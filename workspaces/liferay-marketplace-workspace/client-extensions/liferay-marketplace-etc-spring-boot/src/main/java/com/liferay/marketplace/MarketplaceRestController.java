@@ -106,8 +106,13 @@ public class MarketplaceRestController extends BaseRestController {
 
 		String originalName = file.getOriginalFilename();
 
-		String name = StringUtil.replace(
-			originalName, new String[] {".jar", ".zip"}, new String[] {"", ""});
+		String name = originalName;
+
+		if (StringUtil.endsWith(name, ".jar") ||
+			StringUtil.endsWith(name, ".zip")) {
+
+			name = name.substring(0, name.length() - 4);
+		}
 
 		String finalName = name + ".lpkg";
 
