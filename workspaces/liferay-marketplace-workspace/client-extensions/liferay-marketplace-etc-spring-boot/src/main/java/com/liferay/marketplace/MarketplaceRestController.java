@@ -32,25 +32,37 @@ import com.liferay.marketplace.util.MarketplaceUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import java.math.BigDecimal;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -67,6 +79,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +98,64 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RequestMapping("/marketplace")
 @RestController
 public class MarketplaceRestController extends BaseRestController {
+
+	@PostMapping("/create-lpkg")
+	public ResponseEntity<StreamingResponseBody> createLpkg(
+			@RequestParam("file") MultipartFile file)
+		throws Exception {
+
+		String originalName = file.getOriginalFilename();
+
+		String name = originalName;
+
+		if (StringUtil.endsWith(name, ".jar") ||
+			StringUtil.endsWith(name, ".zip")) {
+
+			name = name.substring(0, name.length() - 4);
+		}
+
+		String finalName = name + ".lpkg";
+
+		Path tempDirectoryPath = Files.createTempDirectory("marketplace-temp-");
+
+		Path lpkgPath = tempDirectoryPath.resolve(finalName);
+
+		File lpkgFile = lpkgPath.toFile();
+
+		try (InputStream inputStream = file.getInputStream()) {
+			_buildLpkg(
+				inputStream, originalName, lpkgPath, Collections.emptyMap(),
+				null, null);
+		}
+
+		File finalLpkgFile = lpkgFile;
+
+		return ResponseEntity.ok(
+		).header(
+			HttpHeaders.CONTENT_DISPOSITION,
+			"attachment; filename=\"" + finalName + "\""
+		).contentType(
+			MediaType.APPLICATION_OCTET_STREAM
+		).body(
+			outputStream -> {
+				try {
+					Files.copy(finalLpkgFile.toPath(), outputStream);
+				}
+				finally {
+					MarketplaceUtil.deleteTempFile(finalLpkgFile, true);
+
+					try {
+						FileSystemUtils.deleteRecursively(tempDirectoryPath);
+					}
+					catch (IOException ioException) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(ioException);
+						}
+					}
+				}
+			}
+		);
+	}
 
 	@GetMapping("orders/export")
 	public ResponseEntity<StreamingResponseBody> getOrdersExport(
@@ -336,10 +407,6 @@ public class MarketplaceRestController extends BaseRestController {
 			Map<String, String> productSpecificationsMap =
 				_marketplaceService.getProductSpecificationsMap(productId);
 
-			if (Objects.equals(productSpecificationsMap.get("type"), "dxp")) {
-				return;
-			}
-
 			List<PublisherAssetLink> publisherAssetLinks =
 				_getPublisherAssetLinks(
 					_marketplaceService.getPublisherAssetsJSONObject(
@@ -362,10 +429,162 @@ public class MarketplaceRestController extends BaseRestController {
 		}
 		catch (WebClientResponseException webClientResponseException) {
 			_log.error(
+				"Unable to process publisher asset links for product " +
+					productId);
+
+			_log.error(webClientResponseException.getResponseBodyAsString());
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to process publisher asset links for product " +
+					productId,
+				exception);
+		}
+	}
+
+	private void _assembleSublpkg(
+			ZipOutputStream masterzipOutputStream,
+			List<JarMetadata> jarMetadatas, Path dir, String suffix,
+			Map<String, String> productSpecificationsMap, Product product,
+			PublisherAssetLink publisherAssetLink)
+		throws IOException {
+
+		if (jarMetadatas.isEmpty()) {
+			return;
+		}
+
+		JarMetadata main = jarMetadatas.get(0);
+
+		Map<String, Path> jars = LinkedHashMapBuilder.<String, Path>create(
+			jarMetadatas.size()
+		).build();
+
+		List<String> bundleEntries = new ArrayList<>();
+
+		for (JarMetadata jar : jarMetadatas) {
+			jars.put(jar._fileName, dir.resolve(jar._fileName));
+
+			bundleEntries.add(
 				StringBundler.concat(
-					"Unable to process publisher asset links for product ",
-					productId, ":\n",
-					webClientResponseException.getResponseBodyAsString()));
+					jar._symbolicName, "#", jar._version, "##"));
+		}
+
+		String name = StringBundler.concat(
+			main._bundleName, " - ", suffix, ".lpkg");
+
+		masterzipOutputStream.putNextEntry(new ZipEntry(name));
+
+		Map<String, Properties> propertiesMap =
+			MarketplaceUtil.getArtifactPropertiesMap(
+				product, productSpecificationsMap, publisherAssetLink,
+				main._symbolicName + "." + StringUtil.toLowerCase(suffix),
+				main._version, String.join(",", bundleEntries),
+				main._bundleName);
+
+		MarketplaceUtil.addPropertiesToZipFile(
+			null, propertiesMap, jars, masterzipOutputStream);
+
+		masterzipOutputStream.closeEntry();
+	}
+
+	/**
+	 * Builds a master LPKG file at the specified path from a ZIP (containing
+	 * JARs) or a single JAR InputStream. Inspects each JAR's OSGi manifest to
+	 * split bundles into API and Impl sub-packages, then assembles the master
+	 * LPKG with the necessary marketplace properties.
+	 *
+	 * @param  inputStream the raw bytes of the uploaded file
+	 * @param  originalFileName used to decide whether the stream is a bare JAR
+	 *         or a ZIP containing multiple JARs
+	 * @param  lpkgPath the target file path where the master LPKG will be
+	 *         written
+	 * @param  productSpecificationsMap product specifications used to determine
+	 *         if the product is Paid/DXP for property injection
+	 * @param  product the Product metadata used for generating marketplace
+	 *         properties
+	 * @param  publisherAssetLink the link metadata used for versioning and file
+	 *         identification
+	 * @throws IOException if an error occurs during file system operations
+	 */
+	private void _buildLpkg(
+			InputStream inputStream, String originalFileName, Path lpkgPath,
+			Map<String, String> productSpecificationsMap, Product product,
+			PublisherAssetLink publisherAssetLink)
+		throws IOException {
+
+		Path workDir = Files.createTempDirectory("lpkg-build-");
+
+		Path apiDir = Files.createDirectories(workDir.resolve("api"));
+		Path implDir = Files.createDirectories(workDir.resolve("impl"));
+
+		List<JarMetadata> apiJars = new ArrayList<>();
+		List<JarMetadata> implJars = new ArrayList<>();
+
+		// Resolve license properties once — injected into each JAR for Paid
+		// products, null for Free (JARs remain untouched)
+
+		Properties licenseProperties = null;
+
+		if (Objects.equals(
+				productSpecificationsMap.get("price-model"), "Paid") &&
+			Objects.equals(productSpecificationsMap.get("type"), "dxp")) {
+
+			licenseProperties = new Properties();
+
+			licenseProperties.setProperty(
+				"product-id",
+				productSpecificationsMap.getOrDefault("product-erc", ""));
+			licenseProperties.setProperty("license-version", "1.0.0");
+			licenseProperties.setProperty(
+				"security-manager-set-context-class-loader", "true");
+			licenseProperties.setProperty("product-version-id", "1");
+		}
+
+		try {
+			if (originalFileName.endsWith(".jar")) {
+				_processJar(
+					originalFileName, inputStream, workDir, apiJars, implJars,
+					apiDir, implDir, licenseProperties);
+			}
+			else {
+				ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+				ZipEntry entry;
+
+				while ((entry = zipInputStream.getNextEntry()) != null) {
+					if (!entry.isDirectory() &&
+						entry.getName(
+						).endsWith(
+							".jar"
+						)) {
+
+						_processJar(
+							entry.getName(), zipInputStream, workDir, apiJars,
+							implJars, apiDir, implDir, licenseProperties);
+					}
+
+					zipInputStream.closeEntry();
+				}
+			}
+
+			if (apiJars.isEmpty() && implJars.isEmpty()) {
+				throw new IOException(
+					"No valid OSGi bundles found in the uploaded file");
+			}
+
+			try (ZipOutputStream masterzipOutputStream = new ZipOutputStream(
+					Files.newOutputStream(lpkgPath))) {
+
+				_assembleSublpkg(
+					masterzipOutputStream, apiJars, apiDir, "API",
+					productSpecificationsMap, product, publisherAssetLink);
+
+				_assembleSublpkg(
+					masterzipOutputStream, implJars, implDir, "Impl",
+					productSpecificationsMap, product, publisherAssetLink);
+			}
+		}
+		finally {
+			FileSystemUtils.deleteRecursively(workDir);
 		}
 	}
 
@@ -526,6 +745,99 @@ public class MarketplaceRestController extends BaseRestController {
 			).build());
 	}
 
+	/**
+	 * Inspects a single JAR stream, reads its OSGi manifest, and places it in
+	 * either the API or Impl bucket. For Paid products ({@code licenseProperties}
+	 * non-null), rewrites the JAR injecting {@code META-INF/marketplace.properties}
+	 * so the DXP runtime can enforce license validation at install time.
+	 * Free product JARs are copied verbatim.
+	 */
+	private void _processJar(
+			String entryName, InputStream inputStream, Path workDir,
+			List<JarMetadata> apiJars, List<JarMetadata> implJars, Path apiDir,
+			Path implDir, Properties licenseProperties)
+		throws IOException {
+
+		String fileName = new File(
+			entryName
+		).getName();
+
+		Path tempFile = Files.createTempFile(workDir, "temp_", ".jar");
+
+		Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
+
+		JarMetadata meta = null;
+
+		try (JarFile jarFile = new JarFile(tempFile.toFile())) {
+			Manifest mf = jarFile.getManifest();
+
+			if (mf == null) {
+				return;
+			}
+
+			Attributes attributes = mf.getMainAttributes();
+
+			String rawBsn = attributes.getValue("Bundle-SymbolicName");
+
+			if (rawBsn == null) {
+				return;
+			}
+
+			meta = new JarMetadata();
+
+			meta._symbolicName = rawBsn.split(";")[0].trim();
+			meta._version = Objects.toString(
+				attributes.getValue("Bundle-Version"), "0.0.0");
+			meta._bundleName = Objects.toString(
+				attributes.getValue("Bundle-Name"), meta._symbolicName);
+			meta._fileName = fileName;
+		}
+
+		// For Paid products, rewrite the JAR injecting
+		// META-INF/marketplace.properties inside it.
+		// Free product JARs are moved verbatim.
+
+		Path targetDir = meta._symbolicName.contains(".api") ? apiDir : implDir;
+
+		if (licenseProperties != null) {
+			Path injectedJar = Files.createTempFile(
+				workDir, "injected_", ".jar");
+
+			try (OutputStream outputStream = Files.newOutputStream(
+					injectedJar)) {
+
+				MarketplaceUtil.addPropertiesToZipFile(
+					tempFile.toFile(),
+					Collections.singletonMap(
+						"META-INF/marketplace.properties", licenseProperties),
+					null, outputStream);
+			}
+
+			Files.move(
+				injectedJar, targetDir.resolve(fileName),
+				StandardCopyOption.REPLACE_EXISTING);
+
+			Files.deleteIfExists(tempFile);
+		}
+		else {
+			Files.move(
+				tempFile, targetDir.resolve(fileName),
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		if (meta._symbolicName.contains(".api")) {
+			apiJars.add(meta);
+		}
+		else {
+			implJars.add(meta);
+		}
+	}
+
+	/**
+	 * Processes a single publisher asset link for non-DXP product types
+	 * (e.g. "cloud"). Downloads the asset, adds artifact metadata, posts it as
+	 * a virtual file entry, optionally attaches it, and marks it as processed.
+	 */
 	private void _processPublisherAssetLink(
 			Product product, Map<String, String> productSpecificationsMap,
 			PublisherAssetLink publisherAssetLink)
@@ -538,16 +850,52 @@ public class MarketplaceRestController extends BaseRestController {
 			publisherAssetFile = _getPublisherAssetFile(
 				publisherAssetLink.getHREF());
 
-			publisherAssetArtifactFile = MarketplaceUtil.addArtifactMetadata(
-				publisherAssetFile, publisherAssetLink.getFileName(),
-				MarketplaceUtil.getArtifactPropertiesMap(
-					product, productSpecificationsMap, publisherAssetLink));
+			String type = productSpecificationsMap.get("type");
+
+			if (Objects.equals(type, "dxp")) {
+				Map<String, String> enrichedSpecificationsMap =
+					HashMapBuilder.putAll(
+						productSpecificationsMap
+					).put(
+						"product-erc", product.getExternalReferenceCode()
+					).build();
+
+				String appName = MarketplaceUtil.getDefaultLocale(
+					product.getName());
+
+				String fileNameWithoutExtension = StringUtil.replace(
+					StringUtil.toLowerCase(appName), ' ', '-');
+
+				String fileName = fileNameWithoutExtension + ".lpkg";
+
+				Path tempDir = Files.createTempDirectory("lpkg-upload-");
+
+				Path lpkgPath = tempDir.resolve(fileName);
+
+				publisherAssetArtifactFile = lpkgPath.toFile();
+
+				try (InputStream inputStream = Files.newInputStream(
+						publisherAssetFile.toPath())) {
+
+					_buildLpkg(
+						inputStream, publisherAssetLink.getFileName(), lpkgPath,
+						enrichedSpecificationsMap, product, publisherAssetLink);
+				}
+			}
+			else {
+				publisherAssetArtifactFile =
+					MarketplaceUtil.addArtifactMetadata(
+						publisherAssetFile, publisherAssetLink.getFileName(),
+						MarketplaceUtil.getArtifactPropertiesMap(
+							product, productSpecificationsMap,
+							publisherAssetLink, null, null, null, null));
+			}
 
 			_marketplaceService.postVirtualFileEntry(
 				publisherAssetArtifactFile, product.getProductId(),
 				publisherAssetLink.getVersion());
 
-			if (Objects.equals(productSpecificationsMap.get("type"), "cloud")) {
+			if (Objects.equals(type, "cloud")) {
 				_marketplaceService.postProductAttachment(
 					publisherAssetArtifactFile,
 					publisherAssetLink.getFileName(), product.getProductId());
@@ -600,7 +948,20 @@ public class MarketplaceRestController extends BaseRestController {
 			).toString());
 	}
 
-	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
+	/**
+	 * Holds OSGi manifest metadata for a single JAR during LPKG assembly.
+	 * {@code marketplaceProperties} is non-null only for licensed (paid) DXP
+	 * bundles that ship a {@code META-INF/marketplace.properties} file.
+	 */
+	private static class JarMetadata {
+
+		private String _bundleName;
+		private String _fileName;
+		private Properties _marketplaceProperties;
+		private String _symbolicName;
+		private String _version;
+
+	}
 
 	private static final int _ACCOUNT_TYPE_PERSON = 1;
 
@@ -622,5 +983,7 @@ public class MarketplaceRestController extends BaseRestController {
 
 	@Autowired
 	private ProvisioningService _provisioningService;
+
+	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
 
 }
