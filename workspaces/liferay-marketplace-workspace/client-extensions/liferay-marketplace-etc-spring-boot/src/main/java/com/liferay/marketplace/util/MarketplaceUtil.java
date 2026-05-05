@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,7 +40,6 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.logging.Log;
@@ -62,10 +62,8 @@ public class MarketplaceUtil {
 
 		Path path = tempDirectoryPath.resolve(fileName);
 
-		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-				Files.newOutputStream(path))) {
-
-			addPropertiesToZipFile(file, propertiesMap, zipOutputStream);
+		try (OutputStream outputStream = Files.newOutputStream(path)) {
+			addPropertiesToZipFile(file, propertiesMap, null, outputStream);
 		}
 
 		return path.toFile();
@@ -73,50 +71,80 @@ public class MarketplaceUtil {
 
 	public static void addPropertiesToZipFile(
 			File sourceZipFile, Map<String, Properties> propertiesMap,
-			ZipOutputStream zipOutputStream)
+			Map<String, Path> filesMap, OutputStream outputStream)
 		throws IOException {
 
-		if (sourceZipFile != null) {
-			try (ZipFile zipFile = new ZipFile(sourceZipFile)) {
-				_cloneZipFile(
-					zipFile, zipOutputStream, propertiesMap.keySet());
+		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
+				new FilterOutputStream(outputStream) {
+
+					@Override
+					public void close() throws IOException {
+
+						// Do not close the underlying stream
+
+					}
+
+				})) {
+
+			if (sourceZipFile != null) {
+				try (ZipFile zipFile = new ZipFile(sourceZipFile)) {
+					_cloneZipFile(
+						zipFile, zipOutputStream, propertiesMap.keySet());
+				}
 			}
-		}
 
-		for (Map.Entry<String, Properties> entry : propertiesMap.entrySet()) {
-			Properties properties = entry.getValue();
+			if (propertiesMap != null) {
+				for (Map.Entry<String, Properties> entry :
+						propertiesMap.entrySet()) {
 
-			if (properties == null) {
-				continue;
-			}
+					Properties properties = entry.getValue();
 
-			String key = entry.getKey();
+					if (properties == null) {
+						continue;
+					}
 
-			int lastPathIndex = StringUtil.lastIndexOfAny(
-				key, new char[] {'/'});
+					String key = entry.getKey();
 
-			if (lastPathIndex != -1) {
-				try {
-					zipOutputStream.putNextEntry(
-						new ZipEntry(key.substring(0, lastPathIndex + 1)));
+					int lastPathIndex = StringUtil.lastIndexOfAny(
+						key, new char[] {'/'});
+
+					if (lastPathIndex != -1) {
+						try {
+							zipOutputStream.putNextEntry(
+								new ZipEntry(
+									key.substring(0, lastPathIndex + 1)));
+
+							zipOutputStream.closeEntry();
+						}
+						catch (ZipException zipException) {
+							if (_log.isDebugEnabled()) {
+								_log.debug(zipException);
+							}
+						}
+					}
+
+					zipOutputStream.putNextEntry(new ZipEntry(key));
+
+					properties.store(zipOutputStream, null);
 
 					zipOutputStream.closeEntry();
 				}
-				catch (ZipException zipException) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(zipException);
-					}
+			}
+
+			if (filesMap != null) {
+				for (Map.Entry<String, Path> entry : filesMap.entrySet()) {
+					zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
+
+					Files.copy(entry.getValue(), zipOutputStream);
+
+					zipOutputStream.closeEntry();
 				}
 			}
 
-			zipOutputStream.putNextEntry(new ZipEntry(key));
-
-			properties.store(zipOutputStream, null);
-
-			zipOutputStream.closeEntry();
+			zipOutputStream.finish();
+			zipOutputStream.flush();
 		}
 	}
-
 
 	public static ExternalLink[] appendExternalLink(
 		ExternalLink[] externalLinks, String domain, String entityId,
@@ -463,42 +491,6 @@ public class MarketplaceUtil {
 		}
 
 		return null;
-	}
-
-	public static void writeMarketplaceProperties(
-			Map<String, Properties> propertiesMap, Map<String, Path> jars,
-			OutputStream outputStream)
-		throws IOException {
-
-		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-				new java.io.FilterOutputStream(outputStream) {
-
-					@Override
-					public void close() throws IOException {
-
-						// Do not close the underlying stream
-
-					}
-
-				})) {
-
-			addPropertiesToZipFile(null, propertiesMap, zipOutputStream);
-
-			// Binary Jars
-
-			if (jars != null) {
-				for (Map.Entry<String, Path> entry : jars.entrySet()) {
-					zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
-
-					Files.copy(entry.getValue(), zipOutputStream);
-
-					zipOutputStream.closeEntry();
-				}
-			}
-
-			zipOutputStream.finish();
-			zipOutputStream.flush();
-		}
 	}
 
 	private static void _cloneZipFile(

@@ -106,7 +106,14 @@ public class MarketplaceRestController extends BaseRestController {
 
 		String originalName = file.getOriginalFilename();
 
-		Path lpkgPath = Files.createTempFile("lpkg-", ".lpkg");
+		String name = StringUtil.replace(
+			originalName, new String[] {".jar", ".zip"}, new String[] {"", ""});
+
+		String finalName = name + ".lpkg";
+
+		Path tempDirectoryPath = Files.createTempDirectory("marketplace-temp-");
+
+		Path lpkgPath = tempDirectoryPath.resolve(finalName);
 
 		File lpkgFile = lpkgPath.toFile();
 
@@ -115,11 +122,6 @@ public class MarketplaceRestController extends BaseRestController {
 				inputStream, originalName, lpkgPath, Collections.emptyMap(),
 				null, null);
 		}
-
-		String name = StringUtil.replace(
-			originalName, new String[] {".jar", ".zip"}, new String[] {"", ""});
-
-		String finalName = name + ".lpkg";
 
 		File finalLpkgFile = lpkgFile;
 
@@ -135,7 +137,7 @@ public class MarketplaceRestController extends BaseRestController {
 					Files.copy(finalLpkgFile.toPath(), outputStream);
 				}
 				finally {
-					Files.deleteIfExists(finalLpkgFile.toPath());
+					MarketplaceUtil.deleteTempFile(finalLpkgFile, true);
 				}
 			}
 		);
@@ -404,9 +406,6 @@ public class MarketplaceRestController extends BaseRestController {
 				return;
 			}
 
-			boolean dxp = Objects.equals(
-				productSpecificationsMap.get("type"), "dxp");
-
 			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
 				_processPublisherAssetLink(
 					product, productSpecificationsMap, publisherAssetLink);
@@ -427,38 +426,7 @@ public class MarketplaceRestController extends BaseRestController {
 		}
 	}
 
-	/**
-	 * Assembles the master (suite) LPKG containing one API sub-package and/or
-	 * one Impl sub-package, plus the master marketplace.properties.
-	 *
-	 * <p>Whether license properties are injected into each sub-LPKG is
-	 * determined by the presence of {@code META-INF/marketplace.properties}
-	 * inside each JAR — paid bundles ship that file, free ones do not.
-	 *
-	 * <p>All JARs (API + Impl) are listed in the {@code bundles} property of
-	 * every sub-LPKG, matching the structure expected by the DXP runtime.
-	 */
-	private void _assembleMasterLpkg(
-			List<JarMetadata> apiJars, List<JarMetadata> implJars, Path apiDir,
-			Path implDir, Map<String, String> productSpecificationsMap,
-			Product product, PublisherAssetLink publisherAssetLink,
-			OutputStream outputStream)
-		throws IOException {
-
-		try (ZipOutputStream masterzipOutputStream = new ZipOutputStream(
-				outputStream)) {
-
-			_assembleSubLpkg(
-				masterzipOutputStream, apiJars, apiDir, "API",
-				productSpecificationsMap, product, publisherAssetLink);
-
-			_assembleSubLpkg(
-				masterzipOutputStream, implJars, implDir, "Impl",
-				productSpecificationsMap, product, publisherAssetLink);
-		}
-	}
-
-	private void _assembleSubLpkg(
+	private void _assembleSublpkg(
 			ZipOutputStream masterzipOutputStream,
 			List<JarMetadata> jarMetadatas, Path dir, String suffix,
 			Map<String, String> productSpecificationsMap, Product product,
@@ -485,18 +453,20 @@ public class MarketplaceRestController extends BaseRestController {
 					jar._symbolicName, "#", jar._version, "##"));
 		}
 
-		String name = main._bundleName + " - " + suffix + ".lpkg";
+		String name = StringBundler.concat(
+			main._bundleName, " - ", suffix, ".lpkg");
 
 		masterzipOutputStream.putNextEntry(new ZipEntry(name));
 
 		Map<String, Properties> propertiesMap =
 			MarketplaceUtil.createMarketplaceProperties(
 				product, productSpecificationsMap, publisherAssetLink,
-				main._symbolicName + "." + suffix.toLowerCase(), main._version,
-				String.join(",", bundleEntries), main._bundleName);
+				main._symbolicName + "." + StringUtil.toLowerCase(suffix),
+				main._version, String.join(",", bundleEntries),
+				main._bundleName);
 
-		MarketplaceUtil.writeMarketplaceProperties(
-			propertiesMap, jars, masterzipOutputStream);
+		MarketplaceUtil.addPropertiesToZipFile(
+			null, propertiesMap, jars, masterzipOutputStream);
 
 		masterzipOutputStream.closeEntry();
 	}
@@ -579,11 +549,16 @@ public class MarketplaceRestController extends BaseRestController {
 					"No valid OSGi bundles found in the uploaded file");
 			}
 
-			try (OutputStream outputStream = Files.newOutputStream(lpkgPath)) {
-				_assembleMasterLpkg(
-					apiJars, implJars, apiDir, implDir,
-					productSpecificationsMap, product, publisherAssetLink,
-					outputStream);
+			try (ZipOutputStream masterzipOutputStream = new ZipOutputStream(
+					Files.newOutputStream(lpkgPath))) {
+
+				_assembleSublpkg(
+					masterzipOutputStream, apiJars, apiDir, "API",
+					productSpecificationsMap, product, publisherAssetLink);
+
+				_assembleSublpkg(
+					masterzipOutputStream, implJars, implDir, "Impl",
+					productSpecificationsMap, product, publisherAssetLink);
 			}
 		}
 		finally {
@@ -685,7 +660,6 @@ public class MarketplaceRestController extends BaseRestController {
 
 		return publisherAssetLinks;
 	}
-
 
 	@PostMapping("request-product-feedback/{orderId}")
 	private void _postRequestProductFeedback(
@@ -805,15 +779,15 @@ public class MarketplaceRestController extends BaseRestController {
 				Path injectedJar = Files.createTempFile(
 					workDir, "injected_", ".jar");
 
-				try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-						Files.newOutputStream(injectedJar))) {
+				try (OutputStream outputStream = Files.newOutputStream(
+						injectedJar)) {
 
 					MarketplaceUtil.addPropertiesToZipFile(
 						tempFile.toFile(),
 						Collections.singletonMap(
 							"META-INF/marketplace.properties",
 							licenseProperties),
-						zipOutputStream);
+						null, outputStream);
 				}
 
 				Files.move(
@@ -916,7 +890,6 @@ public class MarketplaceRestController extends BaseRestController {
 			MarketplaceUtil.deleteTempFile(publisherAssetFile, false);
 		}
 	}
-
 
 	private void _setExchangeRate(Order order) throws Exception {
 		Map<String, String> customFields =
