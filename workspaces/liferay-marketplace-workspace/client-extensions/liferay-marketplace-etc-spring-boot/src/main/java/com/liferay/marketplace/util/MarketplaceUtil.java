@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -74,76 +73,63 @@ public class MarketplaceUtil {
 			Map<String, Path> filesMap, OutputStream outputStream)
 		throws IOException {
 
-		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
-				new FilterOutputStream(outputStream) {
+		ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
 
-					@Override
-					public void close() throws IOException {
-
-						// Do not close the underlying stream
-
-					}
-
-				})) {
-
-			if (sourceZipFile != null) {
-				try (ZipFile zipFile = new ZipFile(sourceZipFile)) {
-					_cloneZipFile(
-						zipFile, zipOutputStream, propertiesMap.keySet());
-				}
+		if (sourceZipFile != null) {
+			try (ZipFile zipFile = new ZipFile(sourceZipFile)) {
+				_cloneZipFile(zipFile, zipOutputStream, propertiesMap.keySet());
 			}
-
-			if (propertiesMap != null) {
-				for (Map.Entry<String, Properties> entry :
-						propertiesMap.entrySet()) {
-
-					Properties properties = entry.getValue();
-
-					if (properties == null) {
-						continue;
-					}
-
-					String key = entry.getKey();
-
-					int lastPathIndex = StringUtil.lastIndexOfAny(
-						key, new char[] {'/'});
-
-					if (lastPathIndex != -1) {
-						try {
-							zipOutputStream.putNextEntry(
-								new ZipEntry(
-									key.substring(0, lastPathIndex + 1)));
-
-							zipOutputStream.closeEntry();
-						}
-						catch (ZipException zipException) {
-							if (_log.isDebugEnabled()) {
-								_log.debug(zipException);
-							}
-						}
-					}
-
-					zipOutputStream.putNextEntry(new ZipEntry(key));
-
-					properties.store(zipOutputStream, null);
-
-					zipOutputStream.closeEntry();
-				}
-			}
-
-			if (filesMap != null) {
-				for (Map.Entry<String, Path> entry : filesMap.entrySet()) {
-					zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
-
-					Files.copy(entry.getValue(), zipOutputStream);
-
-					zipOutputStream.closeEntry();
-				}
-			}
-
-			zipOutputStream.finish();
-			zipOutputStream.flush();
 		}
+
+		if (propertiesMap != null) {
+			for (Map.Entry<String, Properties> entry :
+					propertiesMap.entrySet()) {
+
+				Properties properties = entry.getValue();
+
+				if (properties == null) {
+					continue;
+				}
+
+				String key = entry.getKey();
+
+				int lastPathIndex = StringUtil.lastIndexOfAny(
+					key, new char[] {'/'});
+
+				if (lastPathIndex != -1) {
+					try {
+						zipOutputStream.putNextEntry(
+							new ZipEntry(key.substring(0, lastPathIndex + 1)));
+
+						zipOutputStream.closeEntry();
+					}
+					catch (ZipException zipException) {
+						if (_log.isDebugEnabled()) {
+							_log.debug(zipException);
+						}
+					}
+				}
+
+				zipOutputStream.putNextEntry(new ZipEntry(key));
+
+				properties.store(zipOutputStream, null);
+
+				zipOutputStream.closeEntry();
+			}
+		}
+
+		if (filesMap != null) {
+			for (Map.Entry<String, Path> entry : filesMap.entrySet()) {
+				zipOutputStream.putNextEntry(new ZipEntry(entry.getKey()));
+
+				Files.copy(entry.getValue(), zipOutputStream);
+
+				zipOutputStream.closeEntry();
+			}
+		}
+
+		zipOutputStream.finish();
+		zipOutputStream.flush();
 	}
 
 	public static ExternalLink[] appendExternalLink(
@@ -210,37 +196,55 @@ public class MarketplaceUtil {
 
 		Properties productProperties = new Properties();
 
-		String category = null;
+		String specCategory = null;
+		String specIconURL = null;
+		String specRemoteAppId = null;
 
 		if (productSpecificationsMap != null) {
-			category = getCategoryName(
+			specCategory = getCategoryName(
 				productSpecificationsMap.get("category"));
+			specIconURL = productSpecificationsMap.get("icon-url");
+			specRemoteAppId = productSpecificationsMap.get("remote-app-id");
 		}
 
-		if (Validator.isNull(category) && (product != null)) {
-			category = getCategoryName(product.getCategories());
+		String productCategory = null;
+		String productIconURL = null;
+		String productRemoteAppId = null;
+		String productTitle = null;
+
+		if (product != null) {
+			productCategory = getCategoryName(product.getCategories());
+			productIconURL = product.getThumbnail();
+			productRemoteAppId = String.valueOf(product.getId());
+			productTitle = getDefaultLocale(product.getName());
 		}
 
 		productProperties.setProperty(
-			"category", GetterUtil.getString(category));
+			"category", _getOrDefault(specCategory, productCategory));
+		productProperties.setProperty(
+			"icon-url", _getOrDefault(specIconURL, productIconURL));
+		productProperties.setProperty(
+			"remote-app-id",
+			_getOrDefault(specRemoteAppId, productRemoteAppId));
+		productProperties.setProperty(
+			"title", _getOrDefault(title, productTitle));
+
+		String pubVersion = null;
+
+		if (publisherAssetLink != null) {
+			pubVersion = publisherAssetLink.getVersion();
+		}
+
+		productProperties.setProperty(
+			"version", _getOrDefault(bundleVersion, pubVersion));
+
+		productProperties.setProperty("required", "false");
+		productProperties.setProperty("restart-required", "false");
 
 		if (product != null) {
 			productProperties.setProperty(
 				"description", getDefaultLocale(product.getDescription()));
 		}
-
-		String iconURL = null;
-
-		if (productSpecificationsMap != null) {
-			iconURL = productSpecificationsMap.get("icon-url");
-		}
-
-		if (Validator.isNull(iconURL) && (product != null)) {
-			iconURL = product.getThumbnail();
-		}
-
-		productProperties.setProperty(
-			"icon-url", GetterUtil.getString(iconURL));
 
 		if (Validator.isNotNull(bundleSymbolicName)) {
 			productProperties.setProperty(
@@ -251,36 +255,6 @@ public class MarketplaceUtil {
 			productProperties.setProperty(
 				"liferay-marketplace-bundle-version", bundleVersion);
 		}
-
-		String remoteAppId = null;
-
-		if (productSpecificationsMap != null) {
-			remoteAppId = productSpecificationsMap.get("remote-app-id");
-		}
-
-		if (Validator.isNull(remoteAppId) && (product != null)) {
-			remoteAppId = String.valueOf(product.getId());
-		}
-
-		productProperties.setProperty(
-			"remote-app-id", GetterUtil.getString(remoteAppId));
-
-		productProperties.setProperty("required", "false");
-		productProperties.setProperty("restart-required", "false");
-
-		if (Validator.isNull(title) && (product != null)) {
-			title = getDefaultLocale(product.getName());
-		}
-
-		productProperties.setProperty("title", GetterUtil.getString(title));
-
-		String version = bundleVersion;
-
-		if (Validator.isNull(version) && (publisherAssetLink != null)) {
-			version = publisherAssetLink.getVersion();
-		}
-
-		productProperties.setProperty("version", GetterUtil.getString(version));
 
 		if (Validator.isNotNull(bundles)) {
 			productProperties.setProperty("bundles", bundles);
@@ -519,6 +493,14 @@ public class MarketplaceUtil {
 
 			zipOutputStream.closeEntry();
 		}
+	}
+
+	private static String _getOrDefault(String primary, String secondary) {
+		if (Validator.isNotNull(primary)) {
+			return primary;
+		}
+
+		return GetterUtil.getString(secondary);
 	}
 
 	private static boolean _isMarketplaceCategory(String vocabulary) {
