@@ -749,6 +749,8 @@ public class MarketplaceRestController extends BaseRestController {
 
 		Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
+		JarMetadata meta = null;
+
 		try (JarFile jarFile = new JarFile(tempFile.toFile())) {
 			Manifest mf = jarFile.getManifest();
 
@@ -764,7 +766,7 @@ public class MarketplaceRestController extends BaseRestController {
 				return;
 			}
 
-			JarMetadata meta = new JarMetadata();
+			meta = new JarMetadata();
 
 			meta._symbolicName = rawBsn.split(";")[0].trim();
 			meta._version = Objects.toString(
@@ -772,47 +774,45 @@ public class MarketplaceRestController extends BaseRestController {
 			meta._bundleName = Objects.toString(
 				attributes.getValue("Bundle-Name"), meta._symbolicName);
 			meta._fileName = fileName;
+		}
 
-			// For Paid products, rewrite the JAR injecting
-			// META-INF/marketplace.properties inside it.
-			// Free product JARs are moved verbatim.
+		// For Paid products, rewrite the JAR injecting
+		// META-INF/marketplace.properties inside it.
+		// Free product JARs are moved verbatim.
 
-			Path targetDir =
-				meta._symbolicName.contains(".api") ? apiDir : implDir;
+		Path targetDir = meta._symbolicName.contains(".api") ? apiDir : implDir;
 
-			if (licenseProperties != null) {
-				Path injectedJar = Files.createTempFile(
-					workDir, "injected_", ".jar");
+		if (licenseProperties != null) {
+			Path injectedJar = Files.createTempFile(
+				workDir, "injected_", ".jar");
 
-				try (OutputStream outputStream = Files.newOutputStream(
-						injectedJar)) {
+			try (OutputStream outputStream = Files.newOutputStream(
+					injectedJar)) {
 
-					MarketplaceUtil.addPropertiesToZipFile(
-						tempFile.toFile(),
-						Collections.singletonMap(
-							"META-INF/marketplace.properties",
-							licenseProperties),
-						null, outputStream);
-				}
-
-				Files.move(
-					injectedJar, targetDir.resolve(fileName),
-					StandardCopyOption.REPLACE_EXISTING);
-
-				Files.deleteIfExists(tempFile);
-			}
-			else {
-				Files.move(
-					tempFile, targetDir.resolve(fileName),
-					StandardCopyOption.REPLACE_EXISTING);
+				MarketplaceUtil.addPropertiesToZipFile(
+					tempFile.toFile(),
+					Collections.singletonMap(
+						"META-INF/marketplace.properties", licenseProperties),
+					null, outputStream);
 			}
 
-			if (meta._symbolicName.contains(".api")) {
-				apiJars.add(meta);
-			}
-			else {
-				implJars.add(meta);
-			}
+			Files.move(
+				injectedJar, targetDir.resolve(fileName),
+				StandardCopyOption.REPLACE_EXISTING);
+
+			Files.deleteIfExists(tempFile);
+		}
+		else {
+			Files.move(
+				tempFile, targetDir.resolve(fileName),
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		if (meta._symbolicName.contains(".api")) {
+			apiJars.add(meta);
+		}
+		else {
+			implJars.add(meta);
 		}
 	}
 
