@@ -24,6 +24,7 @@ import com.liferay.headless.commerce.admin.order.client.pagination.Page;
 import com.liferay.headless.commerce.admin.order.client.pagination.Pagination;
 import com.liferay.headless.commerce.admin.order.client.resource.v1_0.OrderItemResource;
 import com.liferay.headless.commerce.admin.order.client.resource.v1_0.OrderResource;
+import com.liferay.marketplace.model.JarMetadata;
 import com.liferay.marketplace.model.PublisherAssetLink;
 import com.liferay.marketplace.permission.DefaultServiceAccountPermission;
 import com.liferay.marketplace.service.MarketplaceService;
@@ -47,7 +48,6 @@ import java.math.BigDecimal;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -57,9 +57,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -462,24 +459,24 @@ public class MarketplaceRestController extends BaseRestController {
 		List<String> bundleEntries = new ArrayList<>();
 
 		for (JarMetadata jar : jarMetadatas) {
-			jars.put(jar._fileName, dir.resolve(jar._fileName));
+			jars.put(jar.getFileName(), dir.resolve(jar.getFileName()));
 
 			bundleEntries.add(
 				StringBundler.concat(
-					jar._symbolicName, "#", jar._version, "##"));
+					jar.getSymbolicName(), "#", jar.getVersion(), "##"));
 		}
 
 		String name = StringBundler.concat(
-			main._bundleName, " - ", suffix, ".lpkg");
+			main.getBundleName(), " - ", suffix, ".lpkg");
 
 		masterzipOutputStream.putNextEntry(new ZipEntry(name));
 
 		Map<String, Properties> propertiesMap =
 			MarketplaceUtil.getArtifactPropertiesMap(
 				product, productSpecificationsMap, publisherAssetLink,
-				main._symbolicName + "." + StringUtil.toLowerCase(suffix),
-				main._version, String.join(",", bundleEntries),
-				main._bundleName);
+				main.getSymbolicName() + "." + StringUtil.toLowerCase(suffix),
+				main.getVersion(), String.join(",", bundleEntries),
+				main.getBundleName());
 
 		MarketplaceUtil.addPropertiesToZipFile(
 			null, propertiesMap, jars, masterzipOutputStream);
@@ -542,9 +539,22 @@ public class MarketplaceRestController extends BaseRestController {
 
 		try {
 			if (originalFileName.endsWith(".jar")) {
-				_processJar(
-					originalFileName, inputStream, workDir, apiJars, implJars,
-					apiDir, implDir, licenseProperties);
+				JarMetadata jarMetadata = MarketplaceUtil.processJar(
+					originalFileName, inputStream, workDir, apiDir, implDir,
+					licenseProperties);
+
+				if (jarMetadata != null) {
+					if (jarMetadata.getSymbolicName(
+						).contains(
+							".api"
+						)) {
+
+						apiJars.add(jarMetadata);
+					}
+					else {
+						implJars.add(jarMetadata);
+					}
+				}
 			}
 			else {
 				ZipInputStream zipInputStream = new ZipInputStream(inputStream);
@@ -557,9 +567,22 @@ public class MarketplaceRestController extends BaseRestController {
 							".jar"
 						)) {
 
-						_processJar(
-							entry.getName(), zipInputStream, workDir, apiJars,
-							implJars, apiDir, implDir, licenseProperties);
+						JarMetadata jarMetadata = MarketplaceUtil.processJar(
+							entry.getName(), zipInputStream, workDir, apiDir,
+							implDir, licenseProperties);
+
+						if (jarMetadata != null) {
+							if (jarMetadata.getSymbolicName(
+								).contains(
+									".api"
+								)) {
+
+								apiJars.add(jarMetadata);
+							}
+							else {
+								implJars.add(jarMetadata);
+							}
+						}
 					}
 
 					zipInputStream.closeEntry();
@@ -746,94 +769,6 @@ public class MarketplaceRestController extends BaseRestController {
 	}
 
 	/**
-	 * Inspects a single JAR stream, reads its OSGi manifest, and places it in
-	 * either the API or Impl bucket. For Paid products ({@code licenseProperties}
-	 * non-null), rewrites the JAR injecting {@code META-INF/marketplace.properties}
-	 * so the DXP runtime can enforce license validation at install time.
-	 * Free product JARs are copied verbatim.
-	 */
-	private void _processJar(
-			String entryName, InputStream inputStream, Path workDir,
-			List<JarMetadata> apiJars, List<JarMetadata> implJars, Path apiDir,
-			Path implDir, Properties licenseProperties)
-		throws IOException {
-
-		String fileName = new File(
-			entryName
-		).getName();
-
-		Path tempFile = Files.createTempFile(workDir, "temp_", ".jar");
-
-		Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
-
-		JarMetadata meta = null;
-
-		try (JarFile jarFile = new JarFile(tempFile.toFile())) {
-			Manifest mf = jarFile.getManifest();
-
-			if (mf == null) {
-				return;
-			}
-
-			Attributes attributes = mf.getMainAttributes();
-
-			String rawBsn = attributes.getValue("Bundle-SymbolicName");
-
-			if (rawBsn == null) {
-				return;
-			}
-
-			meta = new JarMetadata();
-
-			meta._symbolicName = rawBsn.split(";")[0].trim();
-			meta._version = Objects.toString(
-				attributes.getValue("Bundle-Version"), "0.0.0");
-			meta._bundleName = Objects.toString(
-				attributes.getValue("Bundle-Name"), meta._symbolicName);
-			meta._fileName = fileName;
-		}
-
-		// For Paid products, rewrite the JAR injecting
-		// META-INF/marketplace.properties inside it.
-		// Free product JARs are moved verbatim.
-
-		Path targetDir = meta._symbolicName.contains(".api") ? apiDir : implDir;
-
-		if (licenseProperties != null) {
-			Path injectedJar = Files.createTempFile(
-				workDir, "injected_", ".jar");
-
-			try (OutputStream outputStream = Files.newOutputStream(
-					injectedJar)) {
-
-				MarketplaceUtil.addPropertiesToZipFile(
-					tempFile.toFile(),
-					Collections.singletonMap(
-						"META-INF/marketplace.properties", licenseProperties),
-					null, outputStream);
-			}
-
-			Files.move(
-				injectedJar, targetDir.resolve(fileName),
-				StandardCopyOption.REPLACE_EXISTING);
-
-			Files.deleteIfExists(tempFile);
-		}
-		else {
-			Files.move(
-				tempFile, targetDir.resolve(fileName),
-				StandardCopyOption.REPLACE_EXISTING);
-		}
-
-		if (meta._symbolicName.contains(".api")) {
-			apiJars.add(meta);
-		}
-		else {
-			implJars.add(meta);
-		}
-	}
-
-	/**
 	 * Processes a single publisher asset link for non-DXP product types
 	 * (e.g. "cloud"). Downloads the asset, adds artifact metadata, posts it as
 	 * a virtual file entry, optionally attaches it, and marks it as processed.
@@ -883,12 +818,20 @@ public class MarketplaceRestController extends BaseRestController {
 				}
 			}
 			else {
-				publisherAssetArtifactFile =
-					MarketplaceUtil.addArtifactMetadata(
-						publisherAssetFile, publisherAssetLink.getFileName(),
+				Path tempDir = Files.createTempDirectory("marketplace-temp-");
+
+				Path path = tempDir.resolve(publisherAssetLink.getFileName());
+
+				publisherAssetArtifactFile = path.toFile();
+
+				try (OutputStream outputStream = Files.newOutputStream(path)) {
+					MarketplaceUtil.addPropertiesToZipFile(
+						publisherAssetFile,
 						MarketplaceUtil.getArtifactPropertiesMap(
 							product, productSpecificationsMap,
-							publisherAssetLink, null, null, null, null));
+							publisherAssetLink),
+						null, outputStream);
+				}
 			}
 
 			_marketplaceService.postVirtualFileEntry(
@@ -948,20 +891,7 @@ public class MarketplaceRestController extends BaseRestController {
 			).toString());
 	}
 
-	/**
-	 * Holds OSGi manifest metadata for a single JAR during LPKG assembly.
-	 * {@code marketplaceProperties} is non-null only for licensed (paid) DXP
-	 * bundles that ship a {@code META-INF/marketplace.properties} file.
-	 */
-	private static class JarMetadata {
-
-		private String _bundleName;
-		private String _fileName;
-		private Properties _marketplaceProperties;
-		private String _symbolicName;
-		private String _version;
-
-	}
+	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
 
 	private static final int _ACCOUNT_TYPE_PERSON = 1;
 
@@ -983,7 +913,5 @@ public class MarketplaceRestController extends BaseRestController {
 
 	@Autowired
 	private ProvisioningService _provisioningService;
-
-	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
 
 }

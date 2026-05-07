@@ -9,6 +9,7 @@ import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Category;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Product;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.SkuOption;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.OrderItem;
+import com.liferay.marketplace.model.JarMetadata;
 import com.liferay.marketplace.model.PublisherAssetLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -24,6 +25,7 @@ import java.io.OutputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -37,6 +39,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -52,21 +57,6 @@ import org.json.JSONObject;
  * @author Eduardo Diniz
  */
 public class MarketplaceUtil {
-
-	public static File addArtifactMetadata(
-			File file, String fileName, Map<String, Properties> propertiesMap)
-		throws IOException {
-
-		Path tempDirectoryPath = Files.createTempDirectory("marketplace-temp-");
-
-		Path path = tempDirectoryPath.resolve(fileName);
-
-		try (OutputStream outputStream = Files.newOutputStream(path)) {
-			addPropertiesToZipFile(file, propertiesMap, null, outputStream);
-		}
-
-		return path.toFile();
-	}
 
 	public static void addPropertiesToZipFile(
 			File sourceZipFile, Map<String, Properties> propertiesMap,
@@ -177,7 +167,7 @@ public class MarketplaceUtil {
 		}
 
 		productProperties.setProperty(
-			"title", _getOrDefault(title, productTitle));
+			"title", GetterUtil.getString(title, productTitle));
 
 		String pubVersion = null;
 
@@ -186,7 +176,7 @@ public class MarketplaceUtil {
 		}
 
 		productProperties.setProperty(
-			"version", _getOrDefault(bundleVersion, pubVersion));
+			"version", GetterUtil.getString(bundleVersion, pubVersion));
 
 		productProperties.setProperty("required", "false");
 		productProperties.setProperty("restart-required", "false");
@@ -291,6 +281,15 @@ public class MarketplaceUtil {
 		).format(
 			DateTimeFormatter.ofPattern("MMMM d, yyyy")
 		);
+	}
+
+	public static Map<String, Properties> getArtifactPropertiesMap(
+		Product product, Map<String, String> productSpecificationsMap,
+		PublisherAssetLink publisherAssetLink) {
+
+		return getArtifactPropertiesMap(
+			product, productSpecificationsMap, publisherAssetLink, null, null,
+			null, null);
 	}
 
 	public static Map<String, Properties> getArtifactPropertiesMap(
@@ -413,6 +412,80 @@ public class MarketplaceUtil {
 		return null;
 	}
 
+	public static JarMetadata processJar(
+			String entryName, InputStream inputStream, Path workDir,
+			Path apiDir, Path implDir, Properties licenseProperties)
+		throws IOException {
+
+		String fileName = new File(
+			entryName
+		).getName();
+
+		Path tempFile = Files.createTempFile(workDir, "temp_", ".jar");
+
+		Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
+
+		JarMetadata jarMetadata = new JarMetadata();
+
+		try (JarFile jarFile = new JarFile(tempFile.toFile())) {
+			Manifest manifest = jarFile.getManifest();
+
+			if (manifest == null) {
+				return null;
+			}
+
+			Attributes attributes = manifest.getMainAttributes();
+
+			String rawBsn = attributes.getValue("Bundle-SymbolicName");
+
+			if (rawBsn == null) {
+				return null;
+			}
+
+			jarMetadata.setSymbolicName(rawBsn.split(";")[0].trim());
+			jarMetadata.setVersion(
+				Objects.toString(
+					attributes.getValue("Bundle-Version"), "0.0.0"));
+			jarMetadata.setBundleName(
+				Objects.toString(
+					attributes.getValue("Bundle-Name"),
+					jarMetadata.getSymbolicName()));
+			jarMetadata.setFileName(fileName);
+		}
+
+		Path targetDir = implDir;
+
+		if (jarMetadata.getSymbolicName(
+			).contains(
+				".api"
+			)) {
+
+			targetDir = apiDir;
+		}
+
+		Path targetPath = targetDir.resolve(fileName);
+
+		if (licenseProperties != null) {
+			try (OutputStream outputStream = Files.newOutputStream(
+					targetPath)) {
+
+				addPropertiesToZipFile(
+					tempFile.toFile(),
+					Collections.singletonMap(
+						"META-INF/marketplace.properties", licenseProperties),
+					null, outputStream);
+			}
+
+			deleteTempFile(tempFile.toFile(), false);
+		}
+		else {
+			Files.move(
+				tempFile, targetPath, StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		return jarMetadata;
+	}
+
 	private static void _addFilesToZipFile(
 			Map<String, Path> filesMap, ZipOutputStream zipOutputStream)
 		throws IOException {
@@ -480,14 +553,6 @@ public class MarketplaceUtil {
 
 			zipOutputStream.closeEntry();
 		}
-	}
-
-	private static String _getOrDefault(String primary, String secondary) {
-		if (Validator.isNotNull(primary)) {
-			return primary;
-		}
-
-		return GetterUtil.getString(secondary);
 	}
 
 	private static boolean _isMarketplaceCategory(String vocabulary) {
