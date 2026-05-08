@@ -30,6 +30,7 @@ import com.liferay.marketplace.service.MarketplaceService;
 import com.liferay.marketplace.service.ProvisioningService;
 import com.liferay.marketplace.util.MarketplaceUtil;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
@@ -47,6 +48,8 @@ import java.nio.file.Path;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -336,10 +339,6 @@ public class MarketplaceRestController extends BaseRestController {
 			Map<String, String> productSpecificationsMap =
 				_marketplaceService.getProductSpecificationsMap(productId);
 
-			if (Objects.equals(productSpecificationsMap.get("type"), "dxp")) {
-				return;
-			}
-
 			List<PublisherAssetLink> publisherAssetLinks =
 				_getPublisherAssetLinks(
 					_marketplaceService.getPublisherAssetsJSONObject(
@@ -355,9 +354,25 @@ public class MarketplaceRestController extends BaseRestController {
 				return;
 			}
 
-			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
-				_processPublisherAssetLink(
-					product, productSpecificationsMap, publisherAssetLink);
+			if (Objects.equals(productSpecificationsMap.get("type"), "dxp")) {
+				Map<String, PublisherAssetLink[]> groupedPublisherAssetLinks =
+					_groupPublisherAssetLinks(publisherAssetLinks);
+
+				for (Map.Entry<String, PublisherAssetLink[]> entry :
+						groupedPublisherAssetLinks.entrySet()) {
+
+					_processDXPPublisherAssetLinkGroup(
+						product, productSpecificationsMap, entry.getKey(),
+						entry.getValue());
+				}
+			}
+			else {
+				for (PublisherAssetLink publisherAssetLink :
+						publisherAssetLinks) {
+
+					_processPublisherAssetLink(
+						product, productSpecificationsMap, publisherAssetLink);
+				}
 			}
 		}
 		catch (WebClientResponseException webClientResponseException) {
@@ -464,6 +479,30 @@ public class MarketplaceRestController extends BaseRestController {
 		return publisherAssetLinks;
 	}
 
+	private Map<String, PublisherAssetLink[]> _groupPublisherAssetLinks(
+            List<PublisherAssetLink> publisherAssetLinks) {
+
+		Map<String, PublisherAssetLink[]> map = new HashMap<>();
+
+		for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
+			if (map.containsKey(publisherAssetLink.getVersion())) {
+				map.put(
+					publisherAssetLink.getVersion(),
+					ArrayUtil.append(
+						map.get(publisherAssetLink.getVersion()),
+						publisherAssetLink));
+
+				continue;
+			}
+
+			map.put(
+				publisherAssetLink.getVersion(),
+				new PublisherAssetLink[] {publisherAssetLink});
+		}
+
+		return map;
+	}
+
 	@PostMapping("request-product-feedback/{orderId}")
 	private void _postRequestProductFeedback(
 			@AuthenticationPrincipal Jwt jwt, @PathVariable long orderId)
@@ -526,6 +565,57 @@ public class MarketplaceRestController extends BaseRestController {
 			).build());
 	}
 
+	private void _processDXPPublisherAssetLinkGroup(
+			Product product, Map<String, String> productSpecificationsMap,
+			String version, PublisherAssetLink[] publisherAssetLinks)
+		throws Exception {
+
+		if (publisherAssetLinks.length == 0) {
+			return;
+		}
+
+		Map<String, File> jarFilesMap = new LinkedHashMap<>();
+		File lpkgFile = null;
+
+		try {
+			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
+				jarFilesMap.put(
+					publisherAssetLink.getFileName(),
+					_getPublisherAssetFile(publisherAssetLink.getHREF()));
+			}
+
+			String lpkgFileName = StringBundler.concat(
+				_sanitizeForFileName(
+					MarketplaceUtil.getDefaultLocale(product.getName())),
+				"-", _sanitizeForFileName(version), ".lpkg");
+
+			lpkgFile = MarketplaceUtil.createLPKGFile(
+				lpkgFileName, jarFilesMap,
+				MarketplaceUtil.getArtifactPropertiesMap(
+					product, productSpecificationsMap,
+					publisherAssetLinks[0]));
+
+			_marketplaceService.postVirtualFileEntry(
+				lpkgFile, product.getProductId(), version);
+
+			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
+				_marketplaceService.patchPublisherAssetAttachment(
+					new JSONObject(
+					).put(
+						"processed", true
+					).toString(),
+					publisherAssetLink.getAttachmentId());
+			}
+		}
+		finally {
+			MarketplaceUtil.deleteTempFile(lpkgFile, true);
+
+			for (File jarFile : jarFilesMap.values()) {
+				MarketplaceUtil.deleteTempFile(jarFile, false);
+			}
+		}
+	}
+
 	private void _processPublisherAssetLink(
 			Product product, Map<String, String> productSpecificationsMap,
 			PublisherAssetLink publisherAssetLink)
@@ -564,6 +654,14 @@ public class MarketplaceRestController extends BaseRestController {
 			MarketplaceUtil.deleteTempFile(publisherAssetArtifactFile, true);
 			MarketplaceUtil.deleteTempFile(publisherAssetFile, false);
 		}
+	}
+
+	private static String _sanitizeForFileName(String value) {
+		if (value == null) {
+			return "";
+		}
+
+		return value.replaceAll("[^A-Za-z0-9._-]+", "-");
 	}
 
 	private void _setExchangeRate(Order order) throws Exception {
