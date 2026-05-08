@@ -129,6 +129,42 @@ public class MarketplaceUtil {
 		return jsonArray;
 	}
 
+	public static File createLPKGFile(
+			String fileName, Map<String, File> jarFilesMap,
+			Map<String, Properties> propertiesMap)
+		throws IOException {
+
+		Path tempDirectoryPath = Files.createTempDirectory("marketplace-temp-");
+
+		Path path = tempDirectoryPath.resolve(fileName);
+
+		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
+				Files.newOutputStream(path))) {
+
+			Set<String> existingEntryNames = new HashSet<>();
+
+			for (Map.Entry<String, File> entry : jarFilesMap.entrySet()) {
+				String entryName = entry.getKey();
+
+				zipOutputStream.putNextEntry(new ZipEntry(entryName));
+
+				Files.copy(
+					entry.getValue(
+					).toPath(),
+					zipOutputStream);
+
+				zipOutputStream.closeEntry();
+
+				existingEntryNames.add(entryName);
+			}
+
+			_addPropertiesToZipFile(
+				existingEntryNames, propertiesMap, zipOutputStream);
+		}
+
+		return path.toFile();
+	}
+
 	public static Properties createMarketplaceProperties(
 		Product product, PublisherAssetLink publisherAssetLink) {
 
