@@ -30,9 +30,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -62,9 +64,11 @@ public class MarketplaceUtil {
 				Files.newOutputStream(path));
 			ZipFile zipFile = new ZipFile(file)) {
 
-			_cloneZipFile(zipFile, zipOutputStream);
+			Set<String> existingEntryNames = _cloneZipFile(
+				zipFile, zipOutputStream);
 
-			_addPropertiesToZipFile(propertiesMap, zipOutputStream);
+			_addPropertiesToZipFile(
+				existingEntryNames, propertiesMap, zipOutputStream);
 		}
 
 		return path.toFile();
@@ -354,6 +358,7 @@ public class MarketplaceUtil {
 	}
 
 	private static void _addPropertiesToZipFile(
+			Set<String> existingEntryNames,
 			Map<String, Properties> propertiesMap,
 			ZipOutputStream zipOutputStream)
 		throws IOException {
@@ -365,9 +370,13 @@ public class MarketplaceUtil {
 				key, new char[] {'/'});
 
 			if (lastPathIndex != -1) {
-				zipOutputStream.putNextEntry(
-					new ZipEntry(key.substring(0, lastPathIndex + 1)));
-				zipOutputStream.closeEntry();
+				String directoryEntryName = key.substring(0, lastPathIndex + 1);
+
+				if (existingEntryNames.add(directoryEntryName)) {
+					zipOutputStream.putNextEntry(
+						new ZipEntry(directoryEntryName));
+					zipOutputStream.closeEntry();
+				}
 			}
 
 			zipOutputStream.putNextEntry(new ZipEntry(key));
@@ -385,9 +394,11 @@ public class MarketplaceUtil {
 		}
 	}
 
-	private static void _cloneZipFile(
+	private static Set<String> _cloneZipFile(
 			ZipFile zipFile, ZipOutputStream zipOutputStream)
 		throws IOException {
+
+		Set<String> entryNames = new HashSet<>();
 
 		Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
 
@@ -405,7 +416,11 @@ public class MarketplaceUtil {
 			}
 
 			zipOutputStream.closeEntry();
+
+			entryNames.add(zipEntry.getName());
 		}
+
+		return entryNames;
 	}
 
 	private static final Log _log = LogFactory.getLog(MarketplaceUtil.class);
