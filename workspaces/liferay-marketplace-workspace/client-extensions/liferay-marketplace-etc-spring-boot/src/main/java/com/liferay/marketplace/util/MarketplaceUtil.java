@@ -305,6 +305,15 @@ public class MarketplaceUtil {
 		).build();
 	}
 
+	public static Map<String, Properties> getSubLPKGPropertiesMap(
+		Product product, PublisherAssetLink publisherAssetLink) {
+
+		return HashMapBuilder.<String, Properties>put(
+			"liferay.properties",
+			() -> createProductProperties(product, publisherAssetLink)
+		).build();
+	}
+
 	public static JSONObject getCloudProvisioningJSONObject(
 		JSONArray jsonArray, long orderItemId) {
 
