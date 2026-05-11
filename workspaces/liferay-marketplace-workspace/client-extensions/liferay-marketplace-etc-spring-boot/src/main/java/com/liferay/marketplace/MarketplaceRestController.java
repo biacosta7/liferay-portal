@@ -574,23 +574,70 @@ public class MarketplaceRestController extends BaseRestController {
 			return;
 		}
 
-		Map<String, File> jarFilesMap = new LinkedHashMap<>();
+		Map<String, File> apiJarFilesMap = new LinkedHashMap<>();
+		Map<String, File> implJarFilesMap = new LinkedHashMap<>();
+		Map<String, File> otherJarFilesMap = new LinkedHashMap<>();
+
+		List<File> tempFiles = new ArrayList<>();
+
 		File lpkgFile = null;
 
 		try {
 			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
-				jarFilesMap.put(
-					publisherAssetLink.getFileName(),
-					_getPublisherAssetFile(publisherAssetLink.getHREF()));
+				String fileName = publisherAssetLink.getFileName();
+
+				File jarFile = _getPublisherAssetFile(
+					publisherAssetLink.getHREF());
+
+				tempFiles.add(jarFile);
+
+				String fileNameLowerCase = fileName.toLowerCase();
+
+				if (fileNameLowerCase.contains("api")) {
+					apiJarFilesMap.put(fileName, jarFile);
+				}
+				else if (fileNameLowerCase.contains("impl")) {
+					implJarFilesMap.put(fileName, jarFile);
+				}
+				else {
+					otherJarFilesMap.put(fileName, jarFile);
+				}
+			}
+
+			Map<String, File> parentJarFilesMap = new LinkedHashMap<>();
+
+			parentJarFilesMap.putAll(otherJarFilesMap);
+
+			String appName = MarketplaceUtil.getDefaultLocale(product.getName());
+
+			if (!apiJarFilesMap.isEmpty()) {
+				File apiLPKGFile = MarketplaceUtil.createLPKGFile(
+					appName + " - Api.lpkg", apiJarFilesMap,
+					MarketplaceUtil.getSubLPKGPropertiesMap(
+						product, publisherAssetLinks[0]));
+
+				tempFiles.add(apiLPKGFile);
+
+				parentJarFilesMap.put(apiLPKGFile.getName(), apiLPKGFile);
+			}
+
+			if (!implJarFilesMap.isEmpty()) {
+				File implLPKGFile = MarketplaceUtil.createLPKGFile(
+					appName + " - Impl.lpkg", implJarFilesMap,
+					MarketplaceUtil.getSubLPKGPropertiesMap(
+						product, publisherAssetLinks[0]));
+
+				tempFiles.add(implLPKGFile);
+
+				parentJarFilesMap.put(implLPKGFile.getName(), implLPKGFile);
 			}
 
 			String lpkgFileName = StringBundler.concat(
-				_sanitizeForFileName(
-					MarketplaceUtil.getDefaultLocale(product.getName())),
+				_sanitizeForFileName(appName),
 				"-", _sanitizeForFileName(version), ".lpkg");
 
 			lpkgFile = MarketplaceUtil.createLPKGFile(
-				lpkgFileName, jarFilesMap,
+				lpkgFileName, parentJarFilesMap,
 				MarketplaceUtil.getArtifactPropertiesMap(
 					product, productSpecificationsMap,
 					publisherAssetLinks[0]));
@@ -610,8 +657,11 @@ public class MarketplaceRestController extends BaseRestController {
 		finally {
 			MarketplaceUtil.deleteTempFile(lpkgFile, true);
 
-			for (File jarFile : jarFilesMap.values()) {
-				MarketplaceUtil.deleteTempFile(jarFile, false);
+			for (File tempFile : tempFiles) {
+				String tempFileName = tempFile.getName();
+
+				MarketplaceUtil.deleteTempFile(
+					tempFile, tempFileName.endsWith(".lpkg"));
 			}
 		}
 	}
