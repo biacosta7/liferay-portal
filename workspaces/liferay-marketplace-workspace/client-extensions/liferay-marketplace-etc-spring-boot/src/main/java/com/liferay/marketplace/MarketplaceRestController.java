@@ -48,11 +48,13 @@ import java.nio.file.Path;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
@@ -591,12 +593,25 @@ public class MarketplaceRestController extends BaseRestController {
 
 				tempFiles.add(jarFile);
 
-				String fileNameLowerCase = fileName.toLowerCase();
+				Map<String, Properties> jarPropertiesMap =
+					MarketplaceUtil.getJarPropertiesMap(
+						product, productSpecificationsMap, publisherAssetLink);
 
-				if (fileNameLowerCase.contains("api")) {
+				if (!jarPropertiesMap.isEmpty()) {
+					File processedJarFile = MarketplaceUtil.addArtifactMetadata(
+						jarFile, fileName, jarPropertiesMap);
+
+					tempFiles.add(processedJarFile);
+
+					jarFile = processedJarFile;
+				}
+
+				String jarType = MarketplaceUtil.getJarType(jarFile);
+
+				if (Objects.equals(jarType, "api")) {
 					apiJarFilesMap.put(fileName, jarFile);
 				}
-				else if (fileNameLowerCase.contains("impl")) {
+				else if (Objects.equals(jarType, "impl")) {
 					implJarFilesMap.put(fileName, jarFile);
 				}
 				else {
@@ -636,11 +651,16 @@ public class MarketplaceRestController extends BaseRestController {
 				_sanitizeForFileName(appName),
 				"-", _sanitizeForFileName(version), ".lpkg");
 
+			Map<String, Properties> parentPropertiesMap =
+				Collections.emptyMap();
+
+			if (apiJarFilesMap.isEmpty() && implJarFilesMap.isEmpty()) {
+				parentPropertiesMap = MarketplaceUtil.getSubLPKGPropertiesMap(
+					product, publisherAssetLinks[0]);
+			}
+
 			lpkgFile = MarketplaceUtil.createLPKGFile(
-				lpkgFileName, parentJarFilesMap,
-				MarketplaceUtil.getArtifactPropertiesMap(
-					product, productSpecificationsMap,
-					publisherAssetLinks[0]));
+				lpkgFileName, parentJarFilesMap, parentPropertiesMap);
 
 			_marketplaceService.postVirtualFileEntry(
 				lpkgFile, product.getProductId(), version);
@@ -658,10 +678,17 @@ public class MarketplaceRestController extends BaseRestController {
 			MarketplaceUtil.deleteTempFile(lpkgFile, true);
 
 			for (File tempFile : tempFiles) {
-				String tempFileName = tempFile.getName();
+				boolean deleteParentDirectory = false;
 
-				MarketplaceUtil.deleteTempFile(
-					tempFile, tempFileName.endsWith(".lpkg"));
+				File parentFile = tempFile.getParentFile();
+
+				if ((parentFile != null) &&
+					parentFile.getName().startsWith("marketplace-temp-")) {
+
+					deleteParentDirectory = true;
+				}
+
+				MarketplaceUtil.deleteTempFile(tempFile, deleteParentDirectory);
 			}
 		}
 	}
