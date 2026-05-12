@@ -5,6 +5,7 @@
 
 package com.liferay.marketplace.util;
 
+import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Category;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Product;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.SkuOption;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.Order;
@@ -28,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -36,6 +38,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -188,8 +192,13 @@ public class MarketplaceUtil {
 		Properties properties = new Properties();
 
 		properties.setProperty("bundles", "");
-		properties.setProperty(
-			"category", Arrays.toString(product.getCategories()));
+		String category = _getCategoryName(product.getCategories());
+
+		if (category.length() > 75) {
+			category = category.substring(0, 75);
+		}
+
+		properties.setProperty("category", category);
 		properties.setProperty("context-names", "");
 		properties.setProperty(
 			"description", getDefaultLocale(product.getDescription()));
@@ -306,11 +315,67 @@ public class MarketplaceUtil {
 		).build();
 	}
 
+	public static Map<String, Properties> getJarPropertiesMap(
+		Product product, Map<String, String> productSpecificationsMap,
+		PublisherAssetLink publisherAssetLink) {
+
+		return HashMapBuilder.<String, Properties>put(
+			"META-INF/marketplace.properties",
+			() -> {
+				if (Objects.equals(
+						productSpecificationsMap.get("price-model"), "Paid")) {
+
+					return createMarketplaceProperties(
+						product, publisherAssetLink);
+				}
+
+				return null;
+			}
+		).build();
+	}
+
+	public static String getJarType(File file) {
+		try (JarFile jarFile = new JarFile(file)) {
+			Manifest manifest = jarFile.getManifest();
+
+			if (manifest != null) {
+				String symbolicName = manifest.getMainAttributes(
+				).getValue(
+					"Bundle-SymbolicName"
+				);
+
+				if (symbolicName != null) {
+					symbolicName = StringUtil.toLowerCase(symbolicName);
+
+					if (symbolicName.contains(".api") ||
+						symbolicName.contains("-api")) {
+
+						return "api";
+					}
+
+					if (symbolicName.contains(".impl") ||
+						symbolicName.contains("-impl")) {
+
+						return "impl";
+					}
+				}
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to read manifest for " + file.getName(), exception);
+			}
+		}
+
+		return "other";
+	}
+
 	public static Map<String, Properties> getSubLPKGPropertiesMap(
 		Product product, PublisherAssetLink publisherAssetLink) {
 
 		return HashMapBuilder.<String, Properties>put(
-			"liferay.properties",
+			"liferay-marketplace.properties",
 			() -> createProductProperties(product, publisherAssetLink)
 		).build();
 	}
@@ -466,6 +531,24 @@ public class MarketplaceUtil {
 		}
 
 		return entryNames;
+	}
+
+	private static String _getCategoryName(Category[] categories) {
+		if (ArrayUtil.isEmpty(categories)) {
+			return "";
+		}
+
+		for (Category category : categories) {
+			String vocabulary = category.getVocabulary();
+
+			if ((vocabulary != null) &&
+				StringUtil.toLowerCase(vocabulary).contains("marketplace")) {
+
+				return category.getName();
+			}
+		}
+
+		return categories[0].getName();
 	}
 
 	private static final Log _log = LogFactory.getLog(MarketplaceUtil.class);
