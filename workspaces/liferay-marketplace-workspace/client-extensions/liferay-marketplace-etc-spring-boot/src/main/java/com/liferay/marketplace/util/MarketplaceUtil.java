@@ -14,6 +14,7 @@ import com.liferay.marketplace.model.PublisherAssetLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -195,7 +196,8 @@ public class MarketplaceUtil {
 		properties.setProperty("category", _getCategoryName(product.getCategories()));
 		properties.setProperty("context-names", "");
 		properties.setProperty(
-			"description", getDefaultLocale(product.getDescription()));
+			"description",
+			HtmlUtil.stripHtml(getDefaultLocale(product.getDescription())));
 		properties.setProperty("icon-url", product.getThumbnail());
 		properties.setProperty(
 			"remote-app-id", String.valueOf(product.getId()));
