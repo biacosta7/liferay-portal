@@ -594,8 +594,9 @@ public class MarketplaceRestController extends BaseRestController {
 				tempFiles.add(jarFile);
 
 				Map<String, Properties> jarPropertiesMap =
-					MarketplaceUtil.getJarPropertiesMap(
-						product, productSpecificationsMap, publisherAssetLink);
+					MarketplaceUtil.getArtifactPropertiesMap(
+						false, product, productSpecificationsMap,
+						publisherAssetLink);
 
 				if (!jarPropertiesMap.isEmpty()) {
 					File processedJarFile = MarketplaceUtil.addArtifactMetadata(
@@ -708,7 +709,8 @@ public class MarketplaceRestController extends BaseRestController {
 			publisherAssetArtifactFile = MarketplaceUtil.addArtifactMetadata(
 				publisherAssetFile, publisherAssetLink.getFileName(),
 				MarketplaceUtil.getArtifactPropertiesMap(
-					product, productSpecificationsMap, publisherAssetLink));
+					true, product, productSpecificationsMap,
+					publisherAssetLink));
 
 			_marketplaceService.postVirtualFileEntry(
 				publisherAssetArtifactFile, product.getProductId(),

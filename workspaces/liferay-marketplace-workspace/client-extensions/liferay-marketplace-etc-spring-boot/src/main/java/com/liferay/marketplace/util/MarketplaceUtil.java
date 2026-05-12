@@ -192,13 +192,7 @@ public class MarketplaceUtil {
 		Properties properties = new Properties();
 
 		properties.setProperty("bundles", "");
-		String category = _getCategoryName(product.getCategories());
-
-		if (category.length() > 75) {
-			category = category.substring(0, 75);
-		}
-
-		properties.setProperty("category", category);
+		properties.setProperty("category", _getCategoryName(product.getCategories()));
 		properties.setProperty("context-names", "");
 		properties.setProperty(
 			"description", getDefaultLocale(product.getDescription()));
@@ -294,32 +288,20 @@ public class MarketplaceUtil {
 	}
 
 	public static Map<String, Properties> getArtifactPropertiesMap(
-		Product product, Map<String, String> productSpecificationsMap,
+		boolean includeProductProperties, Product product,
+		Map<String, String> productSpecificationsMap,
 		PublisherAssetLink publisherAssetLink) {
 
 		return HashMapBuilder.<String, Properties>put(
 			"liferay-marketplace.properties",
-			() -> createProductProperties(product, publisherAssetLink)
-		).put(
-			"META-INF/marketplace.properties",
 			() -> {
-				if (Objects.equals(
-						productSpecificationsMap.get("price-model"), "Paid")) {
-
-					return createMarketplaceProperties(
-						product, publisherAssetLink);
+				if (includeProductProperties) {
+					return createProductProperties(product, publisherAssetLink);
 				}
 
 				return null;
 			}
-		).build();
-	}
-
-	public static Map<String, Properties> getJarPropertiesMap(
-		Product product, Map<String, String> productSpecificationsMap,
-		PublisherAssetLink publisherAssetLink) {
-
-		return HashMapBuilder.<String, Properties>put(
+		).put(
 			"META-INF/marketplace.properties",
 			() -> {
 				if (Objects.equals(
@@ -541,9 +523,7 @@ public class MarketplaceUtil {
 		for (Category category : categories) {
 			String vocabulary = category.getVocabulary();
 
-			if ((vocabulary != null) &&
-				StringUtil.toLowerCase(vocabulary).contains("marketplace")) {
-
+			if (vocabulary != null) {
 				return category.getName();
 			}
 		}
