@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
@@ -329,17 +330,18 @@ public class MarketplaceUtil {
 				return "other";
 			}
 
-			String name = manifest.getMainAttributes().getValue(
-				"Bundle-SymbolicName");
+			Attributes attributes = manifest.getMainAttributes();
+			
+			String bundleSymbolicName = attributes.getValue("Bundle-SymbolicName");
 
-			if (name != null) {
-				name = StringUtil.toLowerCase(name);
+			if (bundleSymbolicName != null) {
+				bundleSymbolicName = StringUtil.toLowerCase(bundleSymbolicName);
 
-				if (name.contains(".api") || name.contains("-api")) {
+				if (bundleSymbolicName.contains(".api") || bundleSymbolicName.contains("-api")) {
 					return "api";
 				}
 
-				if (name.contains(".impl") || name.contains("-impl")) {
+				if (bundleSymbolicName.contains(".impl") || bundleSymbolicName.contains("-impl")) {
 					return "impl";
 				}
 			}
@@ -537,7 +539,12 @@ public class MarketplaceUtil {
 			String vocabulary = category.getVocabulary();
 
 			if (vocabulary != null) {
-				return category.getName();
+
+				if (Objects.equals(vocabulary, "marketplace app category") ||
+						Objects.equals(vocabulary, "marketplace category")){
+					return category.getName();
+				}
+
 			}
 		}
 

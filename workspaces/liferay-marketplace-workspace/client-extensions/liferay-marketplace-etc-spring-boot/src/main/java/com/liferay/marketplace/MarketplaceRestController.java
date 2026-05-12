@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -577,14 +576,14 @@ public class MarketplaceRestController extends BaseRestController {
 			return;
 		}
 
-		File subLPKGFile = MarketplaceUtil.createLPKGFile(
+		File file = MarketplaceUtil.createLPKGFile(
 			appName + suffix, jarFilesMap,
 			MarketplaceUtil.getSubLPKGPropertiesMap(
 				product, publisherAssetLink));
 
-		temporaryFiles.add(subLPKGFile);
+		temporaryFiles.add(file);
 
-		parentJarFilesMap.put(subLPKGFile.getName(), subLPKGFile);
+		parentJarFilesMap.put(file.getName(), file);
 	}
 
 	private void _processDXPPublisherAssetLinkGroup(
@@ -596,9 +595,9 @@ public class MarketplaceRestController extends BaseRestController {
 			return;
 		}
 
-		Map<String, File> apiJarFilesMap = new LinkedHashMap<>();
-		Map<String, File> implJarFilesMap = new LinkedHashMap<>();
-		Map<String, File> parentJarFilesMap = new LinkedHashMap<>();
+		Map<String, File> apiJarFilesMap = new HashMap<>();
+		Map<String, File> implJarFilesMap = new HashMap<>();
+		Map<String, File> parentJarFilesMap = new HashMap<>();
 
 		List<File> temporaryFiles = new ArrayList<>();
 
@@ -644,7 +643,7 @@ public class MarketplaceRestController extends BaseRestController {
 				product.getName());
 
 			_addSubLPKG(
-				appName, " - Api.lpkg", apiJarFilesMap, parentJarFilesMap,
+				appName, " - API.lpkg", apiJarFilesMap, parentJarFilesMap,
 				temporaryFiles, product, publisherAssetLinks[0]);
 			_addSubLPKG(
 				appName, " - Impl.lpkg", implJarFilesMap, parentJarFilesMap,
