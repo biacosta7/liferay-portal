@@ -253,17 +253,20 @@ public class MarketplaceUtil {
 		}
 	}
 
-	public static void deleteTempFile(
-		File file, boolean deleteParentDirectory) {
-
+	public static void deleteTempFile(File file) {
 		try {
 			if (file != null) {
-				Files.deleteIfExists(file.toPath());
+				Path filePath = file.toPath();
 
-				if (deleteParentDirectory) {
-					Files.deleteIfExists(
-						file.toPath(
-						).getParent());
+				Files.deleteIfExists(filePath);
+
+				Path parentPath = filePath.getParent();
+
+				if ((parentPath != null) &&
+					parentPath.getFileName().toString().startsWith(
+						"marketplace-temp-")) {
+
+					Files.deleteIfExists(parentPath);
 				}
 			}
 		}
@@ -322,26 +325,22 @@ public class MarketplaceUtil {
 		try (JarFile jarFile = new JarFile(file)) {
 			Manifest manifest = jarFile.getManifest();
 
-			if (manifest != null) {
-				String symbolicName = manifest.getMainAttributes(
-				).getValue(
-					"Bundle-SymbolicName"
-				);
+			if (manifest == null) {
+				return "other";
+			}
 
-				if (symbolicName != null) {
-					symbolicName = StringUtil.toLowerCase(symbolicName);
+			String name = manifest.getMainAttributes().getValue(
+				"Bundle-SymbolicName");
 
-					if (symbolicName.contains(".api") ||
-						symbolicName.contains("-api")) {
+			if (name != null) {
+				name = StringUtil.toLowerCase(name);
 
-						return "api";
-					}
+				if (name.contains(".api") || name.contains("-api")) {
+					return "api";
+				}
 
-					if (symbolicName.contains(".impl") ||
-						symbolicName.contains("-impl")) {
-
-						return "impl";
-					}
+				if (name.contains(".impl") || name.contains("-impl")) {
+					return "impl";
 				}
 			}
 		}
@@ -358,10 +357,8 @@ public class MarketplaceUtil {
 	public static Map<String, Properties> getSubLPKGPropertiesMap(
 		Product product, PublisherAssetLink publisherAssetLink) {
 
-		return HashMapBuilder.<String, Properties>put(
-			"liferay-marketplace.properties",
-			() -> createProductProperties(product, publisherAssetLink)
-		).build();
+		return getArtifactPropertiesMap(
+			true, product, Collections.emptyMap(), publisherAssetLink);
 	}
 
 	public static JSONObject getCloudProvisioningJSONObject(

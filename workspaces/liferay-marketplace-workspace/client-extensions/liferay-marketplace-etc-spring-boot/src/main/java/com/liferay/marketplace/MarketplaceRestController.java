@@ -567,6 +567,26 @@ public class MarketplaceRestController extends BaseRestController {
 			).build());
 	}
 
+	private void _addSubLPKG(
+			String appName, String suffix, Map<String, File> jarFilesMap,
+			Map<String, File> parentJarFilesMap, List<File> temporaryFiles,
+			Product product, PublisherAssetLink publisherAssetLink)
+		throws Exception {
+
+		if (jarFilesMap.isEmpty()) {
+			return;
+		}
+
+		File subLPKGFile = MarketplaceUtil.createLPKGFile(
+			appName + suffix, jarFilesMap,
+			MarketplaceUtil.getSubLPKGPropertiesMap(
+				product, publisherAssetLink));
+
+		temporaryFiles.add(subLPKGFile);
+
+		parentJarFilesMap.put(subLPKGFile.getName(), subLPKGFile);
+	}
+
 	private void _processDXPPublisherAssetLinkGroup(
 			Product product, Map<String, String> productSpecificationsMap,
 			String version, PublisherAssetLink[] publisherAssetLinks)
@@ -578,9 +598,9 @@ public class MarketplaceRestController extends BaseRestController {
 
 		Map<String, File> apiJarFilesMap = new LinkedHashMap<>();
 		Map<String, File> implJarFilesMap = new LinkedHashMap<>();
-		Map<String, File> otherJarFilesMap = new LinkedHashMap<>();
+		Map<String, File> parentJarFilesMap = new LinkedHashMap<>();
 
-		List<File> tempFiles = new ArrayList<>();
+		List<File> temporaryFiles = new ArrayList<>();
 
 		File lpkgFile = null;
 
@@ -591,7 +611,7 @@ public class MarketplaceRestController extends BaseRestController {
 				File jarFile = _getPublisherAssetFile(
 					publisherAssetLink.getHREF());
 
-				tempFiles.add(jarFile);
+				temporaryFiles.add(jarFile);
 
 				Map<String, Properties> jarPropertiesMap =
 					MarketplaceUtil.getArtifactPropertiesMap(
@@ -602,7 +622,7 @@ public class MarketplaceRestController extends BaseRestController {
 					File processedJarFile = MarketplaceUtil.addArtifactMetadata(
 						jarFile, fileName, jarPropertiesMap);
 
-					tempFiles.add(processedJarFile);
+					temporaryFiles.add(processedJarFile);
 
 					jarFile = processedJarFile;
 				}
@@ -616,41 +636,23 @@ public class MarketplaceRestController extends BaseRestController {
 					implJarFilesMap.put(fileName, jarFile);
 				}
 				else {
-					otherJarFilesMap.put(fileName, jarFile);
+					parentJarFilesMap.put(fileName, jarFile);
 				}
 			}
 
-			Map<String, File> parentJarFilesMap = new LinkedHashMap<>();
+			String appName = MarketplaceUtil.getDefaultLocale(
+				product.getName());
 
-			parentJarFilesMap.putAll(otherJarFilesMap);
-
-			String appName = MarketplaceUtil.getDefaultLocale(product.getName());
-
-			if (!apiJarFilesMap.isEmpty()) {
-				File apiLPKGFile = MarketplaceUtil.createLPKGFile(
-					appName + " - Api.lpkg", apiJarFilesMap,
-					MarketplaceUtil.getSubLPKGPropertiesMap(
-						product, publisherAssetLinks[0]));
-
-				tempFiles.add(apiLPKGFile);
-
-				parentJarFilesMap.put(apiLPKGFile.getName(), apiLPKGFile);
-			}
-
-			if (!implJarFilesMap.isEmpty()) {
-				File implLPKGFile = MarketplaceUtil.createLPKGFile(
-					appName + " - Impl.lpkg", implJarFilesMap,
-					MarketplaceUtil.getSubLPKGPropertiesMap(
-						product, publisherAssetLinks[0]));
-
-				tempFiles.add(implLPKGFile);
-
-				parentJarFilesMap.put(implLPKGFile.getName(), implLPKGFile);
-			}
+			_addSubLPKG(
+				appName, " - Api.lpkg", apiJarFilesMap, parentJarFilesMap,
+				temporaryFiles, product, publisherAssetLinks[0]);
+			_addSubLPKG(
+				appName, " - Impl.lpkg", implJarFilesMap, parentJarFilesMap,
+				temporaryFiles, product, publisherAssetLinks[0]);
 
 			String lpkgFileName = StringBundler.concat(
-				_sanitizeForFileName(appName),
-				"-", _sanitizeForFileName(version), ".lpkg");
+				_sanitizeForFileName(appName), "-",
+				_sanitizeForFileName(version), ".lpkg");
 
 			Map<String, Properties> parentPropertiesMap =
 				Collections.emptyMap();
@@ -668,28 +670,15 @@ public class MarketplaceRestController extends BaseRestController {
 
 			for (PublisherAssetLink publisherAssetLink : publisherAssetLinks) {
 				_marketplaceService.patchPublisherAssetAttachment(
-					new JSONObject(
-					).put(
-						"processed", true
-					).toString(),
+					new JSONObject().put("processed", true).toString(),
 					publisherAssetLink.getAttachmentId());
 			}
 		}
 		finally {
-			MarketplaceUtil.deleteTempFile(lpkgFile, true);
+			MarketplaceUtil.deleteTempFile(lpkgFile);
 
-			for (File tempFile : tempFiles) {
-				boolean deleteParentDirectory = false;
-
-				File parentFile = tempFile.getParentFile();
-
-				if ((parentFile != null) &&
-					parentFile.getName().startsWith("marketplace-temp-")) {
-
-					deleteParentDirectory = true;
-				}
-
-				MarketplaceUtil.deleteTempFile(tempFile, deleteParentDirectory);
+			for (File tempFile : temporaryFiles) {
+				MarketplaceUtil.deleteTempFile(tempFile);
 			}
 		}
 	}
@@ -730,8 +719,8 @@ public class MarketplaceRestController extends BaseRestController {
 				publisherAssetLink.getAttachmentId());
 		}
 		finally {
-			MarketplaceUtil.deleteTempFile(publisherAssetArtifactFile, true);
-			MarketplaceUtil.deleteTempFile(publisherAssetFile, false);
+			MarketplaceUtil.deleteTempFile(publisherAssetArtifactFile);
+			MarketplaceUtil.deleteTempFile(publisherAssetFile);
 		}
 	}
 
