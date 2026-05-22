@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Liferay} from '../liferay/liferay';
+import { Liferay } from '../liferay/liferay';
 
 export default {
 	'a-license-key-for-the-entered-domain-already-exists':
@@ -117,6 +117,7 @@ export default {
 	'billing-address': 'Billing Address',
 	'billing-email': 'Billing Email',
 	'browse-catalog': 'Browse Catalog',
+	'browse-products': 'Browse Products',
 	'build': 'Build',
 	'bundle-name': 'Bundle Name',
 	'bundles': 'Bundles',
@@ -546,6 +547,7 @@ export default {
 	'order-info': 'Order Info',
 	'order-marked-as-paid': 'Order marked as paid.',
 	'order-received': 'Order Received',
+	'order-received-awaiting-signature': 'Order Received: Awaiting Signature',
 	'order-status': 'Order Status',
 	'orders': 'Orders',
 	'other': 'Other',

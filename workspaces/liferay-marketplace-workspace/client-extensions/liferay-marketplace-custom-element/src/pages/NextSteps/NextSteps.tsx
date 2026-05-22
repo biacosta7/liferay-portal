@@ -33,6 +33,7 @@ import {
 import {getSiteURL} from '../../utils/site';
 import {getAccountImage} from '../../utils/util';
 import AIHubNextSteps from '../ProductPurchase/pages/LiferayProduct/AIHubForm/AIHubNextSteps';
+import NewAIHubNextSteps from '../ProductPurchase/pages/LiferayProduct/AIHubForm/NewAIHubNextSteps';
 import LDPNextSteps from '../ProductPurchase/pages/LiferayProduct/LDPNextSteps';
 import ProductPurchaseNextSteps from '../ProductPurchase/pages/NextSteps';
 
@@ -298,6 +299,15 @@ export function NextSteps() {
 	) {
 		return (
 			<AIHubNextSteps data={data} error={error} isLoading={isLoading} />
+		);
+	}
+
+	if (
+		productTypeCategory === ProductTypeVocabulary.LIFERAY_PRODUCT &&
+		solutionTypeSpecificationValue === SolutionTypes.NEW_AI_HUB
+	) {
+		return (
+			<NewAIHubNextSteps data={data} error={error} isLoading={isLoading} />
 		);
 	}
 
