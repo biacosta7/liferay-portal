@@ -54,6 +54,11 @@ const LiferayProductsOutlet = () => (
 				props?.marketplaceDeliveryProduct?.specificationValues
 					?.APP_BETA;
 
+			const isAiHub =
+				props?.placedOrder?.orderTypeExternalReferenceCode ===
+				OrderTypes.AI_HUB &&
+				props?.placedOrder?.orderStatusInfo?.code === 0;
+
 			if (
 				[
 					OrderTypes.AI_HUB,
@@ -77,9 +82,24 @@ const LiferayProductsOutlet = () => (
 									);
 								}}
 								outline
-								size="sm"
+								size="regular"
 							>
 								{i18n.translate('share-beta-feedback')}
+							</ClayButton>
+						)}
+
+						{isAiHub && (
+							<ClayButton
+								className="mr-2"
+								displayType="primary"
+								onClick={() => {
+									Liferay.Util.navigate(
+										`${getSiteURL()}/product-purchase?productId=${props?.product?.productId}&aiHubTokens#/`
+									);
+								}}
+								size="regular"
+							>
+								{i18n.translate('buy-extra-token')}
 							</ClayButton>
 						)}
 
