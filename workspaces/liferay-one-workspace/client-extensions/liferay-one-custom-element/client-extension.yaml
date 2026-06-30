@@ -15,5 +15,5 @@ liferay-one-custom-element:
         jira-hc-portal-url: https://liferay.atlassian.net/servicedesk/customer/portal/105
     type: customElement
     urls:
-        -   "*.js"
+        -   main.js
     useESM: true

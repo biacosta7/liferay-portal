@@ -5,7 +5,7 @@
 
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import {defineConfig, splitVendorChunkPlugin} from 'vite';
 
 export default defineConfig({
 	build: {
@@ -13,12 +13,9 @@ export default defineConfig({
 		rollupOptions: {
 			external: ['@liferay/oauth2-provider-web/client'],
 			output: {
-				assetFileNames: 'assets/[name].[hash][extname]',
-				chunkFileNames: '[name].[hash].js',
-				entryFileNames: '[name].[hash].js',
-				manualChunks: {
-					vendor: ['react', 'react-dom', 'react-router-dom'],
-				},
+				assetFileNames: 'assets/[name][extname]',
+				chunkFileNames: '[name]-[hash].js',
+				entryFileNames: 'main.js',
 			},
 		},
 	},
@@ -35,7 +32,7 @@ export default defineConfig({
 		},
 		exclude: ['@liferay/oauth2-provider-web/client'],
 	},
-	plugins: [react()],
+	plugins: [react(), splitVendorChunkPlugin()],
 	resolve: {
 		alias: {
 			'~': path.resolve(__dirname, './src/'),
