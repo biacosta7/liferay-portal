@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,13 @@ public class ObjectActionCommerceOrderItemEntitlementGenerationRestController
 		JSONObject jsonObject = new JSONObject(json);
 
 		_entitlementService.generateEntitlements(jsonObject.getLong("classPK"));
+	}
+
+	@PostMapping("/test/{classPK}")
+	public void testPost(@PathVariable("classPK") long classPK)
+		throws Exception {
+
+		_entitlementService.generateEntitlements(classPK);
 	}
 
 	@Autowired

@@ -10,6 +10,8 @@ liferay-one-etc-spring-boot-oahs:
         -   Liferay.Headless.Commerce.Admin.Order.everything
         -   Liferay.Headless.Commerce.Admin.Pricing.everything
         -   Liferay.Notification.REST.everything
+        -   c_aihubapplication.everything
+        -   c_aihubbetaprivateaccessrequest.everything
         -   c_contract.everything
         -   c_entitlement.everything
         -   c_entitlementdefinition.everything.read
@@ -30,6 +32,11 @@ liferay-one-etc-spring-boot-oaua:
         -   c_projectmembership.everything
         -   c_ticketattachment.everything
     type: oAuthApplicationUserAgent
+liferay-one-etc-spring-boot-object-action-ai-hub-tokens:
+    name: Liferay One Etc Spring Boot Object Action AI Hub Tokens
+    oAuth2ApplicationExternalReferenceCode: liferay-one-etc-spring-boot-oaua
+    resourcePath: /object/action/ai/hub/tokens
+    type: objectAction
 liferay-one-etc-spring-boot-object-action-commerce-order-item-entitlement-generation:
     name: Liferay One Etc Spring Boot Object Action Commerce Order Item Entitlement Generation
     oAuth2ApplicationExternalReferenceCode: liferay-one-etc-spring-boot-oaua
