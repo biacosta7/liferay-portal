@@ -40,12 +40,28 @@ const AccountSelection = () => {
 	const {isPaidApp} = getProductPriceModel(product);
 
 	useEffect(() => {
-		if (isSingleAccount) {
-			setSelectedAccount(accounts[0]);
-
-			navigate(isPaidApp ? '/license' : '/summary', {replace: true});
+		if (!product) {
+			return;
 		}
-	}, [accounts, isPaidApp, isSingleAccount, navigate, setSelectedAccount]);
+
+		if (isSingleAccount) {
+			if (selectedAccount?.id !== accounts[0]?.id) {
+				setSelectedAccount(accounts[0]);
+			}
+
+			let solutionType = getProductSpecificationValue(
+				ProductSpecificationKey.SOLUTION_TYPE,
+				product
+			);
+
+			if (solutionType === 'ai-hub-open-beta') {
+				navigate('/project', {replace: true});
+			}
+			else {
+				navigate(isPaidApp ? '/license' : '/summary', {replace: true});
+			}
+		}
+	}, [accounts, isPaidApp, isSingleAccount, navigate, setSelectedAccount, product, selectedAccount]);
 
 	if (isLoadingAccounts || isSingleAccount) {
 		return (

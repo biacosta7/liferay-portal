@@ -33,10 +33,13 @@ const PurchaseCompleted = lazy(
 
 const ProductPurchaseRoutes = ({product}: {product: DeliveryProduct}) => {
 	const {isPaidApp} = getProductPriceModel(product);
+	const searchParams = new URLSearchParams(window.location.search);
 
 	const steps = getProductPurchaseSteps({
 		isLDP: isLDPProduct(product),
 		isPaidApp,
+		product,
+		searchParams,
 	});
 
 	const routes: AppRoute[] = [
@@ -69,7 +72,9 @@ const ProductPurchaseRouter = () => {
 
 	const isSignedIn = useRequireSignIn();
 
-	const {data: product, isLoading} = useDeliveryProduct(productId);
+	const {data: product, isLoading} = useDeliveryProduct(
+		isSignedIn ? productId : ''
+	);
 
 	if (!isSignedIn) {
 		return null;
@@ -83,7 +88,7 @@ const ProductPurchaseRouter = () => {
 		);
 	}
 
-	if (!productId || !product?.productId) {
+	if (!productId || !(product?.productId ?? product?.id)) {
 		return (
 			<EmptyState
 				description={i18n.translate(
