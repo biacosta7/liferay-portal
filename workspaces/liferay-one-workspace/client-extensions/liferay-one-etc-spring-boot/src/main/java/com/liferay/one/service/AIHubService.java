@@ -46,9 +46,10 @@ public class AIHubService extends OneBaseService {
 					).build(
 					).toUri()));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"Unable to get AI Hub Application " + externalReferenceCode, e);
+				"Unable to get AI Hub Application " + externalReferenceCode,
+				exception);
 
 			return null;
 		}
@@ -115,9 +116,10 @@ public class AIHubService extends OneBaseService {
 					).build(
 					).toUri()));
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"Unable to put AI Hub Application " + externalReferenceCode, e);
+				"Unable to put AI Hub Application " + externalReferenceCode,
+				exception);
 
 			return null;
 		}

@@ -164,8 +164,8 @@ public class ObjectActionAIHubTokensRestController extends BaseRestController {
 				return jsonArray.getString(0);
 			}
 		}
-		catch (Exception e) {
-			_log.error("Unable to parse SkuOption options JSON", e);
+		catch (Exception exception) {
+			_log.error("Unable to parse SkuOption options JSON", exception);
 		}
 
 		return null;
