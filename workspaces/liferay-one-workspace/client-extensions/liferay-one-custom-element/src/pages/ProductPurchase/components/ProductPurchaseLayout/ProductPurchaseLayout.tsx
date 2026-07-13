@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import {
 	Outlet,
 	useLocation,
@@ -50,7 +50,13 @@ export type ProductPurchaseLayoutContext = {
 		nextStep: () => void;
 		previousStep: () => void;
 	};
-	handlePurchase: (dxpFreeForm?: ActivationKeyFormData) => Promise<void>;
+	form: Record<string, any>;
+	setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+	skuRef: React.MutableRefObject<any>;
+	handlePurchase: (
+		customServiceOrForm?: any,
+		options?: any
+	) => Promise<void>;
 	isLoadingAccounts: boolean;
 	isSingleAccount: boolean;
 	isSubmitting: boolean;
@@ -79,10 +85,15 @@ const ProductPurchaseLayout = ({
 	const {accounts, isLoading, selectedAccount, setSelectedAccount} =
 		useAccounts();
 
+	const searchParams = new URLSearchParams(window.location.search);
+	const isAiHubTokens = searchParams.has('aiHubTokens');
+
 	const productPurchaseCart = useProductPurchaseCart(
 		selectedAccount?.id,
 		product,
-		ProductPurchaseApp.getOrderTypeExternalReferenceCode(product)
+		isAiHubTokens
+			? 'AI_HUB_TOKEN'
+			: ProductPurchaseApp.getOrderTypeExternalReferenceCode(product)
 	);
 
 	const {isFreeApp, isPaidApp} = getProductPriceModel(product);
@@ -96,6 +107,12 @@ const ProductPurchaseLayout = ({
 
 	const {pathname} = useLocation();
 	const navigate = useNavigate();
+
+	const [form, setForm] = useState<Record<string, any>>({});
+	const skuRef = useRef<any>(
+		new URLSearchParams(window.location.search).get('skuRef') ??
+			product.skus?.[0]?.externalReferenceCode
+	);
 
 	const steps = stepItems.map((stepItem) => ({
 		active: pathname === stepItem.key,
@@ -113,17 +130,27 @@ const ProductPurchaseLayout = ({
 		}
 	};
 
-	const handlePurchase = async (dxpFreeForm?: ActivationKeyFormData) => {
+	const handlePurchase = async (
+		customServiceOrForm?: any,
+		options?: any
+	) => {
 		setSubmitting(true);
 
 		try {
+			const isCustomService =
+				customServiceOrForm &&
+				typeof customServiceOrForm.createOrder === 'function';
+
 			let productPurchase;
 
-			if (isDXPFreeTierProduct(product) && dxpFreeForm) {
+			if (isCustomService) {
+				productPurchase = customServiceOrForm;
+			}
+			else if (isDXPFreeTierProduct(product) && customServiceOrForm) {
 				productPurchase = new ProductPurchaseDXPFree(
 					selectedAccount,
 					product,
-					dxpFreeForm
+					customServiceOrForm
 				);
 			}
 			else if (isLDPProduct(product) && ldpSettings) {
@@ -140,7 +167,7 @@ const ProductPurchaseLayout = ({
 				);
 			}
 
-			if (isPaidApp) {
+			if (isPaidApp && !isCustomService) {
 				const cart = await productPurchase.createOrder({
 					...productPurchaseCart.cart,
 					billingAddress: payment.billingAddress,
@@ -171,9 +198,16 @@ const ProductPurchaseLayout = ({
 				return;
 			}
 
-			const order = await productPurchase.createOrder();
+			const order = await productPurchase.createOrder(options?.cart || options, options?.cartOptions || options);
 
-			navigate(await productPurchase.getNextStepsLink(order), {
+			const nextLink = await productPurchase.getNextStepsLink(order);
+
+			if (nextLink.startsWith('http')) {
+				window.location.href = nextLink;
+				return;
+			}
+
+			navigate(nextLink, {
 				state: {account: selectedAccount},
 			});
 		}
@@ -195,6 +229,9 @@ const ProductPurchaseLayout = ({
 			nextStep: () => stepNavigate(1),
 			previousStep: () => stepNavigate(-1),
 		},
+		form,
+		setForm,
+		skuRef,
 		handlePurchase,
 		isLoadingAccounts: isLoading,
 		isSingleAccount: accounts.length === 1,

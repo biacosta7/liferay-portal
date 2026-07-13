@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Liferay} from '~/services/liferay/liferay';
+import { Liferay } from '~/services/liferay/liferay';
 
 export default {
 	'1-ticket': '1 Ticket',
@@ -70,10 +70,12 @@ export default {
 	'ai-hub': 'AI Hub',
 	'ai-hub-account-details': 'AI Hub Account Details',
 	'ai-hub-account-name': 'AI Hub Account Name',
+	'ai-hub-details': 'AI Hub Details',
 	'ai-hub-information': 'AI Hub Information',
 	'all': 'All',
 	'all-commerce-modules-are-enabled-by-default':
 		'All Commerce modules are enabled by default.',
+	'ai-hub-url': 'AI Hub URL',
 	'all-orders': 'All Orders',
 	'all-progress-and-information-related-to-the-creation-of-the-app-will-be-lost-do-you-still-want-to-exit':
 		'All progress and information related to the creation of the app will be lost. Do you still want to exit?',
@@ -187,6 +189,7 @@ export default {
 	'billing-email': 'Billing Email',
 	'breadcrumb': 'Breadcrumb',
 	'browse-catalog': 'Browse Catalog',
+	'browse-products': 'Browse Products',
 	'build': 'Build',
 	'bundle-list': 'Bundle List',
 	'bundle-name': 'Bundle Name',
@@ -195,6 +198,7 @@ export default {
 	'business-account': 'Business Account',
 	'business-address': 'Business Address',
 	'business-email-address': 'Business Email Address',
+	'buy-liferay-tokens': 'Buy Liferay Tokens',
 	'business-event-actual-event-date-recorded-successfully':
 		'Business event actual event date recorded successfully.',
 	'business-event-canceled-successfully':
@@ -626,6 +630,8 @@ export default {
 	'liferay-saas': 'Liferay SaaS',
 	'liferay-saas-activation': 'Liferay SaaS Activation',
 	'liferay-self-hosted': 'Liferay Self-Hosted',
+	'liferay-tokens-was-purchased-successfully':
+		'Liferay Tokens was purchased successfully',
 	'liferay-version': 'Liferay Version',
 	'limit-reached': 'Limit Reached',
 	'list-with-latest-published-apps': 'List with latest published apps',
@@ -819,6 +825,7 @@ export default {
 	'order-items': 'Order Items',
 	'order-marked-as-paid': 'Order marked as paid.',
 	'order-received': 'Order Received',
+	'order-received-awaiting-signature': 'Order Received: Awaiting Signature',
 	'order-status': 'Order Status',
 	'order-summary': 'Order Summary',
 	'orders': 'Orders',
@@ -836,6 +843,7 @@ export default {
 	'password-policy': 'Password Policy',
 	'pay-with-bank-transfer': 'Pay with Bank Transfer',
 	'pay-with-card': 'Pay with Card',
+	'pay-with-invoice': 'Pay with Invoice',
 	'payload': 'Payload',
 	'payment': 'Payment',
 	'payment-failed': 'Payment Failed',
@@ -854,6 +862,8 @@ export default {
 	'personal-information-purpose': 'Personal Information & Purpose',
 	'phone': 'Phone',
 	'phone-number': 'Phone Number',
+	'pick-one-of-the-following-three-options-to-immediately-obtain-extra-tokens-to-foster-your-ai-hub-capabilities':
+		'Pick one of the following three options to immediately obtain extra tokens to foster your AI Hub capabilities.',
 	'planned-event-date': 'Planned Event Date',
 	'please-be-aware-that-since-you-are-adding-a-new-version-of-the-app-the-only-section-visible-is-the-build':
 		'Please be aware that since you are adding a new version of the app, the only section visible is the "Build".',
@@ -961,6 +971,7 @@ export default {
 	'publishers': 'Publishers',
 	'purchase-and-install-new-apps-and-they-will-show-up-here':
 		'Purchase and install new apps and they will show up here.',
+	'purchase': 'Purchase',
 	'purchase-app': 'Purchase App',
 	'purchase-completed': 'Purchase Completed',
 	'purchase-date': 'Purchase Date',
@@ -1053,6 +1064,7 @@ export default {
 		'Select an account to view this page.',
 	'select-an-active-enterprise-search-subscription-to-download-the-activation-key':
 		'Select an active Liferay Enterprise Search subscription to download the activation key.',
+	'select-desired-amount-of-tokens': 'Select Desired Amount of Tokens',
 	'select-an-option': 'Select an Option',
 	'select-areas': 'Select Areas',
 	'select-categories': 'Select Categories',
@@ -1225,6 +1237,8 @@ export default {
 	'this-product-is-no-longer-available':
 		'This product is no longer available.',
 	'this-project-has-no-members': 'This project has no members yet.',
+	'this-purchase-will-be-billed-under-your-existing-payment-agreement-the-payment-method-cannot-be-changed-and-no-online-payment-is-required':
+		'This purchase will be billed under your existing payment agreement. The payment method cannot be changed, and no online payment is required.',
 	'this-submission-is-currently-under-review-by-liferay-once-the-process-is-complete-it-will-be-published-on-the-marketplace-in-the-meantime-no-information-or-data-from-this-app-submission-can-be-updated':
 		'This submission is currently under review by Liferay. Once the process is complete, it will be published on the Marketplace. In the meantime, no information or data from this app submission can be updated.',
 	'this-table-allows-you-to-create-manage-and-track-your-business-events-please-note-that-business-events-closed-for-more-than-a-year-will-not-be-displayed-here':
@@ -1250,8 +1264,11 @@ export default {
 		'To join an existing business account, please contact your administrator, who can add you. Once added, you will automatically become part of that account and will be able to manage it and make purchases on Markeplace.',
 	'to-request-a-new-or-replacement-activation-key-open-a-support-ticket':
 		'To request a new or replacement activation key, open a support ticket.',
+	'token-monthly-allowance': 'Token Monthly Allowance',
+	'token-past-purchases': 'Token Past Purchases',
 	'token-unavailable': 'Token Unavailable',
 	'tokens': 'Tokens',
+	'tokens-amount': 'Tokens Amount',
 	'topic': 'Topic',
 	'topics': 'Topics',
 	'total': 'Total',

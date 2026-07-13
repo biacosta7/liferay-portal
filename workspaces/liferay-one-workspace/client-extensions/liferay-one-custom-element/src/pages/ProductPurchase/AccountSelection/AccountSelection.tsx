@@ -43,17 +43,33 @@ const AccountSelection = () => {
 	const isDXPFree = isDXPFreeTierProduct(product);
 
 	useEffect(() => {
-		if (isSingleAccount) {
-			setSelectedAccount(accounts[0]);
+		if (!product) {
+			return;
+		}
 
-			navigate(
-				isPaidApp
-					? '/license'
-					: isDXPFree
-						? '/activation-key-form'
-						: '/summary',
-				{replace: true}
+		if (isSingleAccount) {
+			if (selectedAccount?.id !== accounts[0]?.id) {
+				setSelectedAccount(accounts[0]);
+			}
+
+			const solutionType = getProductSpecificationValue(
+				ProductSpecificationKey.SOLUTION_TYPE,
+				product
 			);
+
+			if (solutionType === 'ai-hub-open-beta') {
+				navigate('/project', {replace: true});
+			}
+			else {
+				navigate(
+					isPaidApp
+						? '/license'
+						: isDXPFree
+							? '/activation-key-form'
+							: '/summary',
+					{replace: true}
+				);
+			}
 		}
 	}, [
 		accounts,
@@ -61,6 +77,8 @@ const AccountSelection = () => {
 		isPaidApp,
 		isSingleAccount,
 		navigate,
+		product,
+		selectedAccount,
 		setSelectedAccount,
 	]);
 
