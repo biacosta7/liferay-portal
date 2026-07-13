@@ -10,8 +10,10 @@ import com.liferay.one.exception.DuplicateEntitlementException;
 import com.liferay.one.model.Entitlement;
 import com.liferay.one.model.EntitlementDefinition;
 import com.liferay.one.model.OrderItem;
+import com.liferay.one.model.Project;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.Map;
@@ -202,7 +204,73 @@ public class EntitlementService extends OneBaseService {
 		Map<String, String> customFields =
 			(Map<String, String>)order.getCustomFields();
 
-		return GetterUtil.getLong(customFields.get("contractId"));
+		long contractId = GetterUtil.getLong(customFields.get("contractId"));
+
+		if (contractId > 0) {
+			return contractId;
+		}
+
+		String orderMetadata = customFields.get("order-metadata");
+
+		if (Validator.isNotNull(orderMetadata)) {
+			JSONObject orderMetadataJSONObject = new JSONObject(orderMetadata);
+
+			String salesforceProjectId = orderMetadataJSONObject.optString(
+				"salesforceProjectId");
+
+			if (Validator.isNotNull(salesforceProjectId)) {
+				List<JSONObject> contracts = getAllItems(
+					"/o/c/contracts",
+					"(r_projectToContract_c_projectERC eq '" +
+						salesforceProjectId + "')",
+					jsonObject -> jsonObject);
+
+				if (!contracts.isEmpty()) {
+					return contracts.get(
+						0
+					).optLong(
+						"id"
+					);
+				}
+
+				Project project = _projectService.fetchProject(
+					salesforceProjectId);
+
+				if (project != null) {
+					JSONObject contractJSONObject = new JSONObject(
+					).put(
+						"activeContract", true
+					).put(
+						"contractTerm", 12
+					).put(
+						"customStatus", "active"
+					).put(
+						"externalReferenceCode",
+						"C_CONTRACT_" + salesforceProjectId
+					).put(
+						"name", project.getName() + " Contract"
+					).put(
+						"r_accountEntryToContract_accountEntryId",
+						project.getAccountId()
+					).put(
+						"r_projectToContract_c_projectERC", salesforceProjectId
+					);
+
+					String response = post(
+						getAuthorization(), contractJSONObject.toString(),
+						UriComponentsBuilder.fromPath(
+							"/o/c/contracts"
+						).build(
+						).toUri());
+
+					JSONObject responseJSONObject = new JSONObject(response);
+
+					return responseJSONObject.optLong("id");
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	private static final Log _log = LogFactory.getLog(EntitlementService.class);
@@ -215,5 +283,8 @@ public class EntitlementService extends OneBaseService {
 
 	@Autowired
 	private EntitlementDefinitionService _entitlementDefinitionService;
+
+	@Autowired
+	private ProjectService _projectService;
 
 }

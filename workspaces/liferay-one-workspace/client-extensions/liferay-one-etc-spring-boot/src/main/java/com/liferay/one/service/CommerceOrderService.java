@@ -5,9 +5,14 @@
 
 package com.liferay.one.service;
 
+import com.liferay.headless.admin.address.client.dto.v1_0.Country;
+import com.liferay.headless.admin.address.client.resource.v1_0.CountryResource;
 import com.liferay.headless.admin.user.client.dto.v1_0.PostalAddress;
+import com.liferay.headless.admin.user.client.dto.v1_0.UserAccount;
 import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Currency;
+import com.liferay.headless.commerce.admin.catalog.client.dto.v1_0.Sku;
 import com.liferay.headless.commerce.admin.catalog.client.resource.v1_0.CurrencyResource;
+import com.liferay.headless.commerce.admin.catalog.client.resource.v1_0.SkuResource;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.Account;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.BillingAddress;
 import com.liferay.headless.commerce.admin.order.client.dto.v1_0.Order;
@@ -107,6 +112,15 @@ public class CommerceOrderService extends OneBaseService {
 		updateOrder(
 			null, orderId, CommerceOrderConstants.ORDER_STATUS_COMPLETED,
 			paymentStatus);
+
+		Order order = fetchCommerceOrder(orderId);
+
+		if ((order != null) &&
+			Objects.equals(
+				order.getOrderTypeExternalReferenceCode(), "AI_HUB")) {
+
+			_provisionAiHub(order);
+		}
 	}
 
 	public Order fetchCommerceOrder(long commerceOrderId) throws Exception {
@@ -153,6 +167,32 @@ public class CommerceOrderService extends OneBaseService {
 		}
 
 		return orders;
+	}
+
+	public Country getCountryByA2(String a2) throws Exception {
+		CountryResource countryResource = CountryResource.builder(
+		).endpoint(
+			lxcDXPMainDomain, lxcDXPServerProtocol
+		).header(
+			HttpHeaders.AUTHORIZATION, getAuthorization()
+		).build();
+
+		return countryResource.getCountryByA2(a2);
+	}
+
+	public OrderResource getOrderResource() {
+		return _buildOrderResource();
+	}
+
+	public Sku getSku(long skuId) throws Exception {
+		SkuResource skuResource = SkuResource.builder(
+		).endpoint(
+			lxcDXPMainDomain, lxcDXPServerProtocol
+		).header(
+			HttpHeaders.AUTHORIZATION, getAuthorization()
+		).build();
+
+		return skuResource.getSku(skuId);
 	}
 
 	public String getSupportRegion(long accountId, Long defaultBillingAddressId)
@@ -292,6 +332,101 @@ public class CommerceOrderService extends OneBaseService {
 		return false;
 	}
 
+	private void _provisionAiHub(Order order) throws Exception {
+		Map<String, String> customFields =
+			(Map<String, String>)order.getCustomFields();
+
+		if ((customFields == null) ||
+			!customFields.containsKey("order-metadata")) {
+
+			return;
+		}
+
+		try {
+			JSONObject orderMetadataJSONObject = new JSONObject(
+				customFields.get("order-metadata"));
+
+			if (!orderMetadataJSONObject.has("aiHubForm")) {
+				return;
+			}
+
+			JSONObject aiHubForm = orderMetadataJSONObject.getJSONObject(
+				"aiHubForm");
+
+			String emailAddress = aiHubForm.getString(
+				"administratorEmailAddress");
+			String firstName = "AI Hub";
+			String lastName = "Administrator";
+
+			try {
+				UserAccount userAccount =
+					_userAccountService.getUserAccountByEmailAddress(
+						emailAddress);
+
+				if (userAccount != null) {
+					firstName = userAccount.getGivenName();
+					lastName = userAccount.getFamilyName();
+				}
+			}
+			catch (Exception e) {
+				_log.warn(
+					"Unable to fetch user account details for " + emailAddress,
+					e);
+			}
+
+			JSONObject provisionJSONObject = new JSONObject(
+			).put(
+				"accountName", aiHubForm.getString("aiHubAccountName")
+			).put(
+				"companyName",
+				order.getAccount(
+				).getName()
+			).put(
+				"userAccounts",
+				new org.json.JSONArray(
+				).put(
+					new JSONObject(
+					).put(
+						"emailAddress", emailAddress
+					).put(
+						"firstName", firstName
+					).put(
+						"lastName", lastName
+					)
+				)
+			);
+
+			JSONObject aiHubJSONObject = _aiHubService.provision(
+				provisionJSONObject);
+
+			if (aiHubJSONObject != null) {
+				_aiHubService.putAIHubApplication(
+					"AI-HUB-" + order.getAccountExternalReferenceCode(),
+					new JSONObject(
+					).put(
+						"accountEntryId",
+						aiHubJSONObject.getInt("accountEntryId")
+					).put(
+						"accountName", aiHubForm.getString("aiHubAccountName")
+					).put(
+						"administratorEmailAddress",
+						aiHubForm.getString("administratorEmailAddress")
+					).put(
+						"r_accountToAIHubApplication_accountEntryERC",
+						order.getAccount(
+						).getExternalReferenceCode()
+					).put(
+						"r_orderToAIHubApplication_commerceOrderERC",
+						order.getExternalReferenceCode()
+					));
+			}
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to provision AI Hub for order: " + order.getId(), e);
+		}
+	}
+
 	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
 
 	private static final int _ACCOUNT_TYPE_PERSON = 1;
@@ -300,15 +435,25 @@ public class CommerceOrderService extends OneBaseService {
 
 	private static final double _TAX_PERCENTAGE = 0.20;
 
+	private static final org.apache.commons.logging.Log _log =
+		org.apache.commons.logging.LogFactory.getLog(
+			CommerceOrderService.class);
+
 	private static final Set<String> _europeanCountryISOCodes = Set.of(
 		"AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR",
 		"HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
 		"SE", "SI", "SK");
 
 	@Autowired
+	private AIHubService _aiHubService;
+
+	@Autowired
 	private CommerceOrderItemService _commerceOrderItemService;
 
 	@Autowired
 	private PostalAddressService _postalAddressService;
+
+	@Autowired
+	private UserAccountService _userAccountService;
 
 }
