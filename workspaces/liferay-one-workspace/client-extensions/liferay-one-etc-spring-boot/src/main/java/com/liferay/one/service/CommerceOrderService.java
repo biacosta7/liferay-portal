@@ -34,6 +34,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -350,11 +354,12 @@ public class CommerceOrderService extends OneBaseService {
 				return;
 			}
 
-			JSONObject aiHubForm = orderMetadataJSONObject.getJSONObject(
-				"aiHubForm");
+			JSONObject aiHubFormJSONObject =
+				orderMetadataJSONObject.getJSONObject("aiHubForm");
 
-			String emailAddress = aiHubForm.getString(
+			String emailAddress = aiHubFormJSONObject.getString(
 				"administratorEmailAddress");
+
 			String firstName = "AI Hub";
 			String lastName = "Administrator";
 
@@ -368,22 +373,25 @@ public class CommerceOrderService extends OneBaseService {
 					lastName = userAccount.getFamilyName();
 				}
 			}
-			catch (Exception e) {
-				_log.warn(
-					"Unable to fetch user account details for " + emailAddress,
-					e);
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to fetch user account details for " +
+							emailAddress,
+						exception);
+				}
 			}
 
 			JSONObject provisionJSONObject = new JSONObject(
 			).put(
-				"accountName", aiHubForm.getString("aiHubAccountName")
+				"accountName", aiHubFormJSONObject.getString("aiHubAccountName")
 			).put(
 				"companyName",
 				order.getAccount(
 				).getName()
 			).put(
 				"userAccounts",
-				new org.json.JSONArray(
+				new JSONArray(
 				).put(
 					new JSONObject(
 					).put(
@@ -407,10 +415,12 @@ public class CommerceOrderService extends OneBaseService {
 						"accountEntryId",
 						aiHubJSONObject.getInt("accountEntryId")
 					).put(
-						"accountName", aiHubForm.getString("aiHubAccountName")
+						"accountName",
+						aiHubFormJSONObject.getString("aiHubAccountName")
 					).put(
 						"administratorEmailAddress",
-						aiHubForm.getString("administratorEmailAddress")
+						aiHubFormJSONObject.getString(
+							"administratorEmailAddress")
 					).put(
 						"r_accountToAIHubApplication_accountEntryERC",
 						order.getAccount(
@@ -421,9 +431,10 @@ public class CommerceOrderService extends OneBaseService {
 					));
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
-				"Unable to provision AI Hub for order: " + order.getId(), e);
+				"Unable to provision AI Hub for order: " + order.getId(),
+				exception);
 		}
 	}
 
@@ -435,9 +446,8 @@ public class CommerceOrderService extends OneBaseService {
 
 	private static final double _TAX_PERCENTAGE = 0.20;
 
-	private static final org.apache.commons.logging.Log _log =
-		org.apache.commons.logging.LogFactory.getLog(
-			CommerceOrderService.class);
+	private static final Log _log = LogFactory.getLog(
+		CommerceOrderService.class);
 
 	private static final Set<String> _europeanCountryISOCodes = Set.of(
 		"AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR",
