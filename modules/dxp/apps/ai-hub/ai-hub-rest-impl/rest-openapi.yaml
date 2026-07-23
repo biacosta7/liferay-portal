@@ -245,6 +245,13 @@ components:
                     type: integer
                 accountEntryName:
                     type: string
+                tier:
+                    enum:
+                        -   Activate
+                        -   Enterprise
+                        -   Studio
+                        -   Trial
+                    type: string
                 userAccounts:
                     items:
                         $ref: "#/components/schemas/UserAccount"

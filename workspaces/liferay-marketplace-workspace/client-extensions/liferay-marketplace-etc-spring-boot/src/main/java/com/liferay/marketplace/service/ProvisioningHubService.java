@@ -133,6 +133,16 @@ public class ProvisioningHubService extends BaseService {
 
 		Map<String, String> properties = koroneikiAccount.getProperties();
 
+		String tier = properties.get("aiHubTier");
+
+		if (Validator.isNull(tier)) {
+			tier = properties.get("tier");
+		}
+
+		if (Validator.isNull(tier)) {
+			tier = "Activate";
+		}
+
 		JSONObject aiHubJSONObject = _aiHubService.provision(
 			new JSONObject(
 			).put(
@@ -140,6 +150,8 @@ public class ProvisioningHubService extends BaseService {
 				order.getAccountExternalReferenceCode()
 			).put(
 				"accountEntryName", properties.get("aiHubAccountName")
+			).put(
+				"tier", tier
 			).put(
 				"userAccounts",
 				new JSONArray(

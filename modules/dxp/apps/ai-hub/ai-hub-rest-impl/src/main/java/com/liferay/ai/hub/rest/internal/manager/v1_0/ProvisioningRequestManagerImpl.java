@@ -15,6 +15,8 @@ import com.liferay.ai.hub.quota.QuotaManager;
 import com.liferay.ai.hub.rest.dto.v1_0.ProvisioningRequest;
 import com.liferay.ai.hub.rest.dto.v1_0.UserAccount;
 import com.liferay.ai.hub.rest.manager.v1_0.ProvisioningRequestManager;
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.headless.common.spi.service.context.ServiceContextBuilder;
 import com.liferay.oauth2.provider.constants.ClientProfile;
 import com.liferay.oauth2.provider.constants.GrantType;
@@ -42,11 +44,16 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 
+import jakarta.ws.rs.BadRequestException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -65,6 +72,12 @@ public class ProvisioningRequestManagerImpl
 			ProvisioningRequest provisioningRequest)
 		throws Exception {
 
+		String tier = provisioningRequest.getTier();
+
+		if (!_isValidTier(tier)) {
+			throw new BadRequestException("Invalid tier: " + tier);
+		}
+
 		ServiceContext serviceContext = ServiceContextBuilder.create(
 			company.getGroupId(), dtoConverterContext.getHttpServletRequest(),
 			null
@@ -79,6 +92,8 @@ public class ProvisioningRequestManagerImpl
 		AccountEntry customerAccountEntry = _addCustomerAccountEntry(
 			provisioningRequest.getAccountEntryExternalReferenceCode(),
 			provisioningRequest.getAccountEntryName(), serviceContext);
+
+		_saveTier(customerAccountEntry, tier);
 
 		_addConfiguration(
 			customerAccountEntry, company.getCompanyId(), dtoConverterContext);
@@ -107,6 +122,7 @@ public class ProvisioningRequestManagerImpl
 					customerAccountEntry::getExternalReferenceCode);
 				setAccountEntryId(customerAccountEntry::getAccountEntryId);
 				setAccountEntryName(customerAccountEntry::getName);
+				setTier(() -> _getTier(customerAccountEntry));
 				setUserAccounts(
 					() -> TransformUtil.transformToArray(
 						users, user -> _toUserAccount(user),
@@ -362,6 +378,58 @@ public class ProvisioningRequestManagerImpl
 		}
 	}
 
+	private String _getTier(AccountEntry accountEntry) {
+		try {
+			ExpandoBridge expandoBridge = accountEntry.getExpandoBridge();
+
+			if (expandoBridge.hasAttribute("tier")) {
+				return (String)expandoBridge.getAttribute("tier");
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to get tier attribute", exception);
+			}
+		}
+
+		return null;
+	}
+
+	private boolean _isValidTier(String tier) {
+		if (Validator.isNull(tier)) {
+			return false;
+		}
+
+		return List.of(
+			"Activate", "Enterprise", "Studio", "Trial"
+		).contains(
+			tier
+		);
+	}
+
+	private void _saveTier(AccountEntry accountEntry, String tier) {
+		if (Validator.isNull(tier)) {
+			return;
+		}
+
+		try {
+			ExpandoBridge expandoBridge = accountEntry.getExpandoBridge();
+
+			if (!expandoBridge.hasAttribute("tier")) {
+				expandoBridge.addAttribute(
+					"tier", ExpandoTableConstants.COLUMN_TYPE_STRING);
+			}
+
+			expandoBridge.setAttribute("tier", tier);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to save tier for account entry " +
+					accountEntry.getAccountEntryId(),
+				exception);
+		}
+	}
+
 	private UserAccount _toUserAccount(User user) {
 		return new UserAccount() {
 			{
@@ -372,6 +440,9 @@ public class ProvisioningRequestManagerImpl
 			}
 		};
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ProvisioningRequestManagerImpl.class);
 
 	@Reference
 	private AccountEntryService _accountEntryService;

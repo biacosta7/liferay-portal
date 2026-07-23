@@ -90,6 +90,18 @@ public class ProvisioningRequestSerDes {
 			sb.append("\"");
 		}
 
+		if (provisioningRequest.getTier() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"tier\": ");
+
+			sb.append("\"");
+			sb.append(provisioningRequest.getTier());
+			sb.append("\"");
+		}
+
 		if (provisioningRequest.getUserAccounts() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -165,6 +177,13 @@ public class ProvisioningRequestSerDes {
 				String.valueOf(provisioningRequest.getAccountEntryName()));
 		}
 
+		if (provisioningRequest.getTier() == null) {
+			map.put("tier", null);
+		}
+		else {
+			map.put("tier", String.valueOf(provisioningRequest.getTier()));
+		}
+
 		if (provisioningRequest.getUserAccounts() == null) {
 			map.put("userAccounts", null);
 		}
@@ -203,6 +222,9 @@ public class ProvisioningRequestSerDes {
 			else if (Objects.equals(jsonParserFieldName, "accountEntryName")) {
 				return false;
 			}
+			else if (Objects.equals(jsonParserFieldName, "tier")) {
+				return false;
+			}
 			else if (Objects.equals(jsonParserFieldName, "userAccounts")) {
 				return false;
 			}
@@ -233,6 +255,13 @@ public class ProvisioningRequestSerDes {
 				if (jsonParserFieldValue != null) {
 					provisioningRequest.setAccountEntryName(
 						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "tier")) {
+				if (jsonParserFieldValue != null) {
+					provisioningRequest.setTier(
+						ProvisioningRequest.Tier.create(
+							(String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "userAccounts")) {
@@ -332,4 +361,4 @@ public class ProvisioningRequestSerDes {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:1878769754
+// LIFERAY-REST-BUILDER-HASH:-1895856345
