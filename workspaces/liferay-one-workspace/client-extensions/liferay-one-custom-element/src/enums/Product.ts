@@ -89,8 +89,8 @@ export type ProductPriceModel =
 
 export const ProductSpecificationKey = {
 	APP_BETA: 'app-beta',
-	APP_BUILD_NUMBER_OF_CPUS: 'cpu',
-	APP_BUILD_RAM_IN_GBS: 'ram',
+	APP_BUILD_NUMBER_OF_CPUS: 'number-of-cpus',
+	APP_BUILD_RAM_IN_GBS: 'ram-in-gb',
 	APP_DEFAULT_SKU_REF: 'default-sku-ref',
 	APP_DEVELOPER_NAME: 'developer-name',
 	APP_ENTRY_UUID: 'app-entry-uuid',
@@ -99,13 +99,13 @@ export const ProductSpecificationKey = {
 	APP_SETTINGS: 'app-settings',
 	APP_STOREFRONT_VIDEO_DESCRIPTION: 'app-storefront-video-description',
 	APP_STOREFRONT_VIDEO_URL: 'app-storefront-video-url',
-	APP_SUPPORT_DOCUMENTATION_URL: 'appdocumentationurl',
-	APP_SUPPORT_EMAIL: 'supportemailaddress',
-	APP_SUPPORT_INSTALLATION_GUIDE_URL: 'appinstallationguideurl',
-	APP_SUPPORT_PHONE: 'supportphone',
-	APP_SUPPORT_PUBLISHER_WEBSITE_URL: 'publisherwebsiteurl',
-	APP_SUPPORT_URL: 'supporturl',
-	APP_SUPPORT_USAGE_TERMS_URL: 'appusagetermsurl',
+	APP_SUPPORT_DOCUMENTATION_URL: 'app-documentation-url',
+	APP_SUPPORT_EMAIL: 'support-email-address',
+	APP_SUPPORT_INSTALLATION_GUIDE_URL: 'app-installation-guide-url',
+	APP_SUPPORT_PHONE: 'support-phone',
+	APP_SUPPORT_PUBLISHER_WEBSITE_URL: 'publisher-web-site-url',
+	APP_SUPPORT_URL: 'support-url',
+	APP_SUPPORT_USAGE_TERMS_URL: 'app-usage-terms-url',
 	APP_TYPE: 'type',
 	APP_VERSION: 'latest-version',
 	APP_VERSION_NOTES: 'product-notes',
@@ -129,13 +129,13 @@ export type ProductSpecificationKey =
 	(typeof ProductSpecificationKey)[keyof typeof ProductSpecificationKey];
 
 export const ProductSupportSpecificationKey = {
-	APP_DOCUMENTATION_URL: 'appdocumentationurl',
-	APP_INSTALLATION_GUIDE_URL: 'appinstallationguideurl',
-	APP_USAGE_TERMS_URL: 'appusagetermsurl',
-	PUBLISHER_WEBSITE_URL: 'publisherwebsiteurl',
-	SUPPORT_EMAIL: 'supportemailaddress',
-	SUPPORT_PHONE: 'supportphone',
-	SUPPORT_URL: 'supporturl',
+	APP_DOCUMENTATION_URL: 'app-documentation-url',
+	APP_INSTALLATION_GUIDE_URL: 'app-installation-guide-url',
+	APP_USAGE_TERMS_URL: 'app-usage-terms-url',
+	PUBLISHER_WEBSITE_URL: 'publisher-web-site-url',
+	SUPPORT_EMAIL: 'support-email-address',
+	SUPPORT_PHONE: 'support-phone',
+	SUPPORT_URL: 'support-url',
 } as const;
 
 export type ProductSupportSpecificationKey =

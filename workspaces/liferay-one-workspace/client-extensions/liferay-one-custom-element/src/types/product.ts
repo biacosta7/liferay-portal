@@ -265,13 +265,13 @@ export type ProductOfferingTypes =
 export type ProductPriceModel = 'Free' | 'Paid';
 
 export type ProductSupportSpecificationKey =
-	| 'appdocumentationurl'
-	| 'appinstallationguideurl'
-	| 'appusagetermsurl'
-	| 'publisherwebsiteurl'
-	| 'supportemailaddress'
-	| 'supportphone'
-	| 'supporturl';
+	| 'app-documentation-url'
+	| 'app-installation-guide-url'
+	| 'app-usage-terms-url'
+	| 'publisher-web-site-url'
+	| 'support-email-address'
+	| 'support-phone'
+	| 'support-url';
 
 export type ProductTags =
 	| 'app-icon'
