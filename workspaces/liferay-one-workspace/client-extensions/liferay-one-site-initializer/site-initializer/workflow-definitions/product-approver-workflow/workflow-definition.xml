@@ -133,6 +133,11 @@
 			]]>
 		</metadata>
 		<actions>
+			<action>
+				<name>submit</name>
+				<status>1</status>
+				<execution-type>onEntry</execution-type>
+			</action>
 			<notification>
 				<name>Review Notification</name>
 				<template>

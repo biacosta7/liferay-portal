@@ -21,13 +21,13 @@ export default function Solutions() {
 	return (
 		<Page
 			pageRendererProps={{className: 'border py-2'}}
-			title={i18n.translate('solutions')}
+			title="Solutions"
 		>
 			<ListView<Product>
 				defaultFilters={{
 					filter: `${SearchBuilder.lambda(
 						'categoryNames',
-						'solution'
+						'Solution'
 					)}`,
 				}}
 				id="administrator-solutions"
@@ -48,7 +48,7 @@ export default function Solutions() {
 						{
 							name: i18n.translate('view-details'),
 							onClick: (row) =>
-								navigate(`/mp-solutions/${row.productId}`),
+								navigate(`/solutions/${row.productId}`),
 						},
 					],
 					columns: [
@@ -97,7 +97,7 @@ export default function Solutions() {
 							),
 						},
 					],
-					navigateTo: ({productId}) => `/mp-solutions/${productId}`,
+					navigateTo: ({productId}) => `/solutions/${productId}`,
 				}}
 			/>
 		</Page>

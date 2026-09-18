@@ -11,6 +11,7 @@
 		"eslint-plugin-jsonc": "^2.0.0",
 		"eslint-plugin-local": "file:./tools/eslint-plugin-local",
 		"jsonc-eslint-parser": "^2.0.0",
+		"playwright": "^1.63.0",
 		"prettier": "3.2.5",
 		"typescript": "4.4.2"
 	},

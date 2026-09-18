@@ -45,7 +45,10 @@ class DevOAuth2Client {
 		this._homePageURL = homePageURL;
 	}
 
-	async fetch(resource: string, options: RequestInit = {}): Promise<Response> {
+	async fetch(
+		resource: string,
+		options: RequestInit = {}
+	): Promise<Response> {
 		let resourceUrl = resource;
 
 		if (!resourceUrl.startsWith(this._homePageURL)) {

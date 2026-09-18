@@ -62,7 +62,7 @@ export default class HeadlessCommerceAdminCatalog {
 		return fetcher.post<Product>(
 			`/o/headless-commerce-admin-catalog/v1.0/products?nestedFields=productVirtualSettings`,
 			{
-				active: true,
+				active: false,
 				catalogId,
 				categories,
 				description: {en_US: description},

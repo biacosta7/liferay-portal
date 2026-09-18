@@ -259,6 +259,7 @@ export default class SolutionPublish extends BaseAppPublish {
 			await HeadlessCommerceAdminCatalogImpl.updateProduct(
 				_product.productId as number,
 				{
+					active: !this.config.isDraft,
 					categories: productCategories,
 					description: {en_US: description},
 					name: {en_US: name},

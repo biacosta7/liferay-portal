@@ -686,6 +686,7 @@ export default class AppPublish extends BaseAppPublish {
 		await HeadlessCommerceAdminCatalogImpl.updateProduct(
 			product.productId,
 			{
+				active: !this.config.isDraft,
 				categories: [
 					...(this.temporary.productCategories ?? product.categories),
 					...(this.temporary.compatibleOfferings ?? []),

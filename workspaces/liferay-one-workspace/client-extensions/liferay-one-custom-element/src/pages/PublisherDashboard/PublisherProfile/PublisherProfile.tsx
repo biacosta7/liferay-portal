@@ -12,6 +12,7 @@ import Page from '~/components/Page/Page';
 import {useFetch} from '~/hooks/useFetch';
 import usePublisherCatalog from '~/hooks/usePublisherCatalog';
 import usePublisherDetails from '~/hooks/usePublisherDetails';
+import {useCurrentAccount} from '~/hooks/useAccounts';
 import i18n, {Word} from '~/i18n';
 
 import {
@@ -63,16 +64,20 @@ export default function PublisherProfile() {
 	const {isLoading: isLoadingDetails, publisherDetails} =
 		usePublisherDetails(catalogId);
 
+	const {data: currentAccount, isLoading: isLoadingCurrentAccount} = useCurrentAccount();
+
 	const appsCount = useProductCount(catalogId, 'app');
 	const solutionsCount = useProductCount(catalogId, 'solution');
 
 	const details = publisherDetails ?? {};
 
+	const profileImageURL = details.publisherProfileImageURL || currentAccount?.logoURL;
+
 	return (
 		<Page
 			description={i18n.translate('manage-your-data-and-contacts')}
 			pageRendererProps={{
-				isLoading: isLoadingCatalog || isLoadingDetails,
+				isLoading: isLoadingCatalog || isLoadingDetails || isLoadingCurrentAccount,
 			}}
 			rightButton={
 				<Button
@@ -98,10 +103,10 @@ export default function PublisherProfile() {
 					clayIcon="globe"
 				>
 					<div className="align-items-center d-flex mb-3 mt-3">
-						{details.publisherProfileImageURL ? (
+						{profileImageURL ? (
 							<img
 								alt={details.publisherName}
-								src={details.publisherProfileImageURL}
+								src={profileImageURL}
 								style={{
 									borderRadius: '50%',
 									height: '3rem',
