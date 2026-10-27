@@ -13430,6 +13430,18 @@
 			],
 			"productSpecifications": [
 				{
+					"specificationKey": "product-type",
+					"value": {
+						"en_US": "primary"
+					}
+				},
+				{
+					"specificationKey": "project-details-profile",
+					"value": {
+						"en_US": "env-instance"
+					}
+				},
+				{
 					"specificationKey": "project-item-type",
 					"value": {
 						"en_US": "product"
@@ -14755,6 +14767,12 @@
 					}
 				},
 				{
+					"specificationKey": "project-details-profile",
+					"value": {
+						"en_US": "env-instance"
+					}
+				},
+				{
 					"specificationKey": "project-item-type",
 					"value": {
 						"en_US": "product"
@@ -14852,6 +14870,12 @@
 					"specificationKey": "product-type",
 					"value": {
 						"en_US": "primary"
+					}
+				},
+				{
+					"specificationKey": "project-details-profile",
+					"value": {
+						"en_US": "env-instance"
 					}
 				},
 				{
