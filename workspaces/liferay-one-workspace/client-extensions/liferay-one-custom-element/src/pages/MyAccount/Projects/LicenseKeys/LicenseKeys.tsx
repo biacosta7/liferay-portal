@@ -99,6 +99,14 @@ function toCloudNativeActivationKey(
 	};
 }
 
+export function formatProductName(productName?: string): string {
+	if (!productName) {
+		return '';
+	}
+
+	return productName.replace(/^DXP\b/, 'Cloud Native');
+}
+
 function getRowKind(row: ProjectActivationKey): Word {
 	if (row.cloudNative) {
 		return row.offlineActivated ? 'offline' : 'online';
@@ -305,18 +313,25 @@ export default function LicenseKeys() {
 	);
 
 	const rows = useMemo(
-		() => [
-			...activationKeys,
-			...filterEnvironmentsByProject(projectId, environments)
-				.filter(
-					(environment) =>
-						environment.offering === CLOUD_NATIVE_OFFERING &&
-						environment.status === ACTIVATION_STATUS_ACTIVE
-				)
-				.map((environment) =>
-					toCloudNativeActivationKey(environment, cloudNativeKeyTypes)
-				),
-		],
+		() =>
+			[
+				...activationKeys,
+				...filterEnvironmentsByProject(projectId, environments)
+					.filter(
+						(environment) =>
+							environment.offering === CLOUD_NATIVE_OFFERING &&
+							environment.status === ACTIVATION_STATUS_ACTIVE
+					)
+					.map((environment) =>
+						toCloudNativeActivationKey(
+							environment,
+							cloudNativeKeyTypes
+						)
+					),
+			].map((row) => ({
+				...row,
+				productName: formatProductName(row.productName),
+			})),
 		[activationKeys, cloudNativeKeyTypes, environments, projectId]
 	);
 

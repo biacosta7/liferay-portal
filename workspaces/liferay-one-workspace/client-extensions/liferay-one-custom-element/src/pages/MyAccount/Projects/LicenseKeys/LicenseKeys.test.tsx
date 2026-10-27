@@ -8,7 +8,7 @@ import userEvent from '@testing-library/user-event';
 import {MemoryRouter} from 'react-router';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 
-import LicenseKeys from './LicenseKeys';
+import LicenseKeys, {formatProductName} from './LicenseKeys';
 
 const mocks = vi.hoisted(() => ({
 	handleNewKey: vi.fn(),
@@ -191,5 +191,88 @@ describe('[ROUTE-MY-ACCOUNT-ACTIVATION] LicenseKeys', () => {
 			screen.getByRole('button', {name: 'Filter'})
 		).toBeInTheDocument();
 		expect(screen.queryByText('Filter')).toBeNull();
+	});
+
+	it('changes DXP to Cloud Native under the product column', () => {
+		mockGeneratePermission(true);
+		mockSummary({generatable: true});
+
+		mocks.useProjectActivationKeys.mockReturnValue({
+			activationKeys: [
+				{
+					active: true,
+					expirationDate: 'Jul 30, 2027',
+					expirationDateValue: 1816905600000,
+					id: 'LK-1',
+					licenseKeyFamily: '',
+					name: 'Iberdrola - Webs Corporativas (Cloud Native) - UAT',
+					productName: 'DXP Non-Production',
+					productVersion: '7.4',
+					startDate: 'May 31, 2026',
+					startDateValue: 1780185600000,
+					status: 'active',
+					type: 'virtual-cluster',
+					unaggregated: true,
+				},
+				{
+					active: true,
+					expirationDate: 'Jul 30, 2027',
+					expirationDateValue: 1816905600000,
+					id: 'LK-2',
+					licenseKeyFamily: '',
+					name: 'Iberdrola - Webs Corporativas (Cloud Native)',
+					productName: 'DXP Production',
+					productVersion: '7.4',
+					startDate: 'May 31, 2026',
+					startDateValue: 1780185600000,
+					status: 'active',
+					type: 'virtual-cluster',
+					unaggregated: true,
+				},
+				{
+					active: true,
+					expirationDate: 'Jul 30, 2027',
+					expirationDateValue: 1816905600000,
+					id: 'LK-3',
+					licenseKeyFamily: 'DXP',
+					name: 'My DXP Environment',
+					productName: 'Liferay DXP',
+					productVersion: '7.4',
+					startDate: 'May 31, 2026',
+					startDateValue: 1780185600000,
+					status: 'active',
+					type: 'production',
+				},
+			],
+			loading: false,
+			revalidate: vi.fn(),
+		});
+
+		renderLicenseKeys();
+
+		expect(
+			screen.getByText('Cloud Native Non-Production')
+		).toBeInTheDocument();
+		expect(screen.getByText('Cloud Native Production')).toBeInTheDocument();
+		expect(screen.getByText('Liferay DXP')).toBeInTheDocument();
+		expect(
+			screen.queryByText('DXP Non-Production')
+		).not.toBeInTheDocument();
+		expect(screen.queryByText('DXP Production')).not.toBeInTheDocument();
+	});
+});
+
+describe('formatProductName', () => {
+	it.each([
+		['DXP Non-Production', 'Cloud Native Non-Production'],
+		['DXP Production', 'Cloud Native Production'],
+		['DXP Backup', 'Cloud Native Backup'],
+		['DXP', 'Cloud Native'],
+		['Liferay DXP', 'Liferay DXP'],
+		['Portal', 'Portal'],
+		['', ''],
+		[undefined, ''],
+	])('formats %s as %s', (input, expected) => {
+		expect(formatProductName(input)).toBe(expected);
 	});
 });
