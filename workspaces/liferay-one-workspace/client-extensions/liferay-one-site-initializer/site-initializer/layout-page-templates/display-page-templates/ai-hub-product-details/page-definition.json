@@ -22,7 +22,7 @@
 								"sticky-container-24",
 								"ai-hub-sticky"
 							],
-							"customCSS": ".[$FRAGMENT_CLASS$] {\nposition:sticky;\ntop:12px;\nz-index:969;\n}",
+							"customCSS": ".[$FRAGMENT_CLASS$] {\nposition:sticky;\ntop:12px;\nz-index:100;\n}",
 							"fragmentStyle": {
 								"backgroundColor": "#F7F7F8",
 								"paddingBottom": "4"
@@ -99,7 +99,7 @@
 															"customCSS": ".[$FRAGMENT_CLASS$] img {\nobject-fit: contain;\n    height: 80px;\n    width: 80px;\nborder-radius: 8px;\n}",
 															"fragment": {
 																"key": "image",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"imageSize": "w-100"
@@ -112,7 +112,7 @@
 																		},
 																		"text": {
 																			"mapping": {
-																				"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Apps Icon$]",
+																				"fieldKey": "ddmTemplate__ddmTemplate_34051402",
 																				"itemReference": {
 																					"contextSource": "DisplayPageItem"
 																				}
@@ -128,7 +128,7 @@
 															},
 															"indexed": true
 														},
-														"id": "32286b6f-4d3f-c0f7-3a7d-eac35d938f5e",
+														"id": "7df054fe-98ed-869c-61d5-c377e6ee6a0f",
 														"type": "Fragment"
 													},
 													{
@@ -148,6 +148,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
+																		"backgroundColor": "colorNeutral1",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -206,6 +207,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
+																		"backgroundColor": "colorNeutral1",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -262,7 +264,7 @@
 																					"value": {
 																						"html": {
 																							"mapping": {
-																								"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Developer Name$]",
+																								"fieldKey": "ddmTemplate__ddmTemplate_36201412",
 																								"itemReference": {
 																									"contextSource": "DisplayPageItem"
 																								}
@@ -403,7 +405,7 @@
 															"customCSS": ".[$FRAGMENT_CLASS$] .main-button {\n width: max-content !important;\nz-index: 10;\n}",
 															"fragment": {
 																"key": "get-app-button",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"buttonText": "Request to Join",
@@ -509,7 +511,7 @@
 												},
 												"text": {
 													"value_i18n": {
-														"en_US": "<p>Deploy agents that improve your productivity, make decisions and automate tasks.</p>\n\n\n\n\n\n\n\n\n\n\n"
+														"en_US": "<p>Deploy agents that improve your productivity, make decisions and automate tasks.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 													}
 												}
 											}
@@ -574,7 +576,7 @@
 												"definition": {
 													"fragment": {
 														"key": "text",
-														"siteKey": "[$GROUP_KEY$]"
+														"siteKey": "One"
 													},
 													"fragmentConfig": {
 														"fontSize": "font-size-paragraph-base",
@@ -657,11 +659,12 @@
 										"definition": {
 											"fragment": {
 												"key": "image-container",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fragmentHeight": "381px",
 												"fragmentId": "1",
+												"fragmentRadius": "24px",
 												"fragmentWidth": "600px",
 												"shape": "trapezoid"
 											},
@@ -676,7 +679,7 @@
 																"fieldKey": "FileEntry_downloadURL",
 																"itemReference": {
 																	"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																	"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media1.webp#]"
+																	"classPK": 41976010
 																}
 															}
 														}
@@ -783,7 +786,7 @@
 										"definition": {
 											"fragment": {
 												"key": "text",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fontSize": "font-size-paragraph-large",
@@ -808,7 +811,7 @@
 												"fontSize": "48px",
 												"fontWeight": "fontWeightLight",
 												"textAlign": "center",
-												"textColor": "#FFFFFF"
+												"textColor": "colorNeutral0"
 											},
 											"indexed": true
 										},
@@ -860,7 +863,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -885,7 +888,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -913,7 +916,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -941,11 +944,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "351px",
-																		"fragmentId": "2",
+																		"fragmentId": "13",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "601px",
 																		"shape": "rectangle"
 																	},
@@ -957,13 +961,13 @@
 																				},
 																				"text": {
 																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media1.webp$]"
+																						"value": "https://one-uat.liferay.com/documents/34050491/36176247/media1.webp/f3df70d2-ecb3-a06c-a0ab-80f6a07d8fd6?version=1.0&t=1788978899561&download=true"
 																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media1.webp#]"
+																							"classPK": 36176297
 																						}
 																					}
 																				}
@@ -1013,16 +1017,17 @@
 																"definition": {
 																	"fragment": {
 																		"key": "demo-video-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"autoplay": true,
 																		"controls": false,
 																		"fragmentHeight": "375px",
-																		"fragmentId": "1",
+																		"fragmentId": "2",
 																		"fragmentWidth": "601px",
 																		"loop": true,
 																		"muted": true,
+																		"objectFit": "cover",
 																		"shadow": false
 																	},
 																	"fragmentFields": [
@@ -1033,13 +1038,13 @@
 																				},
 																				"text": {
 																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media2.mp4$]"
+																						"value": "https://one-uat.liferay.com/documents/34050491/36176247/media2.mp4/8d06a20c-5224-4334-81cf-671d02f2f6e7?version=1.0&t=1788978901052&download=true"
 																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media2.mp4#]"
+																							"classPK": 36176310
 																						}
 																					}
 																				}
@@ -1075,7 +1080,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1100,7 +1105,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1128,7 +1133,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1172,7 +1177,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1197,7 +1202,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1225,7 +1230,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1253,11 +1258,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "447px",
-																		"fragmentId": "4",
+																		"fragmentId": "3",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "601px",
 																		"shape": "rectangle"
 																	},
@@ -1266,18 +1272,6 @@
 																			"id": "icon",
 																			"value": {
 																				"fragmentLink": {
-																				},
-																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media3.webp$]"
-																					},
-																					"mapping": {
-																						"fieldKey": "FileEntry_downloadURL",
-																						"itemReference": {
-																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media3.webp#]"
-																						}
-																					}
 																				}
 																			}
 																		}
@@ -1324,16 +1318,17 @@
 																"definition": {
 																	"fragment": {
 																		"key": "demo-video-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"autoplay": true,
 																		"controls": false,
 																		"fragmentHeight": "382px",
-																		"fragmentId": "2",
+																		"fragmentId": "4",
 																		"fragmentWidth": "601px",
 																		"loop": true,
 																		"muted": true,
+																		"objectFit": "cover",
 																		"shadow": false
 																	},
 																	"fragmentFields": [
@@ -1341,23 +1336,16 @@
 																			"id": "demo",
 																			"value": {
 																				"fragmentLink": {
-																					"value": {
-																						"href": {
-																							"value_i18n": {
-																								"en_US": ""
-																							}
-																						}
-																					}
 																				},
 																				"text": {
 																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media5.mp4$]"
+																						"value": "https://one-uat.liferay.com/documents/34050491/36176247/media5.mp4/db74aa74-3750-eda6-1636-5f9efeff2ee9?version=1.0&t=1788978905472&download=true"
 																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media5.mp4#]"
+																							"classPK": 36176346
 																						}
 																					}
 																				}
@@ -1393,7 +1381,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1418,7 +1406,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1446,7 +1434,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1507,7 +1495,7 @@
 																	"fragmentStyle": {
 																		"fontSize": "18px",
 																		"marginBottom": "4",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1519,7 +1507,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1544,7 +1532,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1572,7 +1560,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1600,11 +1588,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "376px",
-																		"fragmentId": "6",
+																		"fragmentId": "5",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "601px",
 																		"shape": "rectangle"
 																	},
@@ -1616,13 +1605,13 @@
 																				},
 																				"text": {
 																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media4.webp$]"
+																						"value": "https://one-uat.liferay.com/documents/34050491/36176247/media4.webp/d0a61259-76c5-45c6-285d-f4d6d0d64e74?version=1.0&t=1788978903572&download=true"
 																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media4.webp#]"
+																							"classPK": 36176334
 																						}
 																					}
 																				}
@@ -1691,7 +1680,7 @@
 														"widthType": "Fixed"
 													}
 												},
-												"id": "c5432183-cd54-185b-171b-1319a2049d21",
+												"id": "3dfefa53-7494-09bd-6605-662c788b5531",
 												"pageElements": [
 													{
 														"definition": {
@@ -1720,7 +1709,7 @@
 																		"definition": {
 																			"fragment": {
 																				"key": "text",
-																				"siteKey": "[$GROUP_KEY$]"
+																				"siteKey": "One"
 																			},
 																			"fragmentConfig": {
 																				"fontSize": "font-size-paragraph-large",
@@ -1735,7 +1724,7 @@
 																						},
 																						"text": {
 																							"value_i18n": {
-																								"en_US": "<p>Meet the AI Hub</p>\n\n\n\n\n\n\n\n\n\n\n"
+																								"en_US": "<p>Meet the AI Hub</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																							}
 																						}
 																					}
@@ -1768,7 +1757,7 @@
 																						},
 																						"text": {
 																							"value_i18n": {
-																								"en_US": "<p>The primary goal of this product is to put our foundational AI orchestration tools into your hands early, allowing your direct feedback to help us shape and refine the product's evolution.</p>\n\n\n\n\n\n\n\n\n\n\n"
+																								"en_US": "<p>The primary goal of this product is to put our foundational AI orchestration tools into your hands early, allowing your direct feedback to help us shape and refine the product's evolution.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																							}
 																						}
 																					}
@@ -1791,16 +1780,18 @@
 																"definition": {
 																	"fragment": {
 																		"key": "demo-video-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"autoplay": true,
 																		"controls": false,
 																		"fragmentHeight": "539px",
-																		"fragmentId": "3",
+																		"fragmentId": "6",
 																		"fragmentWidth": "808px",
 																		"loop": true,
 																		"muted": true,
+																		"objectFit": "cover",
+																		"posterImage": "",
 																		"shadow": true
 																	},
 																	"fragmentFields": [
@@ -1811,13 +1802,13 @@
 																				},
 																				"text": {
 																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media6.mp4$]"
+																						"value": "https://one-uat.liferay.com/documents/34050491/36176247/media6.mp4/06dfb92e-c88e-df72-44a1-43fe47ab14ec?version=1.0&t=1788978906937&download=true"
 																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/ai_hub_media/media6.mp4#]"
+																							"classPK": 36176359
 																						}
 																					}
 																				}
@@ -1845,7 +1836,7 @@
 															"layout": {
 															}
 														},
-														"id": "9765a1d2-4f89-9a1c-3663-2f192112d126",
+														"id": "1435d850-cec8-491f-11c0-6c999b3bc553",
 														"pageElements": [
 															{
 																"definition": {
@@ -1856,13 +1847,13 @@
 																	"layout": {
 																	}
 																},
-																"id": "796bbd2e-ea9f-3841-3c90-49382466b5d9",
+																"id": "46836f8c-4d22-1a5d-85a8-86ade2d8b9ba",
 																"pageElements": [
 																	{
 																		"definition": {
 																			"fragment": {
 																				"key": "text",
-																				"siteKey": "[$GROUP_KEY$]"
+																				"siteKey": "One"
 																			},
 																			"fragmentConfig": {
 																				"fontSize": "font-size-paragraph-large",
@@ -1892,7 +1883,7 @@
 																			},
 																			"indexed": true
 																		},
-																		"id": "1e099f0c-0376-c659-b0da-e43ab4555952",
+																		"id": "883e1ec9-f3d2-2580-1200-9f8b6f073a82",
 																		"type": "Fragment"
 																	},
 																	{
@@ -1910,7 +1901,7 @@
 																						},
 																						"text": {
 																							"value_i18n": {
-																								"en_US": "<p>Please, take into account that this environment is in constant evolution. In this initial stage, you can begin exploring the <strong>potential of generative AI</strong> through the following available features:</p>\n\n\n\n\n\n\n\n\n\n\n"
+																								"en_US": "<p>Please, take into account that this environment is in constant evolution. In this initial stage, you can begin exploring the <strong>potential of generative AI</strong> through the following available features:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																							}
 																						}
 																					}
@@ -1923,7 +1914,7 @@
 																			},
 																			"indexed": true
 																		},
-																		"id": "c2b974e5-9da3-c762-ac92-f33a78c1fa71",
+																		"id": "010e2b5c-bb02-d8b1-a391-458e8362efff",
 																		"type": "Fragment"
 																	}
 																],
@@ -1956,7 +1947,7 @@
 																	],
 																	"verticalAlignment": "top"
 																},
-																"id": "0a96a74f-7731-96f5-735b-30708c91b6cf",
+																"id": "36b172f4-2e1e-544b-02d0-874221995a6b",
 																"pageElements": [
 																	{
 																		"definition": {
@@ -1980,7 +1971,7 @@
 																			],
 																			"size": 4
 																		},
-																		"id": "d82730dd-989c-771b-73b5-0cf09cd98da2",
+																		"id": "2bc1fa3e-6ee2-e584-135f-c93491706be3",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2009,7 +2000,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "7be951be-3b19-0de9-0e97-98ebf0622be0",
+																				"id": "a8d1160c-2ef8-905e-7005-5cdb0619b0bd",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2032,7 +2023,7 @@
 																							],
 																							"indexed": true
 																						},
-																						"id": "74e255c1-bee9-f1fa-b4ce-509516d2669a",
+																						"id": "6110bd70-7325-9d75-a1d8-3c1af79b0cf0",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2044,14 +2035,14 @@
 																								"contentDisplay": "FlexColumn"
 																							}
 																						},
-																						"id": "0fc4cda3-c0a6-a772-1444-f9d1358a67a8",
+																						"id": "e64553c4-501c-8295-259a-a5e05fae864f",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																									"fragment": {
 																										"key": "text",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
 																										"fontSize": "font-size-paragraph-base",
@@ -2066,7 +2057,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<h2>Custom AI Tasks</h2>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<h2>Custom AI Tasks</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2079,7 +2070,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "41f75a66-9b43-52f5-9202-b51766fa8806",
+																								"id": "040183e3-d949-93c7-dfb5-478669caa808",
 																								"type": "Fragment"
 																							},
 																							{
@@ -2098,7 +2089,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<p style=\"text-align: left;\">Create and configure personalized AI workflows powered by Google Gemini services.</p>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<p style=\"text-align: left;\">Create and configure personalized AI workflows powered by Google Gemini services.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2109,7 +2100,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "cfe1145e-bb1f-d95c-6760-d63441868d53",
+																								"id": "7486a4db-7c78-523e-c240-d4faf988051a",
 																								"type": "Fragment"
 																							}
 																						],
@@ -2143,7 +2134,7 @@
 																			],
 																			"size": 4
 																		},
-																		"id": "d5a9a335-7e39-8a8b-9a2c-099e2a9407eb",
+																		"id": "b643133a-ecd5-efef-c0fa-4631ad8f2758",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2172,7 +2163,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "174f9f22-6054-3bce-7c57-0f936d931cb7",
+																				"id": "9ebe54df-730d-e6e3-8a14-cd72c6f1d219",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2201,7 +2192,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "8b022c00-a4e9-29af-2a87-ed257ee5bd2b",
+																						"id": "d4050060-67b2-5105-cccc-4c439b255c83",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2213,14 +2204,14 @@
 																								"contentDisplay": "FlexColumn"
 																							}
 																						},
-																						"id": "e49ab842-0882-9e21-1be9-1776c0fdadbd",
+																						"id": "ca8793f2-f4bd-ea21-8687-6ec3ea9598d3",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																									"fragment": {
 																										"key": "text",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
 																										"fontSize": "font-size-paragraph-base",
@@ -2235,7 +2226,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<h2>CMS Writing Assistant</h2>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<h2>CMS Writing Assistant</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2248,7 +2239,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "2210a550-b804-94c5-8f62-07ccfa2470b0",
+																								"id": "d9356fa6-83e8-317a-e4f7-cd72fce0ad10",
 																								"type": "Fragment"
 																							},
 																							{
@@ -2267,7 +2258,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<p style=\"text-align: left;\">Access a dedicated plugin within the new CMS to instantly improve writing, fix spelling and grammar, and make content shine in real time.</p>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<p style=\"text-align: left;\">Access a dedicated plugin within the new CMS to instantly improve writing, fix spelling and grammar, and make content shine in real time.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2278,7 +2269,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "6625e804-0c06-26c3-fba0-ebf795e7ceef",
+																								"id": "88dea32e-ec2e-1f1c-8cb2-5a90a2ee1c8f",
 																								"type": "Fragment"
 																							}
 																						],
@@ -2312,7 +2303,7 @@
 																			],
 																			"size": 4
 																		},
-																		"id": "e092f6be-e5ee-e343-65db-2b43494b3222",
+																		"id": "a79c3c5d-df9b-4fab-97a2-10960e9ffbf7",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2341,7 +2332,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "fcfa94fb-89f1-f633-464f-b19f969d4b95",
+																				"id": "da50c146-6a5a-655a-30a0-39be712373cb",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2371,7 +2362,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "f4f94f9e-4f02-2ca2-7fed-182cd737f8f3",
+																						"id": "dd5ab0c0-0ff2-4b1b-d77c-ead69c68e554",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2383,14 +2374,14 @@
 																								"contentDisplay": "FlexColumn"
 																							}
 																						},
-																						"id": "3c85c53a-1edb-ea2a-7118-9d9ffcb9fcb4",
+																						"id": "8d1cc44f-d25f-7516-73de-04eb4b8d30b4",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 21px !important;\n}",
 																									"fragment": {
 																										"key": "text",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
 																										"fontSize": "font-size-paragraph-base",
@@ -2405,7 +2396,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<h2>Liferay AI Assistant</h2>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<h2>Liferay AI Assistant</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2418,7 +2409,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "4ad35918-4152-843f-920b-117d4f1f22ed",
+																								"id": "9765a8fa-d405-deab-461a-b75f1aa1edbd",
 																								"type": "Fragment"
 																							},
 																							{
@@ -2437,7 +2428,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<p style=\"text-align: left;\">Query Liferay data directly through an integrated AI assistant. Beyond simple searches, use the chatbot to trigger writing tools and custom workflows.</p>\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<p style=\"text-align: left;\">Query Liferay data directly through an integrated AI assistant. Beyond simple searches, use the chatbot to trigger writing tools and custom workflows.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -2448,7 +2439,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "73190da1-9b45-b794-8445-7e44c96e9146",
+																								"id": "326b39b3-db57-5f49-3025-313634ec4a06",
 																								"type": "Fragment"
 																							}
 																						],
@@ -2478,13 +2469,13 @@
 																"marginBottom": 4
 															}
 														},
-														"id": "cd9ce237-bc33-4a7f-27a5-a9a883896fb9",
+														"id": "3a4ccc6f-92e3-a9cf-6009-0458ff28eb45",
 														"pageElements": [
 															{
 																"definition": {
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-large",
@@ -2514,7 +2505,7 @@
 																	},
 																	"indexed": true
 																},
-																"id": "bddcabb0-82c1-2ea5-58f9-9c28a46afeb6",
+																"id": "5a5e670b-40bb-42b8-f683-759faad21158",
 																"type": "Fragment"
 															},
 															{
@@ -2544,7 +2535,7 @@
 																	],
 																	"verticalAlignment": "top"
 																},
-																"id": "21a3f5e7-52dc-0f15-2174-8ce384c467e0",
+																"id": "ef815c59-bdc1-4540-9892-6cd89fe32a47",
 																"pageElements": [
 																	{
 																		"definition": {
@@ -2568,7 +2559,7 @@
 																			],
 																			"size": 6
 																		},
-																		"id": "0d5813af-6166-980e-ea82-07b68baab830",
+																		"id": "69caa585-c92a-8f72-8066-659b6315a22e",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2586,7 +2577,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "e3151c63-3c49-a24e-5247-12886002eb42",
+																				"id": "054898ce-f5df-f0c6-38cc-51ec13c12bde",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2613,7 +2604,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "d1cb2ac2-1618-3390-36fd-65680db5bc76",
+																						"id": "1a2a3e3d-8ce5-faf8-aaab-295ad6a133e9",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2621,7 +2612,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2636,7 +2627,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>AI Hub + CMS</h2>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<h2>AI Hub + CMS</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2649,7 +2640,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "3cd3ed7f-d05c-e7b6-ad13-92618a6fc9cc",
+																						"id": "fe786cf0-a956-a36d-ac5c-824aca76930e",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2668,7 +2659,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Configure AI agents to help accelerate content management, like creating assets, translating content, or updating web pages.</p>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<p>Configure AI agents to help accelerate content management, like creating assets, translating content, or updating web pages.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2676,7 +2667,7 @@
 																							],
 																							"indexed": true
 																						},
-																						"id": "ddb9f4cf-7c31-734c-54ad-1c54c18e8318",
+																						"id": "dd4df807-3be7-0ba7-8d83-d51570f7c85a",
 																						"type": "Fragment"
 																					}
 																				],
@@ -2707,7 +2698,7 @@
 																			],
 																			"size": 6
 																		},
-																		"id": "11aeec7b-a26e-cd02-8d22-8aeae0482372",
+																		"id": "e361c8b1-d022-dfa8-0cd8-92320b55d10f",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2725,7 +2716,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "3f43587c-300f-4434-2ca3-c7a92f44aa66",
+																				"id": "53e34c91-572f-b79d-63bd-354283f69b50",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2752,7 +2743,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "b74c006f-e95c-5cce-c570-8c45b0a8502d",
+																						"id": "0419c2a4-b1e9-2d13-a6e0-853d13d4db38",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2760,7 +2751,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2775,7 +2766,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>AI Hub + Commerce</h2>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<h2>AI Hub + Commerce</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2788,7 +2779,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "cfd9d473-89df-ff11-41b2-a194ed85c534",
+																						"id": "90aeea58-5b7f-eda6-c1b7-a822ef69cadf",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2806,7 +2797,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Use AI agents to update product information, manage orders, or personalize customer experiences, ultimately improving customer satisfaction.</p>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<p>Use AI agents to update product information, manage orders, or personalize customer experiences, ultimately improving customer satisfaction.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2814,7 +2805,7 @@
 																							],
 																							"indexed": true
 																						},
-																						"id": "b10f3284-0808-d12d-aad9-3a935a5dcb09",
+																						"id": "066dd086-b879-3859-f1b7-72607313b789",
 																						"type": "Fragment"
 																					}
 																				],
@@ -2845,7 +2836,7 @@
 																			],
 																			"size": 6
 																		},
-																		"id": "4c6ae040-9b57-d310-fa59-671349bc996b",
+																		"id": "baf70c8a-51f2-1739-89e4-3c73779535b9",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -2863,7 +2854,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "3866d610-fa81-1236-5a4a-eb0709510ab7",
+																				"id": "23341663-98a6-223a-3e95-bccdb0ac4aa4",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -2890,7 +2881,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "d44fe4e3-22be-43d1-692d-2c3e9a823386",
+																						"id": "6fad04e1-1490-e9ba-93cb-103f75d20e6b",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2898,7 +2889,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2913,7 +2904,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>AI Hub + Low-Code</h2>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<h2>AI Hub + Low-Code</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2925,7 +2916,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "fe854d2c-9057-0401-20f7-5303648b8d7b",
+																						"id": "42da988d-d4ee-26ff-a7b2-b11591b5cc8d",
 																						"type": "Fragment"
 																					},
 																					{
@@ -2943,7 +2934,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>AI agents can help advance workflow steps or trigger new workflows. Agents can also create, update, or delete Object entries and definitions.</p>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<p>AI agents can help advance workflow steps or trigger new workflows. Agents can also create, update, or delete Object entries and definitions.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2951,7 +2942,7 @@
 																							],
 																							"indexed": true
 																						},
-																						"id": "d32c1478-e383-88f0-49bc-e1a2695f2f61",
+																						"id": "ffcda579-f857-bf59-9a2b-ff1cb29bd716",
 																						"type": "Fragment"
 																					}
 																				],
@@ -2982,7 +2973,7 @@
 																			],
 																			"size": 6
 																		},
-																		"id": "52c8ac14-011a-1035-13cd-2be0a686e999",
+																		"id": "6b71611a-bfbe-045e-af39-41eba0690d86",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -3000,7 +2991,7 @@
 																						"widthType": "Fixed"
 																					}
 																				},
-																				"id": "be73ddf9-e120-780f-58ce-2a61565cfd70",
+																				"id": "e2b3a1ec-e608-a701-9eec-c9c4aafdd7e0",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -3027,7 +3018,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "2ad08072-437e-c913-bf05-7925b6f12efd",
+																						"id": "94f90f5b-1621-3ae2-030c-4fe2be6c0eeb",
 																						"type": "Fragment"
 																					},
 																					{
@@ -3035,7 +3026,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -3050,7 +3041,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>AI Hub + CMP</h2>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<h2>AI Hub + CMP</h2>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -3062,7 +3053,7 @@
 																							},
 																							"indexed": true
 																						},
-																						"id": "40242399-444f-4eb8-0393-ae991f7e975e",
+																						"id": "23d27fd8-204e-01bb-4693-21242a494cbc",
 																						"type": "Fragment"
 																					},
 																					{
@@ -3080,7 +3071,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Leverage AI Agents to audit the existing content library and suggest Projects or reuse an existing piece of content before duplicating.</p>\n\n\n\n\n\n\n\n\n"
+																												"en_US": "<p>Leverage AI Agents to audit the existing content library and suggest Projects or reuse an existing piece of content before duplicating.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -3088,7 +3079,7 @@
 																							],
 																							"indexed": true
 																						},
-																						"id": "edc662bf-d99d-e110-08e2-c2d23932aeaa",
+																						"id": "45cc595e-64cb-2be1-da36-b82899feb982",
 																						"type": "Fragment"
 																					}
 																				],
@@ -3107,7 +3098,7 @@
 														"definition": {
 															"fragment": {
 																"key": "section-container",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"containerId": "ai-hub-plans"
@@ -3119,12 +3110,12 @@
 															},
 															"indexed": true
 														},
-														"id": "073108ff-fb85-cd78-ce90-69d9dc399e78",
+														"id": "e7bf3c3a-50f2-4a50-7d85-564a159441c1",
 														"pageElements": [
 															{
 																"definition": {
 																},
-																"id": "7acb90d0-a050-1d34-4d6a-e10a17186a51",
+																"id": "900c27e9-7c5a-07f9-5acf-1ead695d094a",
 																"pageElements": [
 																	{
 																		"definition": {
@@ -3138,14 +3129,14 @@
 																			],
 																			"indexed": true
 																		},
-																		"id": "2ee30c17-f87b-2c19-66fe-ccf80e11a78c",
+																		"id": "66892533-45b3-eaca-6721-0050a9c3df81",
 																		"type": "Fragment"
 																	},
 																	{
 																		"definition": {
 																			"fragment": {
 																				"key": "text",
-																				"siteKey": "[$GROUP_KEY$]"
+																				"siteKey": "One"
 																			},
 																			"fragmentConfig": {
 																				"fontSize": "font-size-paragraph-large",
@@ -3160,7 +3151,7 @@
 																						},
 																						"text": {
 																							"value_i18n": {
-																								"en_US": "<p>Chose The Perfect Plan For Your Needs</p>\n\n\n\n\n\n\n\n\n\n\n"
+																								"en_US": "<p>Chose The Perfect Plan For Your Needs</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																							}
 																						}
 																					}
@@ -3175,7 +3166,7 @@
 																			},
 																			"indexed": true
 																		},
-																		"id": "8b981125-359e-2567-c05c-e549df4c7816",
+																		"id": "274eb881-d82d-6734-e844-6da77bc38c2c",
 																		"type": "Fragment"
 																	},
 																	{
@@ -3185,7 +3176,7 @@
 																			"layout": {
 																			}
 																		},
-																		"id": "7f347861-806f-b24f-7cd1-4a135e302f70",
+																		"id": "0d063cbe-479e-93b2-8e4e-8077e5ad3131",
 																		"pageElements": [
 																			{
 																				"definition": {
@@ -3222,7 +3213,7 @@
 																					],
 																					"verticalAlignment": "top"
 																				},
-																				"id": "ec4e352a-c1e8-a539-2dbd-0a813213cfd9",
+																				"id": "64cdb2f1-de65-f7d2-1e24-3d225c4ca803",
 																				"pageElements": [
 																					{
 																						"definition": {
@@ -3246,37 +3237,25 @@
 																							],
 																							"size": 4
 																						},
-																						"id": "431cca6b-1833-7d86-6fe4-a53872193b9f",
+																						"id": "dfae78b7-5683-1103-916d-4601b0c6f5b3",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"fragment": {
 																										"key": "tier-card",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
 																										"available": true,
-																										"badgeText": "Coming Soon",
-																										"buttonLink": "/product-purchase?productId=PRODUCTID",
+																										"badgeText": "",
+																										"buttonLink": "",
 																										"buttonText": "Purchase",
 																										"customPrice": false,
-																										"productId": "",
+																										"productId": "39330268",
 																										"purchasable": true,
-																										"skuId": ""
+																										"skuId": "39330314"
 																									},
 																									"fragmentFields": [
-																										{
-																											"id": "description",
-																											"value": {
-																												"fragmentLink": {
-																												},
-																												"text": {
-																													"value_i18n": {
-																														"en_US": "<p>Deploy ready-made Liferay agents into your existing sites, content, and commerce.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-																													}
-																												}
-																											}
-																										},
 																										{
 																											"id": "features",
 																											"value": {
@@ -3284,15 +3263,8 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<ul>\n\t<li>OTB Liferay agents</li>\n\t<li>Up to 5 customised agents (modified OTB)</li>\n\t<li>200MB Data Source Capacity (≈500–4,000 pages)</li>\n\t<li>Basic access control (standard Liferay roles)</li>\n\t<li>Audit trail (6 months)</li>\n\t<li>10 simultaneous agent requests</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<ul>\n\t<li>OTB Liferay agents</li>\n\t<li>Up to 5 customised agents (modified OTB)</li>\n\t<li>200MB Data Source Capacity (≈500–4,000 pages)</li>\n\t<li>Basic access control (standard Liferay roles)</li>\n\t<li>Audit trail (6 months)</li>\n\t<li>10 simultaneous agent requests</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
-																												}
-																											}
-																										},
-																										{
-																											"id": "price-label",
-																											"value": {
-																												"fragmentLink": {
 																												}
 																											}
 																										},
@@ -3304,17 +3276,9 @@
 																											}
 																										},
 																										{
-																											"id": "product-id",
+																											"id": "price-label",
 																											"value": {
 																												"fragmentLink": {
-																												},
-																												"text": {
-																													"mapping": {
-																														"fieldKey": "CPDefinition_cProductId",
-																														"itemReference": {
-																															"contextSource": "DisplayPageItem"
-																														}
-																													}
 																												}
 																											}
 																										},
@@ -3322,6 +3286,18 @@
 																											"id": "subtitle",
 																											"value": {
 																												"fragmentLink": {
+																												}
+																											}
+																										},
+																										{
+																											"id": "description",
+																											"value": {
+																												"fragmentLink": {
+																												},
+																												"text": {
+																													"value_i18n": {
+																														"en_US": "<p>Deploy ready-made Liferay agents into your existing sites, content, and commerce.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+																													}
 																												}
 																											}
 																										},
@@ -3340,7 +3316,7 @@
 																									],
 																									"indexed": true
 																								},
-																								"id": "2d82c0f9-f8e5-85d6-3dbf-518692f9c95a",
+																								"id": "07b54a08-94ae-8d74-acf1-3fb97989e2ad",
 																								"type": "Fragment"
 																							}
 																						],
@@ -3368,37 +3344,25 @@
 																							],
 																							"size": 4
 																						},
-																						"id": "ae269dd1-84a5-82d3-50be-12249f3d08cc",
+																						"id": "54a62514-f019-2641-6357-e84b0b94c162",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"fragment": {
 																										"key": "tier-card",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
-																										"available": false,
-																										"badgeText": "Coming Soon",
-																										"buttonLink": "/product-purchase?productId=PRODUCTID",
-																										"buttonText": "Coming Soon",
+																										"available": true,
+																										"badgeText": "",
+																										"buttonLink": "",
+																										"buttonText": "Purchase",
 																										"customPrice": false,
-																										"productId": "",
-																										"purchasable": false,
-																										"skuId": ""
+																										"productId": "39330268",
+																										"purchasable": true,
+																										"skuId": "39330310"
 																									},
 																									"fragmentFields": [
-																										{
-																											"id": "description",
-																											"value": {
-																												"fragmentLink": {
-																												},
-																												"text": {
-																													"value_i18n": {
-																														"en_US": "<p>Build and own your own AI agents, powered by the language model of your choice.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n"
-																													}
-																												}
-																											}
-																										},
 																										{
 																											"id": "features",
 																											"value": {
@@ -3406,8 +3370,15 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<ul>\n\t<li>Everything in Activate, plus:</li>\n\t<li>Up to 25 custom agents, built from scratch</li>\n\t<li>Bring your own LLM</li>\n\t<li>Connectors to external systems (10 included)</li>\n\t<li>1GB Data Source Capacity (≈2,500–20,000 pages)</li>\n\t<li>25 simultaneous agent requests</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<ul>\n\t<li>Everything in Activate, plus:</li>\n\t<li>Up to 25 custom agents, built from scratch</li>\n\t<li>Bring your own LLM</li>\n\t<li>Connectors to external systems (10 included)</li>\n\t<li>1GB Data Source Capacity (≈2,500–20,000 pages)</li>\n\t<li>25 simultaneous agent requests</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
+																												}
+																											}
+																										},
+																										{
+																											"id": "price-suffix",
+																											"value": {
+																												"fragmentLink": {
 																												}
 																											}
 																										},
@@ -3424,31 +3395,21 @@
 																											}
 																										},
 																										{
-																											"id": "price-suffix",
+																											"id": "subtitle",
 																											"value": {
 																												"fragmentLink": {
 																												}
 																											}
 																										},
 																										{
-																											"id": "product-id",
+																											"id": "description",
 																											"value": {
 																												"fragmentLink": {
 																												},
 																												"text": {
-																													"mapping": {
-																														"fieldKey": "CPDefinition_cProductId",
-																														"itemReference": {
-																															"contextSource": "DisplayPageItem"
-																														}
+																													"value_i18n": {
+																														"en_US": "<p>Build and own your own AI agents, powered by the language model of your choice.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
-																												}
-																											}
-																										},
-																										{
-																											"id": "subtitle",
-																											"value": {
-																												"fragmentLink": {
 																												}
 																											}
 																										},
@@ -3467,7 +3428,7 @@
 																									],
 																									"indexed": true
 																								},
-																								"id": "05d883b0-fe63-9f35-dadb-2b1c802b1dad",
+																								"id": "5c049f89-2d2f-b810-b925-12599e8c8da5",
 																								"type": "Fragment"
 																							}
 																						],
@@ -3495,13 +3456,13 @@
 																							],
 																							"size": 4
 																						},
-																						"id": "90342fd4-9b43-8bcf-45d5-6f28972dabc2",
+																						"id": "893332e1-b538-e3b5-c34d-e930a97caae8",
 																						"pageElements": [
 																							{
 																								"definition": {
 																									"fragment": {
 																										"key": "tier-card",
-																										"siteKey": "[$GROUP_KEY$]"
+																										"siteKey": "One"
 																									},
 																									"fragmentConfig": {
 																										"available": true,
@@ -3509,23 +3470,11 @@
 																										"buttonLink": "https://www.liferay.com/contact-sales",
 																										"buttonText": "Contact sales",
 																										"customPrice": true,
-																										"productId": "",
+																										"productId": "35730896",
 																										"purchasable": false,
-																										"skuId": ""
+																										"skuId": "36357434"
 																									},
 																									"fragmentFields": [
-																										{
-																											"id": "description",
-																											"value": {
-																												"fragmentLink": {
-																												},
-																												"text": {
-																													"value_i18n": {
-																														"en_US": "<p>Run AI across your entire organisation, with the security and deployment regulated industries require.</p>\n\n\n\n\n\n\n"
-																													}
-																												}
-																											}
-																										},
 																										{
 																											"id": "features",
 																											"value": {
@@ -3533,7 +3482,7 @@
 																												},
 																												"text": {
 																													"value_i18n": {
-																														"en_US": "<ul>\n\t<li>Everything in Studio, plus:</li>\n\t<li>Unlimited custom agents</li>\n\t<li>Custom connectors to external systems</li>\n\t<li>Multi-region / sovereign deployment</li>\n\t<li>Advanced governance (SAML, SSO, SCIM) + SIEM</li>\n\t<li>Negotiable support SLAs (incl. Premier 24/7)</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+																														"en_US": "<ul>\n\t<li>Everything in Studio, plus:</li>\n\t<li>Unlimited custom agents</li>\n\t<li>Custom connectors to external systems</li>\n\t<li>Multi-region / sovereign deployment</li>\n\t<li>Advanced governance (SAML, SSO, SCIM) + SIEM</li>\n\t<li>Negotiable support SLAs (incl. Premier 24/7)</li>\n</ul>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -3551,28 +3500,6 @@
 																											}
 																										},
 																										{
-																											"id": "price-suffix",
-																											"value": {
-																												"fragmentLink": {
-																												}
-																											}
-																										},
-																										{
-																											"id": "product-id",
-																											"value": {
-																												"fragmentLink": {
-																												},
-																												"text": {
-																													"mapping": {
-																														"fieldKey": "CPDefinition_cProductId",
-																														"itemReference": {
-																															"contextSource": "DisplayPageItem"
-																														}
-																													}
-																												}
-																											}
-																										},
-																										{
 																											"id": "subtitle",
 																											"value": {
 																												"fragmentLink": {
@@ -3580,6 +3507,18 @@
 																												"text": {
 																													"value_i18n": {
 																														"en_US": "Tailored to your organisation"
+																													}
+																												}
+																											}
+																										},
+																										{
+																											"id": "description",
+																											"value": {
+																												"fragmentLink": {
+																												},
+																												"text": {
+																													"value_i18n": {
+																														"en_US": "<p>Run AI across your entire organisation, with the security and deployment regulated industries require.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 																													}
 																												}
 																											}
@@ -3602,7 +3541,7 @@
 																									},
 																									"indexed": true
 																								},
-																								"id": "3542cd64-017b-e25d-b6d7-8a54fd97b1ec",
+																								"id": "a18fe8b7-234b-ed38-362a-0e2912b1bb6d",
 																								"type": "Fragment"
 																							}
 																						],
@@ -3630,11 +3569,13 @@
 										"definition": {
 											"fragment": {
 												"key": "requirements-modal",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"description": "The Liferay AI Hub requires the 2026.Q1 release of DXP or above to run.",
-												"header": "Liferay AI Hub",
+												"header": "Liferay Ai HUB",
+												"productId": "",
+												"solutionType": "cmp",
 												"title": "AI Hub Requirements"
 											},
 											"fragmentFields": [
@@ -3709,7 +3650,7 @@
 		"masterPage": {
 			"key": "liferay-one"
 		},
-		"themeName": "Classic",
+		"themeName": "Dialect",
 		"themeSettings": {
 			"lfr-theme:regular:show-footer": "false",
 			"lfr-theme:regular:show-header": "false",

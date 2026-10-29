@@ -93,10 +93,11 @@
 													{
 														"definition": {
 															"fragment": {
-																"key": "product-icon",
-																"siteKey": "[$GROUP_KEY$]"
+																"key": "product-icon-(copy)",
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
+																"imageSize": "w-100"
 															},
 															"fragmentFields": [
 																{
@@ -106,7 +107,7 @@
 																		},
 																		"text": {
 																			"mapping": {
-																				"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Apps Icon$]",
+																				"fieldKey": "ddmTemplate__ddmTemplate_34051402",
 																				"itemReference": {
 																					"contextSource": "DisplayPageItem"
 																				}
@@ -115,14 +116,9 @@
 																	}
 																}
 															],
-															"fragmentStyle": {
-																"height": "80px",
-																"maxWidth": "80px",
-																"width": "80px"
-															},
 															"indexed": true
 														},
-														"id": "dbab2f53-7a19-2b66-c9f1-a0d860a09911",
+														"id": "54babc7c-f1ac-8585-ba60-158003f4ba7c",
 														"type": "Fragment"
 													},
 													{
@@ -142,6 +138,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
+																		"backgroundColor": "",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -160,7 +157,7 @@
 																		"definition": {
 																			"fragment": {
 																				"key": "text",
-																				"siteKey": "[$GROUP_KEY$]"
+																				"siteKey": "One"
 																			},
 																			"fragmentConfig": {
 																				"fontSize": "font-size-paragraph-base",
@@ -224,6 +221,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
+																		"backgroundColor": "",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -280,7 +278,7 @@
 																					"value": {
 																						"html": {
 																							"mapping": {
-																								"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Developer Name$]",
+																								"fieldKey": "ddmTemplate__ddmTemplate_36201412",
 																								"itemReference": {
 																									"contextSource": "DisplayPageItem"
 																								}
@@ -357,7 +355,7 @@
 															"customCSS": ".[$FRAGMENT_CLASS$] .main-button {\n width: max-content !important;\nz-index: 10;\n}",
 															"fragment": {
 																"key": "get-app-button",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"buttonText": "Try Beta",
@@ -383,6 +381,9 @@
 																	}
 																}
 															],
+															"fragmentStyle": {
+																"hidden": true
+															},
 															"indexed": true
 														},
 														"id": "d96a2843-41d4-d3f6-42bd-07980d83a984",
@@ -419,9 +420,6 @@
 																	}
 																}
 															],
-															"fragmentStyle": {
-																"hidden": true
-															},
 															"indexed": true
 														},
 														"id": "78770b82-a4fb-370e-0d43-d97e7c589081",
@@ -442,117 +440,8 @@
 					{
 						"definition": {
 							"fragment": {
-								"key": "marketplace-modal",
-								"siteKey": "[$GROUP_KEY$]"
-							},
-							"fragmentConfig": {
-								"contentInitEvent": "",
-								"modalId": "cmp-modal-1",
-								"modalOverlayColor": "primary",
-								"modalSize": "md"
-							},
-							"fragmentFields": [
-								{
-									"id": "buttonText",
-									"value": {
-										"fragmentLink": {
-										}
-									}
-								}
-							],
-							"fragmentStyle": {
-								"hidden": true
-							},
-							"indexed": true
-						},
-						"id": "794d5648-fbf9-a9ea-ce17-447891fd8dc6",
-						"pageElements": [
-							{
-								"definition": {
-								},
-								"id": "ed7e12ef-ccf0-1957-d584-9225eae7c512",
-								"pageElements": [
-									{
-										"definition": {
-											"indexed": true,
-											"layout": {
-											}
-										},
-										"id": "476f58e8-e88c-d9d8-130a-48a696ad0915",
-										"pageElements": [
-											{
-												"definition": {
-													"fragment": {
-														"key": "text",
-														"siteKey": "[$GROUP_KEY$]"
-													},
-													"fragmentConfig": {
-														"fontSize": "font-size-paragraph-base",
-														"smallCaps": false,
-														"tabletScreenCenter": false
-													},
-													"fragmentFields": [
-														{
-															"id": "text",
-															"value": {
-																"fragmentLink": {
-																},
-																"text": {
-																	"value_i18n": {
-																		"en_US": "CONTENT MARKETING PLATFORM"
-																	}
-																}
-															}
-														}
-													],
-													"indexed": true
-												},
-												"id": "ecba5cb3-094a-d7b3-46c1-e8a90f69ec64",
-												"type": "Fragment"
-											}
-										],
-										"type": "Section"
-									}
-								],
-								"type": "FragmentDropZone"
-							}
-						],
-						"type": "Fragment"
-					},
-					{
-						"definition": {
-							"fragment": {
-								"key": "marketplace-modal",
-								"siteKey": "[$GROUP_KEY$]"
-							},
-							"fragmentConfig": {
-								"contentInitEvent": "",
-								"modalId": "",
-								"modalOverlayColor": "primary",
-								"modalSize": "md"
-							},
-							"fragmentFields": [
-								{
-									"id": "buttonText",
-									"value": {
-										"fragmentLink": {
-										}
-									}
-								}
-							],
-							"fragmentStyle": {
-								"hidden": true
-							},
-							"indexed": true
-						},
-						"id": "883ae40c-f911-fd6f-54c4-a8689af84529",
-						"type": "Fragment"
-					},
-					{
-						"definition": {
-							"fragment": {
 								"key": "text",
-								"siteKey": "[$GROUP_KEY$]"
+								"siteKey": "One"
 							},
 							"fragmentConfig": {
 								"fontSize": "font-size-paragraph-base",
@@ -659,7 +548,7 @@
 												},
 												"text": {
 													"value_i18n": {
-														"en_US": "<p>Everything your team needs to plan, launch, and measure high-impact campaigns in one connected workspace.</p>\n\n\n\n\n"
+														"en_US": "<p>Everything your team needs to plan, launch, and measure high-impact campaigns in one connected workspace.</p>\n\n\n\n\n\n\n\n\n\n\n"
 													}
 												}
 											}
@@ -723,7 +612,7 @@
 												"definition": {
 													"fragment": {
 														"key": "text",
-														"siteKey": "[$GROUP_KEY$]"
+														"siteKey": "One"
 													},
 													"fragmentConfig": {
 														"fontSize": "font-size-paragraph-base",
@@ -738,7 +627,7 @@
 																},
 																"text": {
 																	"value_i18n": {
-																		"en_US": "<p><b id=\"docs-internal-guid-875ed6b6-7fff-94a7-9df5-6f3694f174ed\">What Is Liferay CMP?</b></p>\n\n\n\n\n"
+																		"en_US": "<p><b id=\"docs-internal-guid-875ed6b6-7fff-94a7-9df5-6f3694f174ed\">What Is Liferay CMP?</b></p>\n\n\n\n\n\n\n\n\n\n\n"
 																	}
 																}
 															}
@@ -806,7 +695,7 @@
 										"definition": {
 											"fragment": {
 												"key": "image-container",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fragmentHeight": "381px",
@@ -822,14 +711,11 @@
 														"fragmentLink": {
 														},
 														"text": {
-															"defaultFragmentInlineValue": {
-																"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/image1.png$]"
-															},
 															"mapping": {
 																"fieldKey": "FileEntry_downloadURL",
 																"itemReference": {
 																	"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																	"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/image1.png#]"
+																	"classPK": 32915793
 																}
 															}
 														}
@@ -936,7 +822,7 @@
 										"definition": {
 											"fragment": {
 												"key": "text",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fontSize": "font-size-paragraph-large",
@@ -951,7 +837,7 @@
 														},
 														"text": {
 															"value_i18n": {
-																"en_US": "<p>Plan Better. Create Faster. Publish Everywhere.</p>\n\n\n\n\n"
+																"en_US": "<p><span class=\"text-white\">Plan Better. Create Faster. Publish Everywhere.</span></p>\n\n\n\n\n"
 															}
 														}
 													}
@@ -961,7 +847,7 @@
 												"fontSize": "48px",
 												"fontWeight": "fontWeightLight",
 												"textAlign": "center",
-												"textColor": "#FFFFFF"
+												"textColor": ""
 											},
 											"indexed": true
 										},
@@ -1014,7 +900,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1029,7 +915,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p><b id=\"docs-internal-guid-40d3df43-7fff-05ea-7e59-a0744d9ea5d2\">Know your audience coverage before you launch.</b></p>\n\n\n\n\n"
+																						"en_US": "<p><span class=\"text-white\"><b id=\"docs-internal-guid-40d3df43-7fff-05ea-7e59-a0744d9ea5d2\">Know your audience coverage before you launch.</b></span></p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1039,7 +925,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1059,7 +945,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\nMost campaigns discover content gaps after launch, not before. \n<span class=\"highlight\">The Content Population Matrix maps every asset a campaign needs against each target \n  audience</span>, making gaps visible and actionable from day one. Set campaign goals and audience definitions once at the start of a campaign, and they flow through planning, execution, and attribution automatically, so every stage works from the same frame of reference.\n</p>\n\n"
+																						"en_US": "<p class=\"dxp-capabilities-description text-white\">\nMost campaigns discover content gaps after launch, not before. \n<span class=\"highlight\">The Content Population Matrix maps every asset a campaign needs against each target \n  audience</span>, making gaps visible and actionable from day one. Set campaign goals and audience definitions once at the start of a campaign, and they flow through planning, execution, and attribution automatically, so every stage works from the same frame of reference.\n</p>\n\n"
 																					}
 																				}
 																			}
@@ -1067,7 +953,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": ""
 																	},
 																	"indexed": true
 																},
@@ -1095,7 +981,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "381px",
@@ -1111,14 +997,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_001.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_001.png#]"
+																							"classPK": 35423153
 																						}
 																					}
 																				}
@@ -1168,7 +1051,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "448px",
@@ -1184,14 +1067,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_004.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_004.png#]"
+																							"classPK": 35423816
 																						}
 																					}
 																				}
@@ -1227,7 +1107,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1242,7 +1122,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p><b id=\"docs-internal-guid-f6b7e12f-7fff-2558-bfea-32a77b6da509\">Replace the campaign coordination spreadsheet.</b></p>\n\n\n\n\n"
+																						"en_US": "<p><span class=\"text-white\"><b id=\"docs-internal-guid-f6b7e12f-7fff-2558-bfea-32a77b6da509\">Replace the campaign coordination spreadsheet.</b></span></p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1252,7 +1132,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1272,7 +1152,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\n  Marketing teams run campaigns across email threads, spreadsheets, and chat with no single source of truth.  <span class=\"highlight\">Liferay CMP brings coordination into a structured workspace with tasks, owners, deadlines, Calendar and Kanban views</span>, and configurable approval flows. The full campaign lifecycle, from planning through execution, is operable by marketing without IT involvement.\n</p>"
+																						"en_US": "<p class=\"dxp-capabilities-description text-white\">\n  Marketing teams run campaigns across email threads, spreadsheets, and chat with no single source of truth.  <span class=\"highlight\">Liferay CMP brings coordination into a structured workspace with tasks, owners, deadlines, Calendar and Kanban views</span>, and configurable approval flows. The full campaign lifecycle, from planning through execution, is operable by marketing without IT involvement.\n</p>"
 																					}
 																				}
 																			}
@@ -1280,7 +1160,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1324,7 +1204,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1339,7 +1219,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p><b id=\"docs-internal-guid-3c00d44a-7fff-646a-1dd1-04c5e3deca4f\">Content and assets on one platform, with no integration.</b></p>\n\n\n\n\n"
+																						"en_US": "<p><span class=\"text-white\"><b id=\"docs-internal-guid-3c00d44a-7fff-646a-1dd1-04c5e3deca4f\">Content and assets on one platform, with no integration.</b></span></p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1349,7 +1229,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1369,7 +1249,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\n\nMost CMPs require a connection layer between campaign management and the CMS, even \nwhen both come from the same vendor. <span class=\"highlight\">Liferay CMP runs \nnatively on Liferay CMS, sharing the same data model, permissions, and publishing \ninfrastructure with no connection to configure or maintain.</span> \nBuilt-in DAM capabilities mean campaign tasks, content assets, and brand files all live in one governed workspace.\n</p>"
+																						"en_US": "<p class=\"dxp-capabilities-description text-white\">\n\nMost CMPs require a connection layer between campaign management and the CMS, even \nwhen both come from the same vendor. <span class=\"highlight\">Liferay CMP runs \nnatively on Liferay CMS, sharing the same data model, permissions, and publishing \ninfrastructure with no connection to configure or maintain.</span> \nBuilt-in DAM capabilities mean campaign tasks, content assets, and brand files all live in one governed workspace.\n</p>"
 																					}
 																				}
 																			}
@@ -1377,7 +1257,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1405,11 +1285,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "373px",
 																		"fragmentId": "4",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "601px",
 																		"shape": "rectangle"
 																	},
@@ -1420,14 +1301,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_003.jpg$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_003.jpg#]"
+																							"classPK": 35423794
 																						}
 																					}
 																				}
@@ -1476,11 +1354,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "395px",
 																		"fragmentId": "6",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "602px",
 																		"shape": "rectangle"
 																	},
@@ -1491,14 +1370,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_005.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_005.png#]"
+																							"classPK": 35423836
 																						}
 																					}
 																				}
@@ -1534,7 +1410,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1549,7 +1425,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p><b id=\"docs-internal-guid-d69c7f49-7fff-3e0b-3429-f167e68d30ec\">Understand how your content is performing with built-in analytics.</b></p>\n\n\n\n\n"
+																						"en_US": "<p><span class=\"text-white\"><b id=\"docs-internal-guid-d69c7f49-7fff-3e0b-3429-f167e68d30ec\">Understand how your content is performing with built-in analytics.</b></span></p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1559,7 +1435,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1579,7 +1455,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\nGet insights into the effectiveness of your content so you can boost engagement and conversion rates and\nfocus on content quality. <span class=\"highlight\">Use the content dashboard to easily identify what content is being used where and see metrics on views, reads, and traffic.</span> Select any piece of content in Liferay CMS and view insights like views and shares immediately, without leaving the platform.\n</p>\n\n<small><i>Requires the Liferay Data Platform add-on.</i></small>\n\n"
+																						"en_US": "<p class=\"dxp-capabilities-description text-white\">\nGet insights into the effectiveness of your content so you can boost engagement and conversion rates and\nfocus on content quality. <span class=\"highlight\">Use the content dashboard to easily identify what content is being used where and see metrics on views, reads, and traffic.</span> Select any piece of content in Liferay CMS and view insights like views and shares immediately, without leaving the platform.\n</p>\n\n<small class=\"text-white\"><i>Requires the Liferay Data Platform add-on.</i></small>\n\n"
 																					}
 																				}
 																			}
@@ -1587,7 +1463,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1631,7 +1507,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1646,7 +1522,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p><b id=\"docs-internal-guid-404428bf-7fff-5b59-2f37-0eacc5342924\">Produce more content. Govern every output.</b></p>\n\n\n\n\n"
+																						"en_US": "<p><span class=\"text-white\"><b id=\"docs-internal-guid-404428bf-7fff-5b59-2f37-0eacc5342924\">Produce more content. Govern every output.</b></span></p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1656,7 +1532,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1676,7 +1552,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "\n<p class=\"dxp-capabilities-description\">\n\n  <span class=\"highlight\">Liferay CMP includes embedded AI agents that surface content gaps, generate on-brand drafts and images, and automate tagging and translation across markets.</span> Every AI output follows a mandatory review step before it can be published, and all AI-assisted content carries provenance tags. Teams increase content velocity without introducing brand or compliance risk.\n</p>\n  \n<small><i>Requires the AI Hub add-on.</i></small>"
+																						"en_US": "\n<p class=\"dxp-capabilities-description text-white\">\n\n  <span class=\"highlight\">Liferay CMP includes embedded AI agents that surface content gaps, generate on-brand drafts and images, and automate tagging and translation across markets.</span> Every AI output follows a mandatory review step before it can be published, and all AI-assisted content carries provenance tags. Teams increase content velocity without introducing brand or compliance risk.\n</p>\n  \n<small class=\"text-white\"><i>Requires the AI Hub add-on.</i></small>"
 																					}
 																				}
 																			}
@@ -1684,7 +1560,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "whiteColor"
 																	},
 																	"indexed": true
 																},
@@ -1712,11 +1588,12 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "373px",
 																		"fragmentId": "7",
+																		"fragmentRadius": "24px",
 																		"fragmentWidth": "601px",
 																		"shape": "rectangle"
 																	},
@@ -1727,14 +1604,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_002.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/cmp_media/cmp_002.png#]"
+																							"classPK": 35423173
 																						}
 																					}
 																				}
@@ -1824,7 +1698,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-large",
@@ -1839,7 +1713,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p>How Liferay CMP Works with Other Product Modules</p>\n\n\n\n\n"
+																						"en_US": "<p>How Liferay CMP Works with Other Product Modules</p>\n\n\n\n\n\n\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1960,7 +1834,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -1975,7 +1849,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>Content Marketing Platform + CMS</h2>\n"
+																												"en_US": "<h2>Content Marketing Platform + CMS</h2>\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2007,7 +1881,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Go beyond content management and into campaign management. As an add-on to Liferay CMS, Liferay CMP adds the campaign coordination layer marketing teams need, from brief and planning through team coordination, approvals, and publishing. Marketing runs campaigns end to end on the same platform IT already manages and trusts, with no new infrastructure or vendor to add. Liferay CMS includes built-in DAM capabilities, so brand assets are immediately accessible within the campaign workflow without a separate tool or vendor.</p>\n\n\n\n\n"
+																												"en_US": "<p>Go beyond content management and into campaign management. As an add-on to Liferay CMS, Liferay CMP adds the campaign coordination layer marketing teams need, from brief and planning through team coordination, approvals, and publishing. Marketing runs campaigns end to end on the same platform IT already manages and trusts, with no new infrastructure or vendor to add. Liferay CMS includes built-in DAM capabilities, so brand assets are immediately accessible within the campaign workflow without a separate tool or vendor.</p>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2099,7 +1973,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2114,7 +1988,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2><b id=\"docs-internal-guid-f173ff2e-7fff-6ab8-9a67-bbb594ac622e\">Content Marketing Platform + AI Hub</b></h2>\n\n\n\n\n"
+																												"en_US": "<h2><b id=\"docs-internal-guid-f173ff2e-7fff-6ab8-9a67-bbb594ac622e\">Content Marketing Platform + AI Hub</b></h2>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2145,7 +2019,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Scale AI-assisted content production without surrendering governance. Adding AI Hub gives marketing teams embedded agents that surface content gaps, generate on-brand drafts, and automate tagging and translation across markets. Every AI output follows a mandatory review step before publication, so teams increase content velocity without introducing brand or compliance risk.</p>\n\n\n\n\n"
+																												"en_US": "<p>Scale AI-assisted content production without surrendering governance. Adding AI Hub gives marketing teams embedded agents that surface content gaps, generate on-brand drafts, and automate tagging and translation across markets. Every AI output follows a mandatory review step before publication, so teams increase content velocity without introducing brand or compliance risk.</p>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2237,7 +2111,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2252,7 +2126,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2><b id=\"docs-internal-guid-79741a70-7fff-a434-e248-727fb8e02032\">CMP + LDP</b></h2>\n\n\n\n\n"
+																												"en_US": "<h2><b id=\"docs-internal-guid-79741a70-7fff-a434-e248-727fb8e02032\">CMP + LDP</b></h2>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2282,7 +2156,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Give marketing teams direct visibility into how their content is performing. Adding the Liferay Data Platform connects CMP to built-in content analytics, so teams can see views, reads, and traffic across their content library and get immediate performance insights on any piece of content directly within the CMS. No separate analytics tool or data team required to answer basic content performance questions.</p>\n\n\n\n\n"
+																												"en_US": "<p>Give marketing teams direct visibility into how their content is performing. Adding the Liferay Data Platform connects CMP to built-in content analytics, so teams can see views, reads, and traffic across their content library and get immediate performance insights on any piece of content directly within the CMS. No separate analytics tool or data team required to answer basic content performance questions.</p>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2374,7 +2248,7 @@
 																							"customCSS": ".[$FRAGMENT_CLASS$] h2 {\n font-size: 24px;\n}",
 																							"fragment": {
 																								"key": "text",
-																								"siteKey": "[$GROUP_KEY$]"
+																								"siteKey": "One"
 																							},
 																							"fragmentConfig": {
 																								"fontSize": "font-size-paragraph-base",
@@ -2389,7 +2263,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<h2>Content Marketing Platform + Sites</h2>\n"
+																												"en_US": "<h2>Content Marketing Platform + Sites</h2>\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2419,7 +2293,7 @@
 																										},
 																										"text": {
 																											"value_i18n": {
-																												"en_US": "<p>Take campaigns from brief to live web experience without leaving the platform. CMP enables marketing teams to move approved campaign assets into landing pages, microsites, and full web experiences in a coordinated workflow. Launch new initiatives quickly, without switching to a separate publishing tool.</p>\n\n\n\n\n"
+																												"en_US": "<p>Take campaigns from brief to live web experience without leaving the platform. CMP enables marketing teams to move approved campaign assets into landing pages, microsites, and full web experiences in a coordinated workflow. Launch new initiatives quickly, without switching to a separate publishing tool.</p>\n\n\n\n\n\n\n\n\n\n\n"
 																											}
 																										}
 																									}
@@ -2489,7 +2363,7 @@
 		"masterPage": {
 			"key": "liferay-one"
 		},
-		"themeName": "Classic",
+		"themeName": "Dialect",
 		"themeSettings": {
 			"lfr-theme:regular:show-footer": "false",
 			"lfr-theme:regular:show-header": "false",

@@ -99,7 +99,7 @@
 															"customCSS": ".[$FRAGMENT_CLASS$] img {\nobject-fit: contain;\n    height: 80px;\n    width: 80px;\nborder-radius: 8px;\n}",
 															"fragment": {
 																"key": "image",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"imageSize": "w-100"
@@ -112,7 +112,7 @@
 																		},
 																		"text": {
 																			"mapping": {
-																				"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Apps Icon$]",
+																				"fieldKey": "ddmTemplate__ddmTemplate_34051402",
 																				"itemReference": {
 																					"contextSource": "DisplayPageItem"
 																				}
@@ -148,7 +148,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
-																		"backgroundColor": "colorNeutral3",
+																		"backgroundColor": "colorNeutral1",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -167,7 +167,7 @@
 																		"definition": {
 																			"fragment": {
 																				"key": "text",
-																				"siteKey": "[$GROUP_KEY$]"
+																				"siteKey": "One"
 																			},
 																			"fragmentConfig": {
 																				"fontSize": "font-size-paragraph-base",
@@ -242,7 +242,7 @@
 															{
 																"definition": {
 																	"fragmentStyle": {
-																		"backgroundColor": "colorNeutral3",
+																		"backgroundColor": "colorNeutral1",
 																		"borderWidth": "0",
 																		"marginLeft": "2",
 																		"marginRight": "2",
@@ -299,7 +299,7 @@
 																					"value": {
 																						"html": {
 																							"mapping": {
-																								"fieldKey": "ddmTemplate__ddmTemplate_[$TEMPLATE_ENTRY_ID:Marketplace Developer Name$]",
+																								"fieldKey": "ddmTemplate__ddmTemplate_36201412",
 																								"itemReference": {
 																									"contextSource": "DisplayPageItem"
 																								}
@@ -403,7 +403,7 @@
 														"definition": {
 															"fragment": {
 																"key": "get-app-button",
-																"siteKey": "[$GROUP_KEY$]"
+																"siteKey": "One"
 															},
 															"fragmentConfig": {
 																"buttonText": "Request to Join",
@@ -512,7 +512,7 @@
 											"value": {
 												"html": {
 													"value_i18n": {
-														"en_US": "<h1 class=\"dxp-gradient-text\">\n SEO&amp;AEO Studio Beta\n</h1>\n\n"
+														"en_US": "<h1 class=\"dxp-gradient-text\">\n SEO & AEO Studio\n</h1>\n\n"
 													}
 												}
 											}
@@ -542,7 +542,7 @@
 												},
 												"text": {
 													"value_i18n": {
-														"en_US": "<p>Ensure your digital experiences are discovered, optimized, and recommended by humans and machines alike.</p>\n\n\n\n\n"
+														"en_US": "<p>Ensure your digital experiences are discovered, optimized, and recommended by humans and machines alike.</p>\n\n\n\n\n\n\n\n\n\n\n"
 													}
 												}
 											}
@@ -607,7 +607,7 @@
 												"definition": {
 													"fragment": {
 														"key": "text",
-														"siteKey": "[$GROUP_KEY$]"
+														"siteKey": "One"
 													},
 													"fragmentConfig": {
 														"fontSize": "font-size-paragraph-base",
@@ -690,7 +690,7 @@
 										"definition": {
 											"fragment": {
 												"key": "image-container",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fragmentHeight": "381px",
@@ -816,7 +816,7 @@
 										"definition": {
 											"fragment": {
 												"key": "text",
-												"siteKey": "[$GROUP_KEY$]"
+												"siteKey": "One"
 											},
 											"fragmentConfig": {
 												"fontSize": "font-size-paragraph-large",
@@ -831,17 +831,18 @@
 														},
 														"text": {
 															"value_i18n": {
-																"en_US": "<p>From audit to fixes in minutes, at scale</p>\n\n\n\n\n"
+																"en_US": "<p>From audit to fixes in minutes, at scale</p>\n\n\n\n\n\n\n\n\n\n\n"
 															}
 														}
 													}
 												}
 											],
 											"fragmentStyle": {
+												"backgroundColor": "",
 												"fontSize": "48px",
 												"fontWeight": "fontWeightLight",
 												"textAlign": "center",
-												"textColor": "#FFFFFF"
+												"textColor": "colorNeutral0"
 											},
 											"indexed": true
 										},
@@ -895,7 +896,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -910,7 +911,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p>Scan your whole site for issues and opportunities</p>\n\n\n\n\n"
+																						"en_US": "<p>Scan your whole site for issues and opportunities</p>\n\n\n\n\n\n\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -920,7 +921,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -940,7 +941,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\nLiferay SEO&amp;AEO Studio Beta <span class=\"highlight\">monitors your site and surfaces prioritized improvement opportunities for both traditional search and AI answer engine visibility.</span>\nEach insight provides clear explanations of what is broken, why it matters, and what to do next. \n</p>\n\n\n\n\n"
+																						"en_US": "<p class=\"dxp-capabilities-description\">\nLiferay SEO & AEO Studio <span class=\"highlight\">monitors your site and surfaces prioritized improvement opportunities for both traditional search and AI answer engine visibility.</span>\nEach insight provides clear explanations of what is broken, why it matters, and what to do next. \n</p>\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -948,7 +949,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -976,7 +977,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "351px",
@@ -992,14 +993,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo001.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo001.png#]"
+																							"classPK": 43612861
 																						}
 																					}
 																				}
@@ -1049,7 +1047,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "351px",
@@ -1065,14 +1063,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo002.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo002.png#]"
+																							"classPK": 43613061
 																						}
 																					}
 																				}
@@ -1110,7 +1105,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1125,7 +1120,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p>Let AI Agents do the heavy work</p>\n\n\n\n\n"
+																						"en_US": "<p>Let AI Agents do the heavy work</p>\n\n\n\n\n\n\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1135,7 +1130,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1163,7 +1158,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1209,7 +1204,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1224,7 +1219,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p>Stop losing visibility in AI answer engines</p>\n\n\n\n\n"
+																						"en_US": "<p>Stop losing visibility in AI answer engines</p>\n\n\n\n\n\n\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1234,7 +1229,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1262,7 +1257,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1290,7 +1285,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "351px",
@@ -1306,14 +1301,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo003.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo003.png#]"
+																							"classPK": 43613095
 																						}
 																					}
 																				}
@@ -1362,7 +1354,7 @@
 																"definition": {
 																	"fragment": {
 																		"key": "image-container",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fragmentHeight": "351px",
@@ -1378,14 +1370,11 @@
 																				"fragmentLink": {
 																				},
 																				"text": {
-																					"defaultFragmentInlineValue": {
-																						"value": "[$DOCUMENT_URL:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo004.png$]"
-																					},
 																					"mapping": {
 																						"fieldKey": "FileEntry_downloadURL",
 																						"itemReference": {
 																							"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																							"classPK": "[#DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/one_liferay_marketplace/seo_studio_content/seo004.png#]"
+																							"classPK": 43613166
 																						}
 																					}
 																				}
@@ -1421,7 +1410,7 @@
 																	"customCSS": ".[$FRAGMENT_CLASS$] {\nline-height: 40px;\n}",
 																	"fragment": {
 																		"key": "text",
-																		"siteKey": "[$GROUP_KEY$]"
+																		"siteKey": "One"
 																	},
 																	"fragmentConfig": {
 																		"fontSize": "font-size-paragraph-base",
@@ -1436,7 +1425,7 @@
 																				},
 																				"text": {
 																					"value_i18n": {
-																						"en_US": "<p>The right metrics, in one place</p>\n\n\n\n\n"
+																						"en_US": "<p>The right metrics, in one place</p>\n\n\n\n\n\n\n\n\n\n\n"
 																					}
 																				}
 																			}
@@ -1446,7 +1435,7 @@
 																		"fontSize": "32px",
 																		"fontWeight": "600",
 																		"marginBottom": "3",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1466,7 +1455,7 @@
 																			"value": {
 																				"html": {
 																					"value_i18n": {
-																						"en_US": "<p class=\"dxp-capabilities-description\">\nBy connecting data from Liferay DXP, Google Search Console, and PageSpeed Insights, Liferay SEO&amp;AEO Studio Beta gives marketing and IT teams the right performance data at the right time.\n</p>\n"
+																						"en_US": "<p class=\"dxp-capabilities-description\">\nBy connecting data from Liferay DXP, Google Search Console, and PageSpeed Insights, Liferay SEO & AEO Studio gives marketing and IT teams the right performance data at the right time.\n</p>\n"
 																					}
 																				}
 																			}
@@ -1474,7 +1463,7 @@
 																	],
 																	"fragmentStyle": {
 																		"fontSize": "18px",
-																		"textColor": "#FFFFFF"
+																		"textColor": "colorNeutral0"
 																	},
 																	"indexed": true
 																},
@@ -1526,6 +1515,47 @@
 										},
 										"id": "8780e910-103c-c56f-65b1-e5c2db2cd106",
 										"type": "Section"
+									},
+									{
+										"definition": {
+											"fragment": {
+												"key": "requirements-modal",
+												"siteKey": "One"
+											},
+											"fragmentConfig": {
+												"description": "The Liferay AI Hub requires the 2026.Q1 release of DXP or above to run.",
+												"header": "Liferay Ai HUB",
+												"productId": "",
+												"solutionType": "cmp",
+												"title": "AI Hub Requirements"
+											},
+											"fragmentFields": [
+												{
+													"id": "header",
+													"value": {
+														"fragmentLink": {
+														}
+													}
+												},
+												{
+													"id": "description",
+													"value": {
+														"fragmentLink": {
+														}
+													}
+												},
+												{
+													"id": "title",
+													"value": {
+														"fragmentLink": {
+														}
+													}
+												}
+											],
+											"indexed": true
+										},
+										"id": "c476f489-5590-0bce-f169-d9ceadcc938a",
+										"type": "Fragment"
 									}
 								],
 								"type": "Section"
@@ -1568,7 +1598,7 @@
 		"masterPage": {
 			"key": "liferay-one"
 		},
-		"themeName": "Classic",
+		"themeName": "Dialect",
 		"themeSettings": {
 			"lfr-theme:regular:show-footer": "false",
 			"lfr-theme:regular:show-header": "false",
